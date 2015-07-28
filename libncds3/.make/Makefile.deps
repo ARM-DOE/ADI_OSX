@@ -1,0 +1,42 @@
+
+# SOURCE DEPENDENCIES
+# -----------------------
+$(OBJ_DIR)/ncds_datastreams.o: ncds_datastreams.c $(COMP_HOME)/include/ncds3.h $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h ncds_private.h
+$(OBJ_DIR)/ncds_data_types.o: ncds_data_types.c $(COMP_HOME)/include/ncds3.h $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h ncds_private.h
+$(OBJ_DIR)/ncds_find_files.o: ncds_find_files.c $(COMP_HOME)/include/ncds3.h $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h ncds_private.h
+$(OBJ_DIR)/ncds_get.o: ncds_get.c $(COMP_HOME)/include/ncds3.h $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h ncds_private.h
+$(OBJ_DIR)/ncds_read.o: ncds_read.c $(COMP_HOME)/include/ncds3.h $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h ncds_private.h
+$(OBJ_DIR)/ncds_utils.o: ncds_utils.c $(COMP_HOME)/include/ncds3.h $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h ncds_private.h
+$(OBJ_DIR)/ncds_version.o: ncds_version.c
+$(OBJ_DIR)/ncds_write.o: ncds_write.c $(COMP_HOME)/include/ncds3.h $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h ncds_private.h
+$(OBJ_DIR)/ncwrap_dataset.o: ncwrap_dataset.c $(COMP_HOME)/include/ncds3.h $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h
+$(OBJ_DIR)/ncwrap_inquire.o: ncwrap_inquire.c $(COMP_HOME)/include/ncds3.h $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h
+
+# DEPENDENCY MAKEFILE DEPENDENCIES
+#  -----------------------
+# This should only be seen in the dependency file
+$(DEPENDENCY_MF): $(SRCS)
+
+#OLD SRCS VALUE
+#----------------------------------------
+#   This is the list of src files from last time.
+#   It'll be compared to the new srcs during next make.
+#----------------------------------------
+OLD_SRCS = ncds_datastreams.c ncds_data_types.c ncds_find_files.c ncds_get.c ncds_read.c ncds_utils.c ncds_version.c ncds_write.c ncwrap_dataset.c ncwrap_inquire.c
+
+# OUT DEPENDENCIES
+# -----------------------
+$(OUT_DIR)/libncds3.so: $(OBJ_DIR)/ncds_datastreams.o $(OBJ_DIR)/ncds_data_types.o $(OBJ_DIR)/ncds_find_files.o $(OBJ_DIR)/ncds_get.o $(OBJ_DIR)/ncds_read.o $(OBJ_DIR)/ncds_utils.o $(OBJ_DIR)/ncds_version.o $(OBJ_DIR)/ncds_write.o $(OBJ_DIR)/ncwrap_dataset.o $(OBJ_DIR)/ncwrap_inquire.o
+$(OUT_DIR)/libncds3.a: $(OBJ_DIR)/ncds_datastreams.o $(OBJ_DIR)/ncds_data_types.o $(OBJ_DIR)/ncds_find_files.o $(OBJ_DIR)/ncds_get.o $(OBJ_DIR)/ncds_read.o $(OBJ_DIR)/ncds_utils.o $(OBJ_DIR)/ncds_version.o $(OBJ_DIR)/ncds_write.o $(OBJ_DIR)/ncwrap_dataset.o $(OBJ_DIR)/ncwrap_inquire.o
+
+#DEPENDENCIES NOT FOUND
+#----------------------------------------------------------------------
+# The list below contains dependency files that could
+# not be located.  This may be due to any one of the
+# following:
+# System directories were excluded from the search
+# A component home is missing from the SWAWT resource file
+# The file is actually missing
+#----------------------------------------------------------------------
+#/home/vonderfecht/dev/afl/include/ncds3.h
+#  netcdf.h

@@ -1,0 +1,535 @@
+Changes 2.26-devel
+
+ - Updated to *not* automatically retrieve the qc_time variable if it exists.
+ - Updated NetCDF file name pattern to match at end of file name
+ - Added cds_map_symbol_to_unit("ster", "steradian")
+ - Added --dynamic-dods option for ingests.  This is still experimental and
+   was added to support the the generic csv2nc_ingest.
+
+Changes 2.25
+
+ - Fixed another bug in mapping logic that could cause the output dataset to
+   only contain sample times greater than the current processing interval. 
+
+Changes 2.24
+
+ - Fixed bug in mapping logic that could cause the output dataset to only
+   contain sample times greater than the current processing interval.
+
+Changes 2.23
+
+ - requires libcds3-1.16 and libncds3-1.12 releases
+
+ - Updated to search for non-standard missing values attriutes at both the
+   field and global level.
+
+ - Updated to dynamically create a standard missing_value attribute for input
+   variables that do not have one when dynamic DODs mode is enabled.  The
+   missing value will be determined by first looking for non-standard missing
+   value attributes at the field level, and then at the global level if none
+   are found. If a missing value can not be determined the default fill value
+   for the variable data type will be used.
+
+Changes 2.22
+
+ - Updated so the input_datastreams attribute would automatically be created
+   when the dynamic DODs option is enabled.
+
+ - Updated VAP logic to properly report "No Output Data Created" in the log
+   messages when no output data was created but input data was actually found.
+
+Changes 2.21
+
+ - Updated to properly shift time_bounds when times are shifted.
+
+ - Updated to not "auto disable" ingests when future times are found
+   and the process is run with the force option.
+
+Changes 2.20
+
+ - Added logic to properly update the input_datastreams attribute when a new
+   dataset is being appended to an existing file. This allows "VAP like"
+   processes to work on smaller "processing intervals" while creating larger
+   output files.
+
+ - Added better error handling for command line arguments, like checking to 
+   make sure the end time speecified if after the begin time.
+
+ - Updated to exit with error code 2 if a fatal system error occurred.
+
+ - Updated to exclude the time_bounds:units attribute from the DOD compare,
+   and let the unit conversion logic handle unit changes.
+
+ - Updated to check errno on access() failures in the file rename logic.
+
+ - Fixed bug in dsproc_consolidate_var_qc() that was reseting 
+   QC bits when it shouldn't have.
+
+ - Updated dsproc_is_fatal to check errno also.
+
+ - Updated _dsproc_run_init_process_hook() to return the exit value rather
+   than exit the program when an error occures.
+
+ - Updates to add a "real time" mode for processes that use the VAP framework
+ - so they can run more like ingests.
+
+Changes 2.19
+
+** Requires new releases of libarmutils and dsproc_test
+
+ - Added Ingest logic to automatically filter overlapping records when
+   force_mode is enabled (-F option).
+
+ - Updated to look for the DATASTREAM_DATA_IN and DATASTREAM_DATA_OUT
+   environment variables before using DATASTREAN_DATA.
+
+Changes 2.18
+
+ - Added initial logic for the new -F (force) option for ingests.
+ - Fixed transform logic to only set width equal to interval if
+   the width has not already been defined.
+
+
+Changes 2.17
+
+ - Updated the transformation logic to use the bounds fields and/or the bin
+   width/alignment values stored in the ds_properties database table.
+
+ - Updated to map the bounds fields to the output dataset if they exist in
+   the input dataset.
+
+ - Updated dsproc_get_dataset_vars to skip the time_bounds field.
+
+ - Updated the mapping logic to support mapping multiple input datasets
+   to a single output dataset.
+
+ - Added an adi_version() function that returns a string containing all
+   library versions separated by -'s.
+
+ - Added a dsproc_disable_dynamic_metric_vars() function to disable the mapping
+   of metric variables to the output dataset when the --dynamic-dods option
+   is used.
+
+
+Changes 2.16
+
+ - Fixed bug that could prevent data from non-observation based retrievals
+   from being read in up through the end time of previous observation based
+   retrievals if they extend past the end of the current processing interval. 
+
+ - Updated to strip the extra new-line character from the end of the
+   input_datastreams attribute value if one exists.
+
+ - Changed dsproc_get_bounds_var function call.
+
+Changes 2.15
+
+ - Fixed bug introduced in the last update to handle negative retrieval
+   offsets.  This caused the offsets to be set using the last instance
+   of a datastream group, rather than the largest offset found in all
+   instances of the datastream group.
+
+Changes 2.14
+
+ - Updated to handle negative retrieval offsets.
+ - Updated to not split output files if the only change is the dod_version.
+
+Changes 2.13
+
+ - Updated to allow minutes and seconds to be specified in the begin and end
+   times specified on the command line.
+
+ - Updated dsproc_create_output_dataset() to free the current dataset and
+   create a new one if the dataset already exists.
+
+ - Fixed bug in _dsproc_fetch_timevals.
+
+ - Added dsproc_set_overlap_filtering_mode() function that can be used to
+   configure the filtering logic to remove data records from a dataset
+   that overlap with previously stored data.
+
+ - Updated QC variables in the transformation datasets to contain the
+   appropriate bit descriptions and assessments.
+
+ - Added QC Utility Functions:
+     - dsproc_consolidate_var_qc()
+     - dsproc_get_bad_qc_mask()
+     - dsproc_get_qc_assessment_mask()
+
+ - Fixed bug in retriever logic that was not detecting when the current
+   processing interval fit inside a gap in an input file.
+
+ - Added options to consolidate transformation QC bits when mapping the 
+   QC fields to the output datasets.
+
+ - Added dsproc_abort() function and DSPROC_ABORT convenience macro.
+
+Changes 2.12
+
+ - Updated to rename files to the .done directory if it exists.
+
+Changes 2.11
+
+ - Requires release of libcds3
+
+ - Added function: dsproc_use_nc_extension().
+
+ - Added functions for dealing with bounds variables:
+    - dsproc_get_bounds_var()
+    - dsproc_set_bounds_data()
+    - dsproc_set_bounds_var_data()
+
+ - Updated dsproc_store_dataset() to call dsproc_set_bounds_data().
+
+ - Added process control functions:
+    - dsproc_set_processing_interval()
+    - dsproc_set_retriever_time_offsets()
+
+ - Updated process interval logic to determine process interval
+   from command line begin and end times if the process interval
+   is set to zero in the database. 
+
+Changes 2.10
+
+ - Requires release of libdsdb3
+
+ - Updated input_source global attribute to be the full path.
+
+ - Updated to set location_description and platform_id global attributes.
+
+ - Updated to only include the facility code in the facility_id if
+   location_description also exists in the output dataset.
+
+ - Updated to set the field level source attributes for variables that
+   are directly mapped from the input to output datasets.
+
+ - Updated the search for output coordinate system transformation
+   parameters files to include the site and facility specified on the
+   command line.
+
+ - Updated to set lat, lon, and alt to -9999 if all values are 0, and 
+   for values less than -9900.
+
+Changes 2.9.2
+
+ - Updated to properly check the prior_sample_flag attribute for the
+   qc_time variable before applying delta checks.
+
+Changes 2.9.1
+
+ - Fixed bug in previous logic that caused the code to always fall
+   though to the apps conf area even is a file was found in the
+   data conf area.
+
+Changes 2.9
+
+ - Requires libarmutils-1.6
+
+ - Updated to look for transformation parameter files in the apps conf
+   area if none are found in the data conf area.
+
+Changes 2.8
+
+ - Update to only allow 128 files to be open at a time per datastream.
+   The dsproc_set_max_open_files() function was added to changed this
+   default limit.
+
+ - Added function: dsproc_set_max_open_files
+ - Added split mode option: SPLIT_ON_MONTHS
+
+Changes 2.7
+
+ - Added function: dsproc_get_var_coordsys_name()
+
+Changes 2.6
+
+ - Updated retriever logic to use the new file access layer developed to
+   better support Ingest development and minimize file system load.
+
+ - Updated to look for NetCDF files with either a .cdf or .nc extension.
+
+ - Added DS_SKIP_TRANSFORM flag for input datastreams.
+
+ - Added function: dsproc_get_source_var_name()
+ - Added function: dsproc_get_source_ds_name()
+ - Added function: dsproc_get_source_ds_id()
+
+ - Added function: dsproc_get_dynamic_dods_mode()
+ - Added function: dsproc_set_dynamic_dods_mode()
+ - Added function: dsproc_set_log_dir()
+ - Added function: dsproc_set_log_interval()
+
+ - Added function: dsproc_get_trans_dim_info()
+
+Changes 2.5
+
+ - Fixed bug in dsproc_store_dataset that caused a memory curruption error
+   when storing data that spans two or more file split boundaries. 
+
+ - Updated logic to support simple observation based processing that does
+   not use the built-in transformations.
+
+ - Update dsproc_retriever to only call dsproc_load_transform_params_file
+   if the DSP_TRANSFORM process model flag is set.
+
+ - Added function: dsproc_set_map_time_range()
+ - Added function: dsproc_disable_nan_filter_warnings()
+
+Changes 2.4
+
+ - Added:  dsproc_exclude_from_standard_qc_checks().
+
+ - Exposed dsproc_get_reprocessing_mode() to the public.
+
+ - Updated to only run the Nan/Inf filter by default for
+   'a' and 'b' level datastreams.
+
+ - Renamed dsproc_filter_nans() to dsproc_filter_dataset_nans()
+   and added a warn flag.
+
+ - Added dsproc_filter_var_nans() function.
+
+ - Added custom_qc_hook function (only available for C implementations)
+
+ - Added DS_DISABLE_MERGE datastream flag.
+
+Changes 2.3-0
+
+ - Fixed bug in dsproc_qc_limit_checks that resulted in only the first
+   sample in multi-dimensional variables to be checked.
+
+Changes 2.2-0
+
+ - Added function: dsproc_set_datastream_file_extension()
+
+ - Fixed bug in dsproc_store_dataset that caused the wrong base time value
+   to be used if the data crosses a day boundry but all data for the first
+   day is filtered out.
+
+Changes 2.1-0
+
+ - requires new release for: afl-libarmutils-1.4-0 
+ - requires new release for: afl-libcds3-1.11-0 
+
+ - Added function: dsproc_get_dsdod_version()
+ - Added function: dsproc_get_dataset_version()
+ - Added function: dsproc_qc_delta_checks()
+ - Added function: dsproc_set_att_value_if_null()
+ - Added function: dsproc_set_att_text_if_null()
+
+ - Renamed: dsproc_standard_qc_limit_checks()
+        to: dsproc_qc_limit_checks()
+
+ - Renamed: dsproc_standard_qc_time_checks()
+        to: dsproc_qc_time_checks()
+
+ - Made the dsproc_standard_qc_checks() function visible to the public and
+   updated to perform the delta checks.
+
+ - Added dsproc_filter_nans() function and updated dsproc_store_dataset() to 
+   filter NaN and Inf values if the DS_FILTER_NANS flag is set (which is now
+   the default for all output datastreams).
+
+ - Fixed version numbers in the input_datastreams global attribute.
+
+Changes 2.0-0
+
+ - requires new releases for:
+
+    - afl-libcds3-1.10
+    - afl-libncds3-1.8
+
+ - Updated dsproc_set_runtime_metadata() to:
+ 
+    - Set the global "datastream" attribute.
+
+    - Generate an error if an invalid value is found in a global attribute.
+
+ - Updated dsproc_store_dataset() function to:
+
+    - Filter out duplicate records in the dataset, and verify that all record
+      times are in chronological order. Duplicate records are defined has having
+      identical times and data values.
+
+    - Apply standard missing value, and min/max QC checks for datastreams that
+      have the DS_STANDARD_QC flag set. This is the default for b1 datastreams
+      (see the dsproc_set_datastream_flags() function).
+
+    - Filter out all records that are duplicates of previously stored data, and
+      verify that the records do not overlap any previously stored data. This
+      check is currently being skipped if we are in reprocessing mode, and the
+      file splitting mode is SPLIT_ON_STORE (the default for VAPs).
+
+    - Merge datasets with existing files and only split on defined intervals
+      or when metadata values change. The default for VAPs is to create a new
+      file for every dataset stored, and the default for ingests is to create
+      daily files that split at midnight UTC
+      (see the dsproc_set_datastream_split_mode() function).
+
+ - Added/updated functions used to get the list of files in a datastream
+   directory.
+
+    - dsproc_free_file_list()
+    - dsproc_get_datastream_files()
+    - dsproc_set_file_name_compare_function()
+    - dsproc_add_datastream_file_patterns()
+    - dsproc_set_datastream_split_mode()
+
+ - Added functions used to check for metadata changes between two datasets.
+
+    - dsproc_compare_dod_versions()
+    - dsproc_compare_dod_dims()
+    - dsproc_compare_dod_atts()
+    - dsproc_compare_dod_vars()
+    - dsproc_compare_dods()
+    - dsproc_exclude_from_dod_compare()
+
+ - Added functions used to retrieve previously stored data.
+
+    - dsproc_fetch_dataset()
+    - dsproc_fetch_timevals()
+
+ - Added functions used to apply standard QC checks to a dataset.
+
+    - dsproc_standard_qc_limit_checks()
+    - dsproc_standard_qc_time_checks()
+
+ - Added functions used to filter duplicate records from datasets. Currently
+   these functions are not visible outside the library itself.
+
+Changes 1.8-0
+
+ - Updated retriever to cache start time, end time, and number of records
+   retrieved from each input file.
+
+Changes 1.7-0
+
+ - requires new libcds3 and libncds3 releases.
+
+ - Updated logic to fix time units that are not recognized by UDUNITS. 
+ - Added DSDir and related functions.
+ - Updated internals to use dsdir functions instead of dirlist functions.
+ - Added internal framework required to support ingests.
+
+Changes 1.6-3
+
+ - Changed metric variable suffix _frac to _goodfraction.
+
+ - Added additional debug statements to retriever logic.
+
+ - Added function: dsproc_datastream_path()
+ - Added function: dsproc_check_for_dsdod_update()
+
+ - Added dsproc_set_process_file_hook() and supporting functions.
+ - Updated docs to specify which hooks are for Ingests, VAPs, or both.
+
+ - Added function: _dsproc_ingest_main_loop()
+
+Changes 1.6-2
+
+ - Fixed bug that sent the variable mapping logic into an infinite loop
+   if data was found within the specified time offsets, but not for the
+   current processing interval.
+
+ - Updated variable mapping logic to support metric variables "std" and "frac".
+
+ - Added: dsproc_get_metric_var()
+
+Changes 1.6-1
+
+ - Fixed bug in retriever that prevented the length of the time dimension from
+   being changed when only a subset of times were retrieved from a file.
+
+ - Fixed bug in retriever that could cause a coredump when the date dependency
+   of an input datastream is outside the current processing interval.
+
+ - Updated to only generate an error when a mapped coordinate variable is not 
+   found in the retrieved data for required variables. When a mapped coordinate
+   variable is not found for an opptional variable a warning message will now be
+   generated and processing will continue.
+
+ - added: dsproc_set_processing_interval_offset()
+ - added: dsproc_set_sample_times()
+
+Changes 1.6
+
+ - requires libcds3 release afl-libcds3-1.8
+ - requires libmsngr release afl-libmsngr-1.6
+
+ - updated framework to facilitate implementations in other languages.
+ - updated to create all output datasets before calling the process_data_hook()
+ - updated to map data to output datasets before calling the process_data_hook()
+ - updated to store all unstored data after the process_data_hook().
+
+ - updated to only copy data for the current processing interval into
+   the output datasets. This only affects data with start/end offsets.
+
+ - updated VarTarget structure to use ds_id instead of dsc_name and dsc_level,
+   and made it visible to the public.
+
+ - added --dynamic_dods command line option that can be used to create the
+   output datasets without the need for a DOD defined in the database.
+
+ - changed prototype for dsproc_add_var_output_target():
+    - from: (CDSVar *var, const char *dsc_name, const char *dsc_level);
+    - to:   (CDSVar *var, int ds_id, const char *var_name);
+
+ - changed prototype for dsproc_set_var_output_target():
+    - from: (CDSVar *var, const char *dsc_name, const char *dsc_level);
+    - to:   (CDSVar *var, int ds_id, const char *var_name);
+
+ - added: dsproc_main()
+ - added: dsproc_set_init_process_hook()
+ - added: dsproc_set_finish_process_hook()
+ - added: dsproc_set_process_data_hook()
+
+ - added: message macros
+    - DSPROC_LOG(format, ...)
+    - DSPROC_WARNING(format, ...)
+    - DSPROC_ERROR(status, format, ...)
+    - DSPROC_MENTOR_MAIL(format, ...)
+    - DSPROC_DEBUG_LV1(format, ...)
+    - DSPROC_DEBUG_LV2(format, ...)
+    - DSPROC_DEBUG_LV3(format, ...)
+    - DSPROC_DEBUG_LV4(format, ...)
+    - DSPROC_DEBUG_LV5(format, ...)
+
+ - added: dsproc_dataset_name()
+ - added: dsproc_get_output_dataset()
+ - added: dsproc_get_retrieved_dataset()
+ - added: dsproc_get_transformed_dataset()
+
+ - added: dsproc_get_output_var()
+ - added: dsproc_var_name()
+ - added: dsproc_var_sample_count()
+ - added: dsproc_var_sample_size()
+
+ - added: dsproc_get_var_output_targets()
+
+Changes 1.5
+
+ - renamed RetVarInfo structure to VarTag, made some structure changes, and
+   updated all related code.
+
+ - added: dsproc_get_retrieved_var()
+ - added: dsproc_get_transformed_var()
+ - added: dsproc_get_coord_var()
+ - added: dsproc_get_qc_var()
+ - added: dsproc_clone_var()
+ - added: dsproc_define_var()
+ - added: dsproc_delete_var()
+ - added: dsproc_create_output_dataset()
+ - added: dsproc_add_var_output_target()
+ - added: dsproc_copy_var_tag()
+ - added: dsproc_set_var_coordsys_name()
+ - added: dsproc_get_var_missing_values()
+ - added: dsproc_delete_var_tag()
+ - added: dsproc_set_var_flags()
+ - added: dsproc_set_var_output_target()
+ - added: dsproc_unset_var_flags()
+
+ - deprecated: dsproc_create_dataset()
+
+Changes 1.4.1
+ - fixed bug in setting transformation widths in dsproc_transform
+ - libtrans had a bug fix relating to width calculations

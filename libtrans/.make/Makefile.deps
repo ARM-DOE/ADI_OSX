@@ -1,0 +1,40 @@
+
+# SOURCE DEPENDENCIES
+# -----------------------
+$(OBJ_DIR)/cds_transform_driver.o: cds_transform_driver.c $(COMP_HOME)/include/trans.h $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h
+$(OBJ_DIR)/trans_bin_average.o: trans_bin_average.c $(COMP_HOME)/include/trans.h $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h
+$(OBJ_DIR)/trans_interpolate.o: trans_interpolate.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h $(COMP_HOME)/include/trans.h
+$(OBJ_DIR)/trans_passthrough.o: trans_passthrough.c $(COMP_HOME)/include/trans.h $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h
+$(OBJ_DIR)/trans_quadrature.o: trans_quadrature.c $(COMP_HOME)/include/trans.h $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h
+$(OBJ_DIR)/trans_subsample.o: trans_subsample.c $(COMP_HOME)/include/trans.h $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h
+$(OBJ_DIR)/trans_utils.o: trans_utils.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h $(COMP_HOME)/include/trans.h
+$(OBJ_DIR)/trans_version.o: trans_version.c
+
+# DEPENDENCY MAKEFILE DEPENDENCIES
+#  -----------------------
+# This should only be seen in the dependency file
+$(DEPENDENCY_MF): $(SRCS)
+
+#OLD SRCS VALUE
+#----------------------------------------
+#   This is the list of src files from last time.
+#   It'll be compared to the new srcs during next make.
+#----------------------------------------
+OLD_SRCS = cds_transform_driver.c trans_bin_average.c trans_interpolate.c trans_passthrough.c trans_quadrature.c trans_subsample.c trans_utils.c trans_version.c
+
+# OUT DEPENDENCIES
+# -----------------------
+$(OUT_DIR)/libtrans.so: $(OBJ_DIR)/cds_transform_driver.o $(OBJ_DIR)/trans_bin_average.o $(OBJ_DIR)/trans_interpolate.o $(OBJ_DIR)/trans_passthrough.o $(OBJ_DIR)/trans_quadrature.o $(OBJ_DIR)/trans_subsample.o $(OBJ_DIR)/trans_utils.o $(OBJ_DIR)/trans_version.o
+$(OUT_DIR)/libtrans.a: $(OBJ_DIR)/cds_transform_driver.o $(OBJ_DIR)/trans_bin_average.o $(OBJ_DIR)/trans_interpolate.o $(OBJ_DIR)/trans_passthrough.o $(OBJ_DIR)/trans_quadrature.o $(OBJ_DIR)/trans_subsample.o $(OBJ_DIR)/trans_utils.o $(OBJ_DIR)/trans_version.o
+
+#DEPENDENCIES NOT FOUND
+#----------------------------------------------------------------------
+# The list below contains dependency files that could
+# not be located.  This may be due to any one of the
+# following:
+# System directories were excluded from the search
+# A component home is missing from the SWAWT resource file
+# The file is actually missing
+#----------------------------------------------------------------------
+#trans_utils.c
+#  netcdf.h

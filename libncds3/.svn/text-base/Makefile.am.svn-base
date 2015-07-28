@@ -1,0 +1,27 @@
+SUBDIRS = test
+
+SUBPACKAGE = libncds3
+
+lib_LTLIBRARIES = libncds3.la
+
+INCLUDES = $(CDS3_CFLAGS) $(MSNGR_CFLAGS) $(GLIB_CFLAGS) $(NETCDF_CFLAGS)
+
+libncds3_la_SOURCES = ncds_data_types.c ncds_datastreams.c ncds_find_files.c ncds_get.c ncds_private.h ncds_read.c ncds_utils.c ncds_version.c ncds_write.c ncwrap_dataset.c ncwrap_inquire.c
+
+libncds3_la_LDFLAGS = $(NETCDF_LIBS) ../libcds3/libcds3.la ../libmsngr/libmsngr.la
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = ncds3.pc
+
+DOXYGEN_SRCS = $(libncds3_la_SOURCES) ../../include/ncds3.h
+
+TAGFILES = ../libmsngr/doxygen-doc/libmsngr.tag=../libmsngr \
+           ../libcds3/doxygen-doc/libcds3.tag=../libcds3
+
+include $(top_srcdir)/doxygen.am
+EXTRA_DIST = doxygen.cfg
+
+MOSTLYCLEANFILES = $(DX_CLEANFILES)
+
+install-data-hook: doxygen-install
+

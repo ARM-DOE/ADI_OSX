@@ -1,0 +1,146 @@
+PYTHON_COMPILER    := /apps/base/bin/python
+
+#OSREV=$(shell uname -r | awk -F'.' '{print $$6}')
+OSREV=$(shell uname -r | sed 's/.*\(el[0-9]\).*/\1/')
+
+
+CCNAME = $(shell \
+    if test -n "`$(CC) -V 2>&1 | grep Sun`"; then echo "SunC"; \
+    else echo "GCC"; fi ;)
+#OSNAME = $(shell uname)
+#ARCHNAME = $(shell arch)
+ANT_SRCS = $(shell ls build.xml $(STD_ERR))
+OTHER_SRCS += $(ANT_SRCS)
+
+ifneq ($(ANT_SRCS),)
+    OTHER_TARGET     = ant
+    COMP_CLEAN      += antclean
+endif
+
+ifeq ($(CCNAME),GCC)
+  LINKER_FLAGS        = $(strip $(OPTIMIZE_TAG) $(SO_FLAGS) $(BITS64_FLAGS) $(DFLAGS) $(LFLAGS) $(LDFLAGS:-R%=-Wl,-R,%))
+endif
+
+FOR_COMPILER   = f90 -fixed
+FOR_LINKER     = f90
+FC_LIBS        = 
+FC_LFLAGS      = 
+#FC_LIBS      := -lF77 -lV77 -lM77 -lsunmath
+#FC_LFLAGS    := -L$(FC_FORLIB_DIR) -L$(FC_CLIB_DIR)
+
+#ifeq ($(CCNAME),GCC)
+  #SO_FLAGS       = -shared 
+  #COMP_CFLAGS    = -Wall
+  #ifeq ($(MAKE_TYPE),lib)
+    #COMP_CFLAGS += -fPIC
+  #endif
+#else
+    #SO_FLAGS       += -G 
+  #ifeq ($(MAKE_TYPE),lib)
+    #COMP_CFLAGS += -KPIC
+  #endif
+#endif
+
+#SO_FLAGS += $(CFLAGS)
+
+#ifeq ($(ARCHNAME),i86pc)
+#  ifeq ($(BITS64),true)
+#    BITS64_DIR = /64
+#    BITS64_FLAGS = -m64
+#  endif
+#endif
+
+ifeq ($(OS_NAME),Linux)
+  ifneq ($(BITS64),true)
+    BITS64_FLAGS = -m32
+  endif
+  FOR_COMPILER   = gfortran
+  FOR_LINKER     = gfortran
+#  BITS64_DIR =
+#  BITS64 = false
+#  BITS64_FLAGS = 
+endif
+
+ifeq ($(MAKE_TYPE),lib)
+    ifeq ($(BITS64),true)
+      COMP_ALL     = 32bit_make
+      COMP_CLEAN   = 32bit_clean
+    endif
+endif
+
+
+ifeq ($(AFL_LIB),)
+  AFL_LIB        = /apps/ds
+endif
+ifeq ($(ALGORITHM_LIB),)
+  ALGORITHM_LIB  = /apps/process
+endif
+
+ifeq ($(ANTS_LIB),)
+  ANTS_LIB       = /apps/tool
+endif
+
+ifeq ($(DSDB3_LIB),)
+  DSDB3_LIB       = /apps/ds
+endif
+ifeq ($(DSDB_LIB),)
+  DSDB_LIB       = /apps/ds
+endif
+
+ifeq ($(PGSQL_LIB),)
+  PGSQL_LIB      = /usr
+endif
+ifeq ($(DBCORE_LIB),)
+  DBCORE_LIB     = /apps/ds
+endif
+ifeq ($(DSDB2_LIB),)
+  DSDB2_LIB      = /apps/ds
+endif
+ifeq ($(DSLIB_LIB),)
+  DSLIB_LIB      = /apps/ds
+endif
+ifeq ($(DSUTIL_LIB),)
+  DSUTIL_LIB     = /apps/ds
+endif
+ifeq ($(ZEBRA_LIB),)
+  ZEBRA_LIB      = /apps/ds
+endif
+ifeq ($(NETCDF4_LIB),)
+  ifeq ($(OSREV),el5)
+    NETCDF4_LIB    = /apps/base/netcdf4
+  else
+    NETCDF4_LIB    = /usr
+  endif
+endif
+ifeq ($(HDF5_LIB),)
+  ifeq ($(OSREV),el5)
+    HDF5_LIB       = /apps/base
+  else
+    HDF5_LIB    = /usr
+  endif
+endif
+ifeq ($(UDUNITS2_LIB),)
+  ifeq ($(OSREV),el5)
+    UDUNITS2_LIB   = /apps/base
+  else
+    UDUINTS2_LIB    = /usr
+  endif
+endif
+ifeq ($(CURL_LIB),)
+  CURL_LIB       = /apps/base
+endif
+ifeq ($(JANSSON_LIB),)
+  JANSSON_LIB    = /apps/base
+endif
+
+ifneq ($(MATLAB_SRCS),)
+  ifneq ($(C_SRCS),)
+    MEX_OBJS        = $(patsubst %.$(C_SFX), $(OBJ_DIR)/%.mexs64, $(MEX_SRCS))
+  endif
+else
+  ifneq ($(DO_MEX),)
+    MATLAB_OUT      = $(OUT_NAME).mexs64
+    MATLAB_TARGET   = $(MATLAB_OUT_DIR)/$(MATLAB_OUT)
+    REG_TARGET      =
+  endif
+endif

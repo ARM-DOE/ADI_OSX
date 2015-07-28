@@ -1,0 +1,18 @@
+TARGET_TYPE = TEST
+TARGET      = libncds3_test
+
+include $(MKINC_DIR)/make.defs
+
+IFLAGS  = -I$(BUILD_ROOT)/include -I$(NETCDF4_HOME)/include
+LFLAGS  = -L$(BUILD_ROOT)/lib$(LIB64) -L$(NETCDF4_HOME)/lib$(LIB64)
+RFLAGS  = -R$(BUILD_ROOT)/lib$(LIB64) -R$(NETCDF4_HOME)/lib$(LIB64)
+LIBS    = -lncds3 -lcds3 -lnetcdf
+
+CLEAN_FILES = \
+out.sgpvceil25kC1.b1.dump \
+out.sgpvceil25kC1.b1.header \
+out.sgpvceil25kC1.b1.nc \
+out.sgpvceil25kC1.b1.ncdump
+
+include $(MKINC_DIR)/make.rules
+

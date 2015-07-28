@@ -1,0 +1,74 @@
+
+============================================================
+DSENV Tests
+============================================================
+
+------------------------------------------------------------
+Setting environment variables
+------------------------------------------------------------
+
+COLLECTION_DATA = /data/collection
+CONF_DATA = /data/conf
+DATASTREAM_DATA = /data/datastream
+LOGS_DATA = /data/logs
+QUICKLOOK_DATA = /data/quicklook
+TMP_DATA = /data/tmp
+INGEST_HOME = /apps/process
+VAP_HOME = /apps/process
+
+------------------------------------------------------------
+Getting environment variables
+------------------------------------------------------------
+
+COLLECTION_DATA = /data/collection
+CONF_DATA = /data/conf
+DATASTREAM_DATA = /data/datastream
+LOGS_DATA = /data/logs
+QUICKLOOK_DATA = /data/quicklook
+TMP_DATA = /data/tmp
+INGEST_HOME = /apps/process
+VAP_HOME = /apps/process
+
+------------------------------------------------------------
+Testing Functions
+------------------------------------------------------------
+
+
+dsenv_get_apps_conf_root(mfrsr, Ingest)
+ = /apps/process/conf/ingest/mfrsr
+
+dsenv_get_apps_conf_dir(mfrsr, Ingest, sgp, C1, mfrsr, b1)
+ = /apps/process/conf/ingest/mfrsr/sgp/sgpmfrsrC1.b1
+
+dsenv_get_apps_conf_dir(mfrsr, Ingest, sgp, C1, mfrsr, NULL)
+ = /apps/process/conf/ingest/mfrsr/sgp/sgpmfrsrC1
+
+dsenv_get_collection_root()
+ = /data/collection
+
+dsenv_get_collection_dir(sgp, C1, mfrsr, 00)
+ = /data/collection/sgp/sgpmfrsrC1.00
+
+dsenv_get_data_conf_root()
+ = /data/conf
+
+dsenv_get_data_conf_dir(sgp, C1, mfrsr, b1)
+ = /data/conf/sgp/sgpmfrsrC1.b1
+
+dsenv_get_data_conf_dir(sgp, C1, mfrsr, NULL)
+ = /data/conf/sgp/sgpmfrsrC1
+
+dsenv_get_datastream_root()
+ = /data/datastream
+
+dsenv_get_datastream_dir(sgp, C1, mfrsr, b1)
+ = /data/datastream/sgp/sgpmfrsrC1.b1
+
+dsenv_get_tmp_root()
+ = /data/tmp
+
+dsenv_get_logs_root()
+ = /data/logs
+
+dsenv_get_quicklook_root()
+ = /data/quicklook

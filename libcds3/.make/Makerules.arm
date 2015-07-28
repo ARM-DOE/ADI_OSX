@@ -1,0 +1,47 @@
+
+64bit_make:
+	@make BITS64=true COMP_ALL=
+
+64bit_clean:
+	@make BITS64=true COMP_CLEAN= clean
+
+32bit_make:
+	@make BITS64=false COMP_ALL=
+
+32bit_clean:
+	@make BITS64=false COMP_CLEAN= clean
+
+ifneq ($(MATLAB_TARGET),)
+  ifeq ($(DO_MEX),)
+    ifneq ($(MEX_SRCS),)
+      $(OBJ_DIR)/%.mexs64:  %.$(C_SFX)
+		@mkdir -p $(OBJ_DIR)
+		mex $(MEXOPTS) $< -o $@
+    endif
+  endif
+
+  $(LIB_DIR)/$(OUT_NAME).mexs64: $(MEX_SRCS)
+	mex $(MEXOPTS) -output $@ $(IFLAGS) $(LFLAGS) $(MEX_SRCS)
+
+  $(BIN_DIR)/$(OUT_NAME):  $(MEX_OBJS)
+	mcc $(MCCOPTS) -mv -d $(MATLAB_OUT_DIR) $(MCC_FLAGS) $(OUT_NAME).$(MATLAB_SFX)
+	$(BIN_DIR)/run_$(OUT_NAME).sh /apps/base/matlab -h > /dev/null
+endif
+
+ant:
+	ant
+antclean:
+	ant clean
+
+distmf:
+	/bin/rm -rf mf
+	mkdir -p mf
+	cp $(DEF_MF_DIR)/* mf
+	cp $(CUST_MF_DIR)/* mf
+	sed -e 's/^MAIN_MF/#MAIN_MF/'  Makefile > /tmp/foo1
+	sed -e 's/^include.*/include mf\/Makemain.default/'  /tmp/foo1 > makefile
+	/bin/rm /tmp/foo1
+
+testecho:
+	@echo $(OSREV)
+

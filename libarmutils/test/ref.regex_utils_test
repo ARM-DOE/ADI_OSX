@@ -1,0 +1,90 @@
+
+============================================================
+Regex Utils Test
+============================================================
+
+------------------------------------------------------------
+Patterns with no parenthesised subexpressions
+------------------------------------------------------------
+
+Regular expression patterns:
+ - \.csv$
+ - \.dat$
+
+Results for string: file_name.csv
+ - mindex = 0
+ - nsubs  = 0
+ - match[0]: so = 9, eo = 13: '.csv'
+
+Results for string: file_name.dat
+ - mindex = 1
+ - nsubs  = 0
+ - match[0]: so = 9, eo = 13: '.dat'
+
+Results for string: file_name.CSV
+ - no match
+
+------------------------------------------------------------
+Patterns with no parenthesised subexpressions (ignore case)
+------------------------------------------------------------
+
+Regular expression patterns:
+ - \.csv$
+ - \.dat$
+
+Results for string: file_name.csv
+ - mindex = 0
+ - nsubs  = 0
+ - match[0]: so = 9, eo = 13: '.csv'
+
+Results for string: file_name.dat
+ - mindex = 1
+ - nsubs  = 0
+ - match[0]: so = 9, eo = 13: '.dat'
+
+Results for string: file_name.CSV
+ - mindex = 0
+ - nsubs  = 0
+ - match[0]: so = 9, eo = 13: '.CSV'
+
+------------------------------------------------------------
+Numeric patterns with parenthesised subexpressions
+------------------------------------------------------------
+
+Regular expression patterns:
+ - [^0-9]?([0-9]{9,10})\.
+ - [^0-9]?([0-9]{4})([0-9]{2})([0-9]{2})\.([0-9]{2})([0-9]{2})([0-9]{2})\.
+
+Results for string: 1286840328.icm
+ - mindex = 0
+ - nsubs  = 1
+ - match[0]: so = 0, eo = 11: '1286840328.'
+ - match[1]: so = 0, eo = 10: '1286840328'
+
+Results for string: prefix.1286840328.icm
+ - mindex = 0
+ - nsubs  = 1
+ - match[0]: so = 6, eo = 18: '.1286840328.'
+ - match[1]: so = 7, eo = 17: '1286840328'
+
+Results for string: 20101011.233848.cdf
+ - mindex = 1
+ - nsubs  = 6
+ - match[0]: so = 0, eo = 16: '20101011.233848.'
+ - match[1]: so = 0, eo = 4: '2010'
+ - match[2]: so = 4, eo = 6: '10'
+ - match[3]: so = 6, eo = 8: '11'
+ - match[4]: so = 9, eo = 11: '23'
+ - match[5]: so = 11, eo = 13: '38'
+ - match[6]: so = 13, eo = 15: '48'
+
+Results for string: prefix.20101011.233848.cdf
+ - mindex = 1
+ - nsubs  = 6
+ - match[0]: so = 6, eo = 23: '.20101011.233848.'
+ - match[1]: so = 7, eo = 11: '2010'
+ - match[2]: so = 11, eo = 13: '10'
+ - match[3]: so = 13, eo = 15: '11'
+ - match[4]: so = 16, eo = 18: '23'
+ - match[5]: so = 18, eo = 20: '38'
+ - match[6]: so = 20, eo = 22: '48'

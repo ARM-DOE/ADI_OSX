@@ -1,0 +1,237 @@
+
+=================================================================
+testing process functions for: ['%', '%', '%', '%']
+=================================================================
+
+inquire_family_processes('Test', '%', '%', '%', '%', '%');
+ -> ['Test', 'test', 'xyz', 'T1', 'Collection', 'test']
+ -> ['Test', 'test', 'xyz', 'T1', 'Ingest', 'test']
+ -> ['Test', 'test', 'zyx', 'T2', 'Collection', 'test']
+ -> ['Test', 'test', 'zyx', 'T2', 'Ingest', 'test']
+
+inquire_family_processes('Junk', '%', '%', '%', '%', '%');
+ -> No Matching Family Processes Found
+
+=================================================================
+Performing dsdb_reconnect() test...
+
+CONNECTED:    nreconnect = 1
+
+DISCONNECTED: nreconnect = 0
+
+CONNECTED:    nreconnect = 1
+
+CONNECTED:    nreconnect = 2
+
+CONNECTED:    nreconnect = 1
+
+DISCONNECTED: nreconnect = 0
+
+CONNECTED:    nreconnect = 1
+
+PASSED
+=================================================================
+
+=================================================================
+testing process functions for: ['xyz', 'T1', 'Ingest', 'test']
+=================================================================
+
+get_family_process('xyz', 'T1', 'Ingest', 'test');
+ -> ['Test', 'test', 'xyz', 'T1', 'Ingest', 'test']
+
+get_process_location('xyz', 'T1', 'Ingest', 'test');
+ -> ['Test Location 1' '12.3450' '-54.3210' '123.0000']
+
+--------------------------------
+Testing Process State Procedures
+--------------------------------
+
+delete_process_state('xyz', 'T1', 'Ingest', 'test');
+ -> Process State Not Found
+
+get_process_state('xyz', 'T1', 'Ingest', 'test');
+ -> ['NULL' 'f' 'NULL' 'NULL']
+
+is_process_enabled('xyz', 'T1', 'Ingest', 'test');
+ -> Disabled
+
+----------
+
+update_process_state('xyz', 'T1', 'Ingest', 'test', 'Enabled', 'Test Enable', '2005-12-04 12:04:32');
+ -> Updated Process State
+
+get_process_state('xyz', 'T1', 'Ingest', 'test');
+ -> ['Enabled' 't' 'Test Enable' '2005-12-04 12:04:32']
+
+is_process_enabled('xyz', 'T1', 'Ingest', 'test');
+ -> Enabled
+
+----------
+
+update_process_state('xyz', 'T1', 'Ingest', 'test', 'Disabled', 'Test Disable', '2006-04-20 05:16:47');
+ -> Updated Process State
+
+get_process_state('xyz', 'T1', 'Ingest', 'test');
+ -> ['Disabled' 'f' 'Test Disable' '2006-04-20 05:16:47']
+
+is_process_enabled('xyz', 'T1', 'Ingest', 'test');
+ -> Disabled
+
+----------
+
+** This next command should fail with a DBError **
+
+update_process_state('xyz', 'T1', 'Ingest', 'test', 'Disable', 'Test DBError', '2005-12-04 12:04:32');
+ERROR: dbname@dbhost: FAILED: SELECT update_family_process_state($1,$2,$3,$4,$5,$6,$7)
+ -> Process State 'Disable' has not been defined
+CONTEXT:  PL/pgSQL function "update_family_process_state" line 16 at assignment
+
+----------
+
+delete_process_state('xyz', 'T1', 'Ingest', 'test');
+ -> Deleted Process State
+
+=================================================================
+Performing dsdb_reconnect() test...
+
+CONNECTED:    nreconnect = 1
+
+DISCONNECTED: nreconnect = 0
+
+CONNECTED:    nreconnect = 1
+
+CONNECTED:    nreconnect = 2
+
+CONNECTED:    nreconnect = 1
+
+DISCONNECTED: nreconnect = 0
+
+CONNECTED:    nreconnect = 1
+
+PASSED
+=================================================================
+
+--------------------------------
+Testing Process Status Procedures
+--------------------------------
+
+delete_process_status('xyz', 'T1', 'Ingest', 'test');
+ -> Process Status Not Found
+
+get_process_status('xyz', 'T1', 'Ingest', 'test');
+ -> ['NULL' 'NULL' 'f' 'NULL' 'NULL' 'NULL']
+
+----------
+
+update_process_started('xyz', 'T1', 'Ingest', 'test', '2005-12-31 23:59:59');
+ -> Updated Process Started
+
+get_process_status('xyz', 'T1', 'Ingest', 'test');
+ -> ['NULL' 'NULL' 'f' '2005-12-31 23:59:59' 'NULL' 'NULL']
+
+----------
+
+update_process_status('xyz', 'T1', 'Ingest', 'test', 'Success', 'Test Success', '2006-01-01 01:07:23');
+ -> Updated Process Status
+
+get_process_status('xyz', 'T1', 'Ingest', 'test');
+ -> ['Success' 'Test Success' 't' '2005-12-31 23:59:59' '2006-01-01 01:07:23' '2006-01-01 01:07:23']
+
+----------
+
+update_process_status('xyz', 'T1', 'Ingest', 'test', 'Failure', 'Test Failure', '2006-01-01 02:01:11');
+ -> Updated Process Status
+
+get_process_status('xyz', 'T1', 'Ingest', 'test');
+ -> ['Failure' 'Test Failure' 'f' '2005-12-31 23:59:59' '2006-01-01 02:01:11' '2006-01-01 01:07:23']
+
+----------
+
+update_process_completed('xyz', 'T1', 'Ingest', 'test', '2006-01-01 03:11:06');
+ -> Updated Process Completed
+
+get_process_status('xyz', 'T1', 'Ingest', 'test');
+ -> ['Failure' 'Test Failure' 'f' '2005-12-31 23:59:59' '2006-01-01 03:11:06' '2006-01-01 01:07:23']
+
+----------
+
+** This next command should fail with a DBError **
+
+update_process_status('xyz', 'T1', 'Ingest', 'test', 'Failed', 'Test Failed', '2006-01-01 02:01:11');
+ERROR: dbname@dbhost: FAILED: SELECT update_family_process_status($1,$2,$3,$4,$5,$6,$7)
+ -> Process Status 'Failed' has not been defined
+CONTEXT:  PL/pgSQL function "update_family_process_status" line 16 at assignment
+
+----------
+
+delete_process_status('xyz', 'T1', 'Ingest', 'test');
+ -> Deleted Process Status
+
+----------------------------------------------------------
+Testing Process Input/Output Datastream Classes Procedures
+----------------------------------------------------------
+
+get_process_inputs('Ingest', 'test');
+ -> ['test', '00']
+
+get_process_outputs('Ingest', 'test');
+ -> ['test', '00']
+ -> ['test', 'a1']
+ -> ['test', 'b1']
+
+--------------------------------------------
+Testing Process Output Datastream Procedures
+--------------------------------------------
+
+delete_datastream_times('xyz', 'T1', 'Ingest', 'test', 'test', 'b1');
+ -> Datastream Not Found
+
+get_datastream_times('xyz', 'T1', 'Ingest', 'test', 'test', 'b1');
+ -> ['NULL' 'NULL']
+
+----------
+
+update_datastream_times('xyz', 'T1', 'Ingest', 'test', 'test', 'b1', '2005-12-31 23:59:59', '2006-01-01 00:00:00');
+ -> Updated Datastream Times
+
+get_datastream_times('xyz', 'T1', 'Ingest', 'test', 'test', 'b1');
+ -> ['2005-12-31 23:59:59' '2006-01-01 00:00:00']
+
+----------
+
+update_datastream_times('xyz', 'T1', 'Ingest', 'test', 'test', 'b1', '2005-12-30 15:28:05', '2005-12-30 16:32:18');
+ -> Updated Datastream Times
+
+get_datastream_times('xyz', 'T1', 'Ingest', 'test', 'test', 'b1');
+ -> ['2005-12-30 15:28:05' '2006-01-01 00:00:00']
+
+----------
+
+update_datastream_times('xyz', 'T1', 'Ingest', 'test', 'test', 'b1', '2005-12-30 20:20:20', '2006-01-01 01:23:38');
+ -> Updated Datastream Times
+
+get_datastream_times('xyz', 'T1', 'Ingest', 'test', 'test', 'b1');
+ -> ['2005-12-30 15:28:05' '2006-01-01 01:23:38']
+
+----------
+
+update_datastream_times('xyz', 'T1', 'Ingest', 'test', 'test', 'b1', '2006-01-01 01:23:38', '2006-01-01 02:23:38');
+ -> Updated Datastream Times
+
+get_datastream_times('xyz', 'T1', 'Ingest', 'test', 'test', 'b1');
+ -> ['2005-12-30 15:28:05' '2006-01-01 02:23:38']
+
+----------
+
+** This next command should fail with a DBError **
+
+update_datastream_times('xyz', 'T1', 'Ingest', 'test', 'junk', 'b1', '2006-01-01 01:23:38', '2006-01-01 02:23:38');
+ERROR: dbname@dbhost: FAILED: SELECT update_process_output_datastream($1,$2,$3,$4,$5,$6,$7,$8)
+ -> Datastream Class ['junk', 'b1'] has not been defined
+CONTEXT:  PL/pgSQL function "get_process_output_ds_class_id" line 17 at assignment
+PL/pgSQL function "update_process_output_datastream" line 18 at assignment
+
+----------
+
+delete_datastream_times('xyz', 'T1', 'Ingest', 'test', 'test', 'b1');
+ -> Deleted Datastream Times

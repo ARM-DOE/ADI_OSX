@@ -1,0 +1,29 @@
+SUBPACKAGE = libdsproc3
+
+lib_LTLIBRARIES = libdsproc3.la
+
+INCLUDES = $(DSDB3_CFLAGS) $(NCDS3_CFLAGS) $(CDS3_CFLAGS) $(ARMUTILS_CFLAGS) $(MSNGR_CFLAGS) $(GLIB_CFLAGS) $(NETCDF_CFLAGS)
+
+libdsproc3_la_SOURCES = dsproc.c dsproc_dataset_atts.c dsproc_dataset_dims.c dsproc_datasets.c dsproc_dataset_store.c dsproc_dataset_times.c dsproc_dataset_vars.c dsproc_datastream_dod.c dsproc_datastream_files.c dsproc_datastreams.c dsproc_dqrdb.c dsproc_dsdb.c dsproc_file_utils.c dsproc_ingest_main.c dsproc_private.h dsproc_rename.c dsproc_retriever.c dsproc_vap_main.c dsproc_version.c dsproc_warnings.c
+
+libdsproc3_la_LDFLAGS = $(DSDB3_LIBS) $(NCDS3_LIBS) $(CDS3_LIBS) $(ARMUTILS_LIBS) $(MSNGR_LIBS) $(NETCDF_LIBS)
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = dsproc3.pc
+
+DOXYGEN_SRCS = $(libdsproc3_la_SOURCES) ../../include/dsproc3.h ../../include/dsproc3_internal.h
+
+TAGFILES = $(DSDB3_TAG)=../libdsdb3 \
+           $(NCDS3_TAG)=../libncds3 \
+           $(CDS3_TAG)=../libcds3 \
+           $(ARMUTILS_TAG)=../libarmutils \
+           $(MSNGR_TAG)=../libmsngr
+
+include $(top_srcdir)/doxygen.am
+EXTRA_DIST = doxygen.cfg
+
+MOSTLYCLEANFILES = $(DX_CLEANFILES)
+
+BUILT_SOURCES = doxygen-doc/$(SUBPACKAGE).tag
+
+install-data-hook: doxygen-install

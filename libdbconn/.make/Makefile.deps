@@ -1,0 +1,43 @@
+
+# SOURCE DEPENDENCIES
+# -----------------------
+$(OBJ_DIR)/dbconn.o: dbconn.c dbconn_pgsql.h $(COMP_HOME)/include/dbconn.h $(COMP_HOME)/include/messenger.h dbconn_private.h dbconn_sqlite.h sqlite3.h dbconn_wspc.h
+$(OBJ_DIR)/dbconn_pgsql.o: dbconn_pgsql.c dbconn_pgsql.h $(COMP_HOME)/include/dbconn.h $(COMP_HOME)/include/messenger.h
+$(OBJ_DIR)/dbconn_sqlite.o: dbconn_sqlite.c dbconn_sqlite.h $(COMP_HOME)/include/dbconn.h $(COMP_HOME)/include/messenger.h sqlite3.h
+$(OBJ_DIR)/dbconn_version.o: dbconn_version.c
+$(OBJ_DIR)/dbconn_wspc.o: dbconn_wspc.c dbconn_wspc.h $(COMP_HOME)/include/dbconn.h $(COMP_HOME)/include/messenger.h
+$(OBJ_DIR)/sqlite3.o: sqlite3.c
+
+# DEPENDENCY MAKEFILE DEPENDENCIES
+#  -----------------------
+# This should only be seen in the dependency file
+$(DEPENDENCY_MF): $(SRCS)
+
+#OLD SRCS VALUE
+#----------------------------------------
+#   This is the list of src files from last time.
+#   It'll be compared to the new srcs during next make.
+#----------------------------------------
+OLD_SRCS = dbconn.c dbconn_pgsql.c dbconn_sqlite.c dbconn_version.c dbconn_wspc.c sqlite3.c
+
+# OUT DEPENDENCIES
+# -----------------------
+$(OUT_DIR)/libdbconn.so: $(OBJ_DIR)/dbconn.o $(OBJ_DIR)/dbconn_pgsql.o $(OBJ_DIR)/dbconn_sqlite.o $(OBJ_DIR)/dbconn_version.o $(OBJ_DIR)/dbconn_wspc.o $(OBJ_DIR)/sqlite3.o
+$(OUT_DIR)/libdbconn.a: $(OBJ_DIR)/dbconn.o $(OBJ_DIR)/dbconn_pgsql.o $(OBJ_DIR)/dbconn_sqlite.o $(OBJ_DIR)/dbconn_version.o $(OBJ_DIR)/dbconn_wspc.o $(OBJ_DIR)/sqlite3.o
+
+#DEPENDENCIES NOT FOUND
+#----------------------------------------------------------------------
+# The list below contains dependency files that could
+# not be located.  This may be due to any one of the
+# following:
+# System directories were excluded from the search
+# A component home is missing from the SWAWT resource file
+# The file is actually missing
+#----------------------------------------------------------------------
+#dbconn_pgsql.h
+#  libpq-fe.h
+#  pgsql/libpq-fe.h
+
+#sqlite3.c
+#  config.h
+#  sqlite3rtree.h

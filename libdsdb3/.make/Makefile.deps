@@ -1,0 +1,37 @@
+
+# SOURCE DEPENDENCIES
+# -----------------------
+$(OBJ_DIR)/datastream_config.o: datastream_config.c $(COMP_HOME)/include/dsdb3.h /home/vonderfecht/dev/afl/include/cds3.h /home/vonderfecht/dev/afl/include/messenger.h /home/vonderfecht/dev/afl/include/dbconn.h dbog_dsdb.h
+$(OBJ_DIR)/dbog_dod.o: dbog_dod.c /home/vonderfecht/dev/afl/include/dbconn.h /home/vonderfecht/dev/afl/include/messenger.h
+$(OBJ_DIR)/dbog_dsdb.o: dbog_dsdb.c /home/vonderfecht/dev/afl/include/dbconn.h /home/vonderfecht/dev/afl/include/messenger.h
+$(OBJ_DIR)/dbog_retriever.o: dbog_retriever.c /home/vonderfecht/dev/afl/include/dbconn.h /home/vonderfecht/dev/afl/include/messenger.h
+$(OBJ_DIR)/dqrdb.o: dqrdb.c $(COMP_HOME)/include/dsdb3.h /home/vonderfecht/dev/afl/include/cds3.h /home/vonderfecht/dev/afl/include/messenger.h /home/vonderfecht/dev/afl/include/dbconn.h
+$(OBJ_DIR)/ds_class.o: ds_class.c $(COMP_HOME)/include/dsdb3.h /home/vonderfecht/dev/afl/include/cds3.h /home/vonderfecht/dev/afl/include/messenger.h /home/vonderfecht/dev/afl/include/dbconn.h dbog_dsdb.h
+$(OBJ_DIR)/dsdb.o: dsdb.c $(COMP_HOME)/include/dsdb3.h /home/vonderfecht/dev/afl/include/cds3.h /home/vonderfecht/dev/afl/include/messenger.h /home/vonderfecht/dev/afl/include/dbconn.h
+$(OBJ_DIR)/dsdb_version.o: dsdb_version.c
+$(OBJ_DIR)/ds_dod.o: ds_dod.c $(COMP_HOME)/include/dsdb3.h /home/vonderfecht/dev/afl/include/cds3.h /home/vonderfecht/dev/afl/include/messenger.h /home/vonderfecht/dev/afl/include/dbconn.h dbog_dod.h
+$(OBJ_DIR)/ds_times.o: ds_times.c $(COMP_HOME)/include/dsdb3.h /home/vonderfecht/dev/afl/include/cds3.h /home/vonderfecht/dev/afl/include/messenger.h /home/vonderfecht/dev/afl/include/dbconn.h dbog_dsdb.h
+$(OBJ_DIR)/facility_location.o: facility_location.c $(COMP_HOME)/include/dsdb3.h /home/vonderfecht/dev/afl/include/cds3.h /home/vonderfecht/dev/afl/include/messenger.h /home/vonderfecht/dev/afl/include/dbconn.h dbog_dsdb.h
+$(OBJ_DIR)/family_process.o: family_process.c $(COMP_HOME)/include/dsdb3.h /home/vonderfecht/dev/afl/include/cds3.h /home/vonderfecht/dev/afl/include/messenger.h /home/vonderfecht/dev/afl/include/dbconn.h dbog_dsdb.h
+$(OBJ_DIR)/process_config.o: process_config.c $(COMP_HOME)/include/dsdb3.h /home/vonderfecht/dev/afl/include/cds3.h /home/vonderfecht/dev/afl/include/messenger.h /home/vonderfecht/dev/afl/include/dbconn.h dbog_dsdb.h
+$(OBJ_DIR)/process_location.o: process_location.c $(COMP_HOME)/include/dsdb3.h /home/vonderfecht/dev/afl/include/cds3.h /home/vonderfecht/dev/afl/include/messenger.h /home/vonderfecht/dev/afl/include/dbconn.h dbog_dsdb.h
+$(OBJ_DIR)/process_state.o: process_state.c $(COMP_HOME)/include/dsdb3.h /home/vonderfecht/dev/afl/include/cds3.h /home/vonderfecht/dev/afl/include/messenger.h /home/vonderfecht/dev/afl/include/dbconn.h dbog_dsdb.h
+$(OBJ_DIR)/process_status.o: process_status.c $(COMP_HOME)/include/dsdb3.h /home/vonderfecht/dev/afl/include/cds3.h /home/vonderfecht/dev/afl/include/messenger.h /home/vonderfecht/dev/afl/include/dbconn.h dbog_dsdb.h
+$(OBJ_DIR)/retriever.o: retriever.c $(COMP_HOME)/include/dsdb3.h /home/vonderfecht/dev/afl/include/cds3.h /home/vonderfecht/dev/afl/include/messenger.h /home/vonderfecht/dev/afl/include/dbconn.h dbog_retriever.h
+
+# DEPENDENCY MAKEFILE DEPENDENCIES
+#  -----------------------
+# This should only be seen in the dependency file
+$(DEPENDENCY_MF): $(SRCS)
+
+#OLD SRCS VALUE
+#----------------------------------------
+#   This is the list of src files from last time.
+#   It'll be compared to the new srcs during next make.
+#----------------------------------------
+OLD_SRCS = datastream_config.c dbog_dod.c dbog_dsdb.c dbog_retriever.c dqrdb.c ds_class.c dsdb.c dsdb_version.c ds_dod.c ds_times.c facility_location.c family_process.c process_config.c process_location.c process_state.c process_status.c retriever.c
+
+# OUT DEPENDENCIES
+# -----------------------
+$(OUT_DIR)/libdsdb3.so: $(OBJ_DIR)/datastream_config.o $(OBJ_DIR)/dbog_dod.o $(OBJ_DIR)/dbog_dsdb.o $(OBJ_DIR)/dbog_retriever.o $(OBJ_DIR)/dqrdb.o $(OBJ_DIR)/ds_class.o $(OBJ_DIR)/dsdb.o $(OBJ_DIR)/dsdb_version.o $(OBJ_DIR)/ds_dod.o $(OBJ_DIR)/ds_times.o $(OBJ_DIR)/facility_location.o $(OBJ_DIR)/family_process.o $(OBJ_DIR)/process_config.o $(OBJ_DIR)/process_location.o $(OBJ_DIR)/process_state.o $(OBJ_DIR)/process_status.o $(OBJ_DIR)/retriever.o
+$(OUT_DIR)/libdsdb3.a: $(OBJ_DIR)/datastream_config.o $(OBJ_DIR)/dbog_dod.o $(OBJ_DIR)/dbog_dsdb.o $(OBJ_DIR)/dbog_retriever.o $(OBJ_DIR)/dqrdb.o $(OBJ_DIR)/ds_class.o $(OBJ_DIR)/dsdb.o $(OBJ_DIR)/dsdb_version.o $(OBJ_DIR)/ds_dod.o $(OBJ_DIR)/ds_times.o $(OBJ_DIR)/facility_location.o $(OBJ_DIR)/family_process.o $(OBJ_DIR)/process_config.o $(OBJ_DIR)/process_location.o $(OBJ_DIR)/process_state.o $(OBJ_DIR)/process_status.o $(OBJ_DIR)/retriever.o

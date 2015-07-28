@@ -1,0 +1,8 @@
+check_PROGRAMS = dsdb_run
+
+INCLUDES = $(DBCORE3_CFLAGS) $(CDS3_CFLAGS)
+
+dsdb_run_SOURCES = dsdb_run.c dsdb_run_commands.c dsdb_run_commands.h dsdb_run_test.c
+dsdb_run_LDFLAGS = ../libdsdb3.la $(DBCORE3_LIBS) $(CDS3_LIBS)
+
+EXTRA_DIST = libdsdb3_test.data libdsdb3_test.ref

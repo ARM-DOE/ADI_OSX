@@ -1,0 +1,39 @@
+################################################################################
+# COPYRIGHT (C) 2000 Battelle Memorial Institute. 
+#    All Rights Reserved. (Now, with this out of the way...) 
+#
+# RCS INFORMATION: 
+#   $RCSfile: Makedefs.netcdf,v $ 
+#   $Revision: 1.7 $ 
+#   $Author: younkin $ 
+#   $Locker:  $ 
+#   $Date: 2008/05/22 18:46:06 $ 
+#   $State: armcm-swawtdev-2.4-0 $ 
+#   $Name: armcm-swawtdev-2#4-0 $ 
+#
+# PURPOSE:
+#   To provide external make definitions and rules for netcdf
+#
+# DESCRIPTION:
+#   Notice that all these definitions are assigned using the '+=' operator.
+#   In GNU make, this operator appends a value to an existing variable name.
+#   This is desired here because we want all external values to be concatenated.
+#   For example, if you want to use, netcdf and, motif, then the value of
+#   EXTERMNAL_LIBS should be -lXm -lXt -lnetcdf.  That is, EXTERNAL_LIBS should
+#   be the concatenation of motif libraries and netcdf libraries.  The order is
+#   of course, dependent on the order they appear in the make templates.
+#
+# GENMAKE COMMAND USED TO GENERATE THIS MAKEFILE:
+#   COMMAND:   -ext netcdf
+################################################################################
+
+EXTERNAL_ALL     +=
+EXTERNAL_CLEAN   +=
+EXTERNAL_LIBS    += -lnetcdf
+EXTERNAL_DFLAGS  +=
+EXTERNAL_CFLAGS  +=
+EXTERNAL_IFLAGS  += -I$(NETCDF_HOME)/include
+EXTERNAL_LFLAGS  += -L$(NETCDF_HOME)/lib$(BITS64_DIR)
+EXTERNAL_LDFLAGS += -R$(NETCDF_HOME)/lib$(BITS64_DIR)
+
+SYS_LIBS         +=

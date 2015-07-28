@@ -1,0 +1,189 @@
+#!/usr/bin/perl
+
+use strict;
+
+our $gRunResult;
+
+our $gNCDump = $ENV{'NETCDF4_LIB'} . '/bin/ncdump';
+
+if (! -e $gNCDump) {
+    $gNCDump = '/apps/base/netcdf4/bin/ncdump';
+    if (! -e $gNCDump) {
+        $gNCDump = 'ncdump';
+    }
+}
+
+sub run
+{
+    my ($command, $check_for_error) = @_;
+    my @output;
+    my $error;
+    my $exit_value;
+    my $signal_number;
+    my $core_dump;
+
+    print("> $command\n");
+
+    $gRunResult = `$command 2>&1`;
+
+    return(1) unless ($check_for_error);
+
+    if ($?) {
+
+        if ($? == -1) {
+            $error = $!;
+        }
+        else {
+            $exit_value    = $? >> 8;
+            $signal_number = $? & 127;
+            $core_dump     = $? & 128;
+
+            if ($core_dump) {
+                $error = "core dumped with signal #$signal_number";
+            }
+            elsif ($signal_number) {
+                $error = "died with signal #$signal_number";
+            }
+            else {
+                $error = "exited with value: $exit_value";
+            }
+        }
+
+        if ($gRunResult) {
+            chomp($gRunResult);
+            print("\n", $gRunResult, "\n");
+        }
+
+        print(
+            "\n",
+            "Failed Command: '$command'\n",
+            " -> $error\n\n");
+
+        return(0);
+    }
+
+    return(1);
+}
+
+sub check_diff
+{
+    my ($ref, $out) = @_;
+
+    return(0) unless run("diff $ref $out", 1);
+
+    if ($gRunResult ne "") {
+        print(
+            "\n",
+            $gRunResult,
+            "\n",
+            "FAILED DIFF CHECK\n",
+            "\n");
+
+        return(0);
+    }
+
+   return(1); 
+}
+
+##############################################################################
+# Remove all out.* files from previous run
+
+exit(1) unless run('rm out.*', 0);
+
+##############################################################################
+# Test NetCDF4 Create
+
+exit(1) unless run('libncds3_test create_nc4_test_file', 1);
+
+exit(1) unless run("$gNCDump out.netcdf4.nc > out.netcdf4.nc_dump", 1);
+exit(1) unless check_diff('ref.netcdf4.nc_dump', 'out.netcdf4.nc_dump', 1);
+
+exit(1) unless run('libncds3_test nc_dump out.netcdf4.nc > out.netcdf4.cds_dump', 1);
+exit(1) unless check_diff('ref.netcdf4.cds_dump', 'out.netcdf4.cds_dump', 1);
+
+print("\nPASSED: NetCDF4 Create Test\n\n");
+
+##############################################################################
+# Test NetCDF4 Copy
+
+exit(1) unless run('libncds3_test nc_copy out.netcdf4.nc out.netcdf4.copy.nc', 1);
+exit(1) unless run("$gNCDump out.netcdf4.copy.nc > out.netcdf4.copy.nc_dump", 1);
+exit(1) unless check_diff('ref.netcdf4.copy.nc_dump', 'out.netcdf4.copy.nc_dump', 1);
+
+print("\nPASSED: NetCDF4 Copy Test\n\n");
+
+##############################################################################
+# Test NetCDF Classic to NetCDF4 Copy
+
+exit(1) unless run('libncds3_test nc_copy vceil25k.nc out.vceil25k.netcdf4.nc -f NETCDF4', 1);
+exit(1) unless run('libncds3_test nc_copy out.vceil25k.netcdf4.nc out.vceil25k.classic.nc -f CLASSIC', 1);
+exit(1) unless run("$gNCDump out.vceil25k.classic.nc > out.vceil25k.classic.nc_dump", 1);
+exit(1) unless check_diff('ref.vceil25k.classic.nc_dump', 'out.vceil25k.classic.nc_dump', 1);
+
+print("\nPASSED: NetCDF Classic to NetCDF4 Copy Test\n\n");
+
+##############################################################################
+# Test NetCDF subset
+
+exit(1) unless run('libncds3_test nc_subset vceil25k.nc out.vceil25k.subset.nc background_light backscatter measurement_parameters', 1);
+exit(1) unless run("$gNCDump out.vceil25k.subset.nc > out.vceil25k.subset.nc_dump", 1);
+exit(1) unless check_diff('ref.vceil25k.subset.nc_dump', 'out.vceil25k.subset.nc_dump', 1);
+
+print("\nPASSED: NetCDF Subset Test\n\n");
+
+##############################################################################
+# Test NetCDF subset
+
+exit(1) unless run('libncds3_test nc_subset vceil25k_no_time_var.nc out.vceil25k_no_time_var.subset.nc background_light backscatter measurement_parameters', 1);
+exit(1) unless run("$gNCDump out.vceil25k_no_time_var.subset.nc > out.vceil25k_no_time_var.subset.nc_dump", 1);
+exit(1) unless check_diff('ref.vceil25k_no_time_var.subset.nc_dump', 'out.vceil25k_no_time_var.subset.nc_dump', 1);
+
+print("\nPASSED: NetCDF No Time Var Subset Test\n\n");
+
+##############################################################################
+# Test Unit Conversions
+
+exit(1) unless run('libncds3_test unit_conversion_tests', 1);
+
+exit(1) unless run("$gNCDump out.unit_conversion_test_1.nc > out.unit_conversion_test_1.nc_dump", 1);
+exit(1) unless check_diff('ref.unit_conversion_test_1.nc_dump', 'out.unit_conversion_test_1.nc_dump', 1);
+
+exit(1) unless run("$gNCDump out.unit_conversion_test_2.nc > out.unit_conversion_test_2.nc_dump", 1);
+exit(1) unless check_diff('ref.unit_conversion_test_2.nc_dump', 'out.unit_conversion_test_2.nc_dump', 1);
+
+exit(1) unless run("$gNCDump out.unit_conversion_test_3.nc > out.unit_conversion_test_3.nc_dump", 1);
+exit(1) unless check_diff('ref.unit_conversion_test_3.nc_dump', 'out.unit_conversion_test_3.nc_dump', 1);
+
+print("\nPASSED: NetCDF4 Unit Conversion Tests\n\n");
+
+##############################################################################
+# Special Attributes Tests
+
+exit(1) unless run('libncds3_test special_attribute_tests', 1);
+
+exit(1) unless run("$gNCDump -s out.special_attribute_tests.nc > out.special_attribute_tests.nc_dump", 1);
+exit(1) unless check_diff('ref.special_attribute_tests.nc_dump', 'out.special_attribute_tests.nc_dump', 1);
+
+print("\nPASSED: NetCDF4 Special Attributes Tests\n\n");
+
+##############################################################################
+# Boundary Variable Tests
+
+exit(1) unless run('libncds3_test bounds_var_tests', 1);
+
+exit(1) unless run("$gNCDump out.bounds_var_test_1.nc > out.bounds_var_test_1.nc_dump", 1);
+exit(1) unless check_diff('ref.bounds_var_test_1.nc_dump', 'out.bounds_var_test_1.nc_dump', 1);
+
+exit(1) unless run("$gNCDump out.bounds_var_test_2.nc > out.bounds_var_test_2.nc_dump", 1);
+exit(1) unless check_diff('ref.bounds_var_test_2.nc_dump', 'out.bounds_var_test_2.nc_dump', 1);
+
+exit(1) unless run("$gNCDump out.bounds_var_test_3.nc > out.bounds_var_test_3.nc_dump", 1);
+exit(1) unless check_diff('ref.bounds_var_test_3.nc_dump', 'out.bounds_var_test_3.nc_dump', 1);
+
+exit(1) unless run("$gNCDump out.bounds_var_test_4.nc > out.bounds_var_test_4.nc_dump", 1);
+exit(1) unless check_diff('ref.bounds_var_test_4.nc_dump', 'out.bounds_var_test_4.nc_dump', 1);
+
+print("\nPASSED: Boundary Variable Tests\n\n");
+
+exit(0);
+

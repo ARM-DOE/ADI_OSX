@@ -1,0 +1,23 @@
+SUBPACKAGE=libdbconn
+
+lib_LTLIBRARIES = libdbconn.la
+
+INCLUDES = $(MSNGR_CFLAGS) $(POSTGRESQL_CFLAGS) $(CURL_CFLAGS) $(GLIB_CFLAGS)
+
+libdbconn_la_SOURCES = dbconn.c dbconn.pc.in dbconn_pgsql.c dbconn_pgsql.h dbconn_private.h dbconn_version.c dbconn_wspc.c dbconn_wspc.h
+libdbconn_la_LDFLAGS = $(POSTGRESQL_LDFLAGS) $(CURL_LIBS) ../libmsngr/libmsngr.la
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = dbconn.pc
+
+DOXYGEN_SRCS = $(libdbconn_la_SOURCES) ../../include/dbconn.h
+
+TAGFILES = ../libmsngr/doxygen-doc/libmsngr.tag=../libmsngr
+
+include $(top_srcdir)/doxygen.am
+EXTRA_DIST = doxygen.cfg
+
+MOSTLYCLEANFILES = $(DX_CLEANFILES)
+
+install-data-hook: doxygen-install
+

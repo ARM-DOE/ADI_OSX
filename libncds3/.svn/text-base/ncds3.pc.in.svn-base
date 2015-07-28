@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+tag=@datarootdir@/doc/libncds3/libncds3.tag
+
+Name: ncds3
+Description: ncds3
+Version: @VERSION@
+Requires: cds3 msngr 
+Cflags: -I${includedir} 
+Libs: -L${libdir} -lncds3

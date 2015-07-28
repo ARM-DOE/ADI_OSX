@@ -1,0 +1,37 @@
+
+# SOURCE DEPENDENCIES
+# -----------------------
+$(OBJ_DIR)/cds_atts.o: cds_atts.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_converter.o: cds_converter.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_copy.o: cds_copy.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_data_types.o: cds_data_types.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h
+$(OBJ_DIR)/cds_dims.o: cds_dims.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_groups.o: cds_groups.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_objects.o: cds_objects.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_print.o: cds_print.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_times.o: cds_times.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_transform_params.o: cds_transform_params.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_units.o: cds_units.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_utils.o: cds_utils.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_vararrays.o: cds_vararrays.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_var_data.o: cds_var_data.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_vargroups.o: cds_vargroups.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_vars.o: cds_vars.c $(COMP_HOME)/include/cds3.h $(COMP_HOME)/include/messenger.h cds_private.h
+$(OBJ_DIR)/cds_version.o: cds_version.c
+
+# DEPENDENCY MAKEFILE DEPENDENCIES
+#  -----------------------
+# This should only be seen in the dependency file
+$(DEPENDENCY_MF): $(SRCS)
+
+#OLD SRCS VALUE
+#----------------------------------------
+#   This is the list of src files from last time.
+#   It'll be compared to the new srcs during next make.
+#----------------------------------------
+OLD_SRCS = cds_atts.c cds_converter.c cds_copy.c cds_data_types.c cds_dims.c cds_groups.c cds_objects.c cds_print.c cds_times.c cds_transform_params.c cds_units.c cds_utils.c cds_vararrays.c cds_var_data.c cds_vargroups.c cds_vars.c cds_version.c
+
+# OUT DEPENDENCIES
+# -----------------------
+$(OUT_DIR)/libcds3.so: $(OBJ_DIR)/cds_atts.o $(OBJ_DIR)/cds_converter.o $(OBJ_DIR)/cds_copy.o $(OBJ_DIR)/cds_data_types.o $(OBJ_DIR)/cds_dims.o $(OBJ_DIR)/cds_groups.o $(OBJ_DIR)/cds_objects.o $(OBJ_DIR)/cds_print.o $(OBJ_DIR)/cds_times.o $(OBJ_DIR)/cds_transform_params.o $(OBJ_DIR)/cds_units.o $(OBJ_DIR)/cds_utils.o $(OBJ_DIR)/cds_vararrays.o $(OBJ_DIR)/cds_var_data.o $(OBJ_DIR)/cds_vargroups.o $(OBJ_DIR)/cds_vars.o $(OBJ_DIR)/cds_version.o
+$(OUT_DIR)/libcds3.a: $(OBJ_DIR)/cds_atts.o $(OBJ_DIR)/cds_converter.o $(OBJ_DIR)/cds_copy.o $(OBJ_DIR)/cds_data_types.o $(OBJ_DIR)/cds_dims.o $(OBJ_DIR)/cds_groups.o $(OBJ_DIR)/cds_objects.o $(OBJ_DIR)/cds_print.o $(OBJ_DIR)/cds_times.o $(OBJ_DIR)/cds_transform_params.o $(OBJ_DIR)/cds_units.o $(OBJ_DIR)/cds_utils.o $(OBJ_DIR)/cds_vararrays.o $(OBJ_DIR)/cds_var_data.o $(OBJ_DIR)/cds_vargroups.o $(OBJ_DIR)/cds_vars.o $(OBJ_DIR)/cds_version.o

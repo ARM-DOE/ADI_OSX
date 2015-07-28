@@ -1,0 +1,91 @@
+Check for NULL bound_offsets attribute!!!
+
+==============================================
+Documentation Updates Needed:
+==============================================
+
+Create list of trans params used in dsproc_transform.c.
+
+---------------------------------------------------------------------------
+email between Brian and Tim
+
+Brian:
+
+> Actually, the "sample_count" is always the length along the first 
+> dimension of the variable, so in this case it should be 538. I did 
+> spend some time pondering this when I created the libcds3 library, and 
+> (for better or worse) decided that this would be less confusing for the end users of the library.
+
+	Yes, I remember something like this; I think the doxygen documentation should be updated to emphasize what "sample" means, because it is not very clear.
+
+---------------------------------------------------------------------------
+
+==============================================
+Updates needed:
+==============================================
+
+For Archive implementation:
+
+    Need DATASTREAM_DATA_INPUT and DATASTREAM_DATA_OUTPUT environment
+    variables that trump the DATASTREAM_DATA environment variable.
+
+    Need a way to specify that all input files are in one directory and
+    all ouput files should go to another single output directory.
+    (i.e. a "flattened" directory structure mode).
+
+Misc:
+
+    Need to add an "update static data" option for variables similar to
+    how the "exclude from metadata checks" works.
+
+Needed for marinemet (let Yan know when done):
+    Expose  _dsproc_get_reprocessing_mode to public.
+    Added ability for users to added command line switches and comments.
+
+Quicklooks:
+  - need a quicklooks hook and options to only run, or not to run quicklooks.
+
+Units:
+  - need to implement a way to rename units that can not be handled by UDUNITS
+    to units that can. This needs to happen as data is read in and before it
+    is converted to user specified units. (i.e. 'km above MSL' -> 'km').
+
+Retriever:
+  - needs update to always set the time dimension to unlimited.
+  - read in mapped coordinate variables that would not be loaded otherwise.
+
+QC:
+  - need to apply user defined QC after data is retrieved but before it is transformed.
+
+Transform:
+  - need a way for users to set transformation parameters from their code.
+  - need multiple observation support
+
+Merge Obs:
+  - needs update to handle overlapping observations
+
+Data Mapping:
+  - needs update to map qc bits using bit_descriptions
+
+==============================================
+Misc Notes For Later:
+==============================================
+
+Database Updates Needed:
+
+ - Add "data_format" to datastream_config (i.e. NetCDF, RAW, PNG, etc...)
+ - Add "split_interval" to datastream_config
+
+ - Move "file_patterns" from process_config to datastream config.
+
+Misc:
+
+ - Add better error checking for dataset dumps:
+
+      dsproc_print.c:168              Creating dataset dump file:
+                                       - dataset: /retrieved_data
+                                       - file:
+      ./debug_dumps/sgpklg_kazrC1.20110525.000000.post_retrieval.debug
+      Filesize limit exceeded
+
+

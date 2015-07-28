@@ -1,0 +1,23 @@
+TARGET_TYPE = SO
+TARGET      = libdbconn.so
+
+include $(MKINC_DIR)/make.defs
+
+IFLAGS += \
+-I$(AFL_LIB)/include \
+-I$(GLIB_LIB)/include \
+-I$(GLIB_LIB)/include/glib-2.0 \
+-I$(GLIB_LIB)/lib/glib-2.0/include
+
+LFLAGS += \
+-L$(AFL_LIB)/lib$(LIB64) \
+-L$(GLIB_LIB)/lib$(LIB64)
+
+RFLAGS += \
+-R$(AFL_LIB)/lib$(LIB64) \
+-R$(GLIB_LIB)/lib$(LIB64)
+
+LIBS   += -lmsngr -lglib-2.0
+
+include $(MKINC_DIR)/make.rules
+

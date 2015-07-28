@@ -1,0 +1,29 @@
+TARGET_TYPE = SO
+TARGET      = libdsproc3.so
+
+include $(MKINC_DIR)/make.defs
+
+IFLAGS  = \
+-I$(DSLIB_LIB)/include \
+-I$(DSDB3_LIB)/include \
+-I$(AFL_LIB)/include \
+-I$(GLIB_LIB)/include \
+-I$(GLIB_LIB)/include/glib-2.0 \
+-I$(GLIB_LIB)/lib/glib-2.0/include 
+
+LFLAGS  = \
+-L$(DSLIB_LIB)/lib$(BITS64_DIR) \
+-L$(DSDB3_LIB)/lib$(BITS64_DIR) \
+-L$(AFL_LIB)/lib$(BITS64_DIR) \
+-L$(GLIB_LIB)/lib$(BITS64_DIR)
+
+RFLAGS  = \
+-R$(DSLIB_LIB)/lib$(BITS64_DIR) \
+-R$(DSDB3_LIB)/lib$(BITS64_DIR) \
+-R$(AFL_LIB)/lib$(BITS64_DIR) \
+-R$(GLIB_LIB)/lib$(BITS64_DIR)
+
+LIBS    = -ldsdb3 -ldsutil -lmsngr -lglib-2.0
+
+include $(MKINC_DIR)/make.rules
+
