@@ -32,6 +32,5 @@ AC_CHECK_FUNCS([memset strchr strdup strerror strstr])
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
-                 src/cds3.pc
-                 src/test/Makefile])
+                 src/cds3.pc])
 AC_OUTPUT

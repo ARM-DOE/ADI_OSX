@@ -34,6 +34,5 @@ AC_CHECK_FUNCS([dup2 strchr strdup])
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
-                 src/dsdb3.pc
-                 src/test/Makefile])
+                 src/dsdb3.pc])
 AC_OUTPUT

@@ -44,6 +44,5 @@ AC_CHECK_FUNCS([gethostname getpagesize memset munmap regcomp rmdir setenv strch
 AC_CONFIG_FILES([Makefile
                  src/Makefile
                  src/armutils.pc
-                 src/armutils/Makefile
-                 test/Makefile])
+                 src/armutils/Makefile])
 AC_OUTPUT
