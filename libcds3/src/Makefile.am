@@ -1,5 +1,3 @@
-SUBDIRS = test
-
 AM_CPPFLAGS = $(MSNGR_CFLAGS) $(GLIB_CFLAGS)
 
 lib_LTLIBRARIES = libcds3.la

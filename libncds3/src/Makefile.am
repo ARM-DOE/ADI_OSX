@@ -1,5 +1,3 @@
-SUBDIRS = test
-
 SUBPACKAGE = libncds3
 
 lib_LTLIBRARIES = libncds3.la
