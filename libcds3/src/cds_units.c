@@ -28,7 +28,7 @@
 
 #include "cds3.h"
 #include "cds_private.h"
-
+#include "../config.h"
 #include <errno.h>
 #ifdef HAVE_UDUNITS2_H
 #include <udunits2.h>

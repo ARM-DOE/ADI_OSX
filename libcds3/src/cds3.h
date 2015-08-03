@@ -33,7 +33,6 @@
 #include <string.h>
 
 #include "messenger.h"
-#include "../config.h"
 
 /** CDS library name. */
 #define CDS_LIB_NAME "libcds3"
