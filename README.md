@@ -11,13 +11,14 @@ A cross-platform version of ADI that can compile on linux and OSX
 - Tap the appropriate Homebrew formulas
   - `brew tap homebrew/science`
   - `brew tap ARM-DOE/adi`
+- Install the core ADI libraries:
+  - `brew install adi`
 - For Python programmers:
   - First, ensure your default version of Python is python 2.7, and has numpy and Cython installed. The easiest way to do this for new users is to install [Anaconda](http://continuum.io/downloads).
-  - `brew install adi --with-python`
-- For Python non-users:
-  - You can skip the Python dependencies and only install the C libraries with:
-  - `brew install adi`
-
+  - Download the adi python package from [here](https://engineering.arm.gov/~vonderfecht/adi_python-1.0.tar.gz)
+  - untar the file, and from inside it, run:
+  - `python setup.py install`
+  - This should install the ADI libraries for whichever is your default version of python.
 # Set Up an Environment for ADI
 
 - Download and untar the [adi_home](https://engineering.arm.gov/~vonderfecht/adi_home.tar.gz) template directory somewhere you want to work from (note: This tarfile contains a directory structure to get you started running ADI quickly. Note that you can also configure the directory structure however you like on your own.)
