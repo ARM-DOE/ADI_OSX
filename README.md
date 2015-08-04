@@ -19,6 +19,7 @@ A cross-platform version of ADI that can compile on linux and OSX
   - untar the file, and from inside it, run:
   - `python setup.py install`
   - This should install the ADI libraries for whichever is your default version of python.
+
 # Set Up an Environment for ADI
 
 - Download and untar the [adi_home](https://engineering.arm.gov/~vonderfecht/adi_home.tar.gz) template directory somewhere you want to work from (note: This tarfile contains a directory structure to get you started running ADI quickly. Note that you can also configure the directory structure however you like on your own.)
