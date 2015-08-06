@@ -29,4 +29,4 @@ copy all the commands in `env_vars` into your bash terminal, to set up the envio
 - To test your installation:
   - go into `dev/vap/src/adi_example1`
   - run `make clean; make` If this fails something about the installation has gone wrong
-  - run `..\..\bin\adi_example1 -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R` this should complete successfully.
+  - run `../../bin/adi_example1 -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R` this should complete successfully.
