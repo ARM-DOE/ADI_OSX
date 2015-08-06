@@ -27,6 +27,6 @@ A cross-platform version of ADI that can compile on linux and OSX
 - Edit `.db_connect` and `env_vars` to replace `/path/to/adi_home` with the actual path to your `adi_home`
 copy all the commands in `env_vars` into your bash terminal, to set up the enviornment. Later you may want to add these to your `.bash_profile`.
 - To test your installation:
-  - go into dev/vap/src/adi_example1
-  - run make clean; make If this fails something about the installation has gone wrong
-  - run ..\..\bin\adi_example1 -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R this should complete successfully.
+  - go into `dev/vap/src/adi_example1`
+  - run `make clean; make` If this fails something about the installation has gone wrong
+  - run `..\..\bin\adi_example1 -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R` this should complete successfully.
