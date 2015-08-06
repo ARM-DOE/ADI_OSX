@@ -15,7 +15,7 @@ A cross-platform version of ADI that can compile on linux and OSX
   - `brew install adi`
 - For Python programmers:
   - First, ensure your default version of Python is python 2.7, and has numpy and Cython installed. The easiest way to do this for new users is to install [Anaconda](http://continuum.io/downloads).
-  - Download the adi python package from [here](https://engineering.arm.gov/~vonderfecht/adi_python-1.0.tar.gz)
+  - Download the adi python package from [here](https://engineering.arm.gov/~vonderfecht/adi-python-1.0.tar.gz)
   - untar the file, and from inside it, run:
   - `python setup.py install`
   - This should install the ADI libraries for whichever is your default version of python.
