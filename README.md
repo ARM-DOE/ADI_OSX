@@ -24,10 +24,18 @@ A cross-platform version of ADI that can compile on linux and OSX
 
 ## Set Up an Environment for ADI
 
-- Download and untar the [adi_home](https://engineering.arm.gov/~vonderfecht/adi_home.tar.gz) template directory somewhere you want to work from (note: This tarfile contains a directory structure to get you started running ADI quickly. Note that you can also configure the directory structure however you like on your own.)
+- Download [adi_home](https://engineering.arm.gov/~vonderfecht/adi_home.tar.gz). This tarfile contains a directory structure to get you started running ADI quickly. Note that you can also configure the directory structure however you like on your own. 
+  
+  *A bit of explanation here: ADI's VAPs expect certain directories and environment variables to be present, so to run VAPs, you
+  must re-create these directories and environment variables. `adi_home` gets this started for you; it contains all the
+  directories needed to run vaps, and provides the required environment variables in the file env_vars. You can use the example1
+  vap to verify the ADI installation worked properly, and as a place to set up new vaps.*
+
+- untar the file and copy the resulting `adi_home` directory to somewhere you want to work from, say, `~/Documents`
 - Enter the untarred adi_home directory
-- Edit `.db_connect` and `env_vars` to replace `/path/to/adi_home` with the actual path to your `adi_home`
-copy all the commands in `env_vars` into your bash terminal, to set up the enviornment. Later you may want to add these to your `.bash_profile`.
+- Edit `env_vars` to replace `/path/to/adi_home` with the absolute path to your `adi_home` (whatever `pwd` outputs when you're in `adi_home`)
+- Edit `.db_connect` and do the same replacement as in env_vars
+- `cat env_vars`, and copy all the `export` commands into your bash terminal, to set up the enviornment. Later you may want to add these environment variables to your `.bash_profile`.
 - To test your installation:
   - go into `dev/vap/src/adi_example1`
   - run `make clean; make` If this fails something about the installation has gone wrong
