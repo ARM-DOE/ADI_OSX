@@ -40,3 +40,22 @@ A cross-platform version of ADI that can compile on linux and OSX
   - go into `dev/vap/src/adi_example1`
   - run `make clean; make`. If this fails, something about the installation has gone wrong.
   - run `../../bin/adi_example1_vap -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R` this should complete successfully.
+
+## To Add Process Definitions to the DSDB:
+The Sqlite copy of the database that comes with `adi_home` is a minimal copy containing only a handful of example vap process definitions. To run additional VAPs against your local database, you will need to import their process information.
+
+- Get the process definition from the PCM
+  - Go to the <a href="https://engineering.arm.gov/pcm/Main.html" target="_blank">Processing Configuration Manager</a>
+    and select the processes tab on the left hand side
+  - Type the name of the process you want in the filter at the bottom, or find it by scrolling through the list
+  - Double click the name of the process to bring it up on the right hand side
+  - Click *Text Export/Import* in the lower right corner, and copy the text that appears to a file on your machine
+- Set your enviornment variables as specified in `env_vars` from the last section 
+- run `db_import_process` for the definition you retrieved
+  - `db_import_process -a dsdb_data -fmt json <process definition file name>`
+- Load the DODs nessecary to run this process. The DODs used by a process are listed on that process's page in the PCM.
+  - Load the DOD into the PCM datastream viewer.
+  - Select the JSON format from the green export DOD icon at the top of the page to copy the DOD to your clipboard. 
+    Copy this into a file on your local machine
+  - Load the dods into the local database
+    - `db_load_dod -a dsdb_data <dod file>`
