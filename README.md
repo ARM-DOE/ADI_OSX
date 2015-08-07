@@ -32,11 +32,11 @@ A cross-platform version of ADI that can compile on linux and OSX
   vap to verify the ADI installation worked properly, and as a place to set up new vaps.*
 
 - untar the file and copy the resulting `adi_home` directory to somewhere you want to work from, say, `~/Documents`
-- Enter the untarred adi_home directory
+- Enter the untarred `adi_home` directory
 - Edit `env_vars` to replace `/path/to/adi_home` with the absolute path to your `adi_home` (whatever `pwd` outputs when you're in `adi_home`)
 - Edit `.db_connect` and do the same replacement as in env_vars
 - `cat env_vars`, and copy all the `export` commands into your bash terminal, to set up the enviornment. Later you may want to add these environment variables to your `.bash_profile`.
 - To test your installation:
   - go into `dev/vap/src/adi_example1`
-  - run `make clean; make` If this fails something about the installation has gone wrong
+  - run `make clean; make`. If this fails, something about the installation has gone wrong.
   - run `../../bin/adi_example1_vap -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R` this should complete successfully.
