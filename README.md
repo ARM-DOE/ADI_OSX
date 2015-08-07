@@ -6,7 +6,7 @@ A cross-platform version of ADI that can compile on linux and OSX
 - Install the requisite perl modules. In a terminal, run the commands below. If you have not used cpan before, you will be asked to configure it. Accepting all the defaults will work fine.
   - `sudo cpan JSON::XS`
   - `sudo cpan CGI::Session`
-- Install [Homebrew](http://brew.sh/) if it's not already installed
+- Install <a href="http://brew.sh/" target="_blank">Homebrew</a> if it's not already installed
 - Tap the appropriate Homebrew formulas
   - `brew tap homebrew/science`
   - `brew tap ARM-DOE/adi`
