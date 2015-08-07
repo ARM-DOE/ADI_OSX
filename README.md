@@ -1,5 +1,8 @@
-# ADI
-A cross-platform version of ADI that can compile on linux and OSX
+#ADI
+
+ARM Data Integrator, ADI, is an open source framework that automates the process of retrieving and preparing data for analysis, simplifies the design and creation of output data products produced by the analysis, and provides a modular, flexible software development architecture for implementing algorithms.  These capabilities are supported through the use of a workflow for data integration, a source code generator that produces C, IDL and Python templates, and a graphical interface through which users can efficient define their data input, preprocessing, and output characteristics.  
+
+ADI is used by the 'Atmospheric Radiation Measurement (ARM) Climate Research Facility <http://www.arm.gov>' to process raw data collected from ARM instruments, and to implement scientific algorithms that process one or more of ARM's existing data products to produce new, higher value, data products.
 
 ## To Install ADI:
 
@@ -59,3 +62,10 @@ The Sqlite copy of the database that comes with `adi_home` is a minimal copy con
     Copy this into a file on your local machine
   - Load the dods into the local database
     - `db_load_dod -a dsdb_data <dod file>`
+
+## Important Links
+
+- [Documentation](http://engineering.arm.gov/ADI_doc)
+- [ADI Process Configuration Interface](https://engineering.arm.gov/pcm/Main.html)
+- [Examples](http://engineering.arm.gov/ADI_doc/algorithm.html#algorithm-development-tutorial)
+- [ARM Data Archive for accessing ARM data](http://archive.arm.gov)
