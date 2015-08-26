@@ -28,10 +28,18 @@
 
 #include "cds3.h"
 #include "cds_private.h"
+#include "../config.h"
 
 #include <errno.h>
-#include <udunits2/udunits2.h>
 #include <math.h>
+
+#ifdef HAVE_UDUNITS2_H
+#include <udunits2.h>
+#else
+#include <udunits2/udunits2.h>
+#endif
+
+
 
 /*******************************************************************************
  *  Private Data and Functions
