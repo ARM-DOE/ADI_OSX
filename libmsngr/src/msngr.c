@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 13168 $
+*    $Revision: 63477 $
 *    $Author: ermold $
-*    $Date: 2012-03-24 01:49:45 +0000 (Sat, 24 Mar 2012) $
+*    $Date: 2015-08-26 22:47:45 +0000 (Wed, 26 Aug 2015) $
 *
 ********************************************************************************
 *
@@ -231,7 +231,7 @@ static void _debug_vprintf(
 
         if (gDebug.footer) {
             fprintf(stdout, gDebug.fl_format, "");
-            fprintf(stdout, gDebug.footer);
+            fprintf(stdout, "%s", gDebug.footer);
             gDebug.footer = (char *)NULL;
             print_newline = 1;
         }
@@ -281,7 +281,7 @@ static void _debug_vprintf(
         if (header) {
             fprintf(stdout, "\n");
             fprintf(stdout, gDebug.fl_format, "");
-            fprintf(stdout, header);
+            fprintf(stdout, "%s", header);
         }
         else if (print_newline) {
             fprintf(stdout, "\n");

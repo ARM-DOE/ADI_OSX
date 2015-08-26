@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 6709 $
+*    $Revision: 63477 $
 *    $Author: ermold $
-*    $Date: 2011-05-16 23:28:15 +0000 (Mon, 16 May 2011) $
+*    $Date: 2015-08-26 22:47:45 +0000 (Wed, 26 Aug 2015) $
 *
 ********************************************************************************
 *
@@ -108,9 +108,6 @@ Mail *mail_create(
 
         if (access("/usr/lib/sendmail", X_OK) == 0) {
             strcpy(gSendMailPath, "/usr/lib/sendmail");
-        }
-	else if (access("/usr/sbin/sendmail", X_OK) == 0) {
-            strcpy(gSendMailPath, "/usr/sbin/sendmail");
         }
         else {
 
@@ -399,7 +396,7 @@ void mail_vprintf(
 
     if (msg_length && msg_block) {
         for (i = 0; msg_block[i] != (char *)NULL; i++) {
-            msg_start += sprintf(msg_start, msg_block[i]);
+            msg_start += sprintf(msg_start, "%s", msg_block[i]);
         }
     }
 

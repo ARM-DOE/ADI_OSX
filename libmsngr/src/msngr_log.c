@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 13168 $
+*    $Revision: 63477 $
 *    $Author: ermold $
-*    $Date: 2012-03-24 01:49:45 +0000 (Sat, 24 Mar 2012) $
+*    $Date: 2015-08-26 22:47:45 +0000 (Wed, 26 Aug 2015) $
 *
 ********************************************************************************
 *
@@ -505,7 +505,7 @@ int log_vprintf(
     /* Print the line tag if one was specified */
 
     if (line_tag) {
-        nbytes = fprintf(log_fp, line_tag);
+        nbytes = fprintf(log_fp, "%s", line_tag);
         if (nbytes < 0) {
             log_errno = errno;
         }
@@ -522,7 +522,7 @@ int log_vprintf(
         for (i = 0; msg_block[i] != (char *)NULL; i++) {
 
             length = strlen(msg_block[i]);
-            nbytes = fprintf(log_fp, msg_block[i]);
+            nbytes = fprintf(log_fp, "%s", msg_block[i]);
             if (nbytes < 0) {
                 log_errno = errno;
             }

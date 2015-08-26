@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 13168 $
+*    $Revision: 63478 $
 *    $Author: ermold $
-*    $Date: 2012-03-24 01:49:45 +0000 (Sat, 24 Mar 2012) $
+*    $Date: 2015-08-26 22:48:53 +0000 (Wed, 26 Aug 2015) $
 *
 ********************************************************************************
 *
@@ -33,7 +33,7 @@
 
 /** @privatesection */
 
-static char *_VersionTag = "$Version: afl-libmsngr-1.6 $";
+static char *_VersionTag = "$Version: afl-libmsngr-1.7-devel $";
 static char  _Version[64];
 
 /** @publicsection */
