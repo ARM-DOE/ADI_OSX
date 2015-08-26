@@ -8,7 +8,7 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
 
 - Install the requisite perl modules. In a terminal, run the commands below. If you have not used cpan before, you will be asked to configure it. Accepting all the defaults will work fine.
   - `sudo cpan JSON::XS`
-  - `sudo cpan CGI::Session`
+  - `sudo cpan CGI::Session`e
 - Install <a href="http://brew.sh/" target="_blank">Homebrew</a> if it's not already installed
 - Tap the appropriate Homebrew formulas
   - `brew tap homebrew/science`
@@ -36,7 +36,7 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
 
 - untar the file and copy the resulting `adi_home` directory to somewhere you want to work from, say, `~/Documents`
 - Enter the untarred `adi_home` directory
-- Edit `env_vars` to replace `/path/to/adi_home` with the absolute path to your `adi_home` (whatever `pwd` outputs when you're in `adi_home`)
+- Edit the file `env_vars` to replace `/path/to/adi_home` with the absolute path to your `adi_home` (whatever `pwd` outputs when you're in `adi_home`)
 - Edit `.db_connect` and do the same replacement as in env_vars
 - `cat env_vars`, and copy all the `export` commands into your bash terminal, to set up the enviornment. Later you may want to add these environment variables to your `.bash_profile`.
 - To test your installation:
