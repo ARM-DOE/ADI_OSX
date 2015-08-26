@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 60277 $
+*    $Revision: 63479 $
 *    $Author: ermold $
-*    $Date: 2015-02-15 00:42:57 +0000 (Sun, 15 Feb 2015) $
+*    $Date: 2015-08-26 22:50:14 +0000 (Wed, 26 Aug 2015) $
 *
 ********************************************************************************
 *
@@ -28,7 +28,7 @@
 
 /** @privatesection */
 
-static char *_VersionTag = "$Version: afl-libcds3-1.16 $";
+static char *_VersionTag = "$Version: afl-libcds3-1.17-devel $";
 static char  _Version[64];
 
 /** @publicsection */

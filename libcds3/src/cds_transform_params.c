@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 54538 $
+*    $Revision: 63472 $
 *    $Author: ermold $
-*    $Date: 2014-05-27 18:47:46 +0000 (Tue, 27 May 2014) $
+*    $Date: 2015-08-26 20:39:27 +0000 (Wed, 26 Aug 2015) $
 *
 ********************************************************************************
 *
@@ -472,7 +472,7 @@ int _cds_print_param_list(
                 }
 
                 if (vi == 0) {
-                    nbytes = fprintf(fp, str_value);
+                    nbytes = fprintf(fp, "%s", str_value);
                     line_length += str_length;
                 }
                 else if ((line_length + str_length + 4) > 80) {
