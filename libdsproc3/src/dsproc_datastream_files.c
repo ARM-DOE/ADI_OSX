@@ -364,8 +364,8 @@ static int _dsproc_refresh_dsfile_info(DSFile *dsfile)
     /* Check if the file has been updated */
 
     if (dsfile->stats.st_mtime        != file_stats.st_mtime       ||
-        dsfile->stats.st_mtimespec.tv_sec  != file_stats.st_mtimespec.tv_sec ||
-        dsfile->stats.st_mtimespec.tv_nsec != file_stats.st_mtimespec.tv_nsec) {
+        dsfile->stats.st_mtim.tv_sec  != file_stats.st_mtim.tv_sec ||
+        dsfile->stats.st_mtim.tv_nsec != file_stats.st_mtim.tv_nsec) {
 
         if (!_dsproc_open_dsfile(dsfile, 0)) {
             return(-1);
@@ -878,8 +878,8 @@ int _dsproc_get_dsdir_files(DSDir *dir, char ***files)
     }
 
     if (dir->stats.st_mtime        == dir_stats.st_mtime       &&
-        dir->stats.st_mtimespec.tv_sec  == dir_stats.st_mtimespec.tv_sec &&
-        dir->stats.st_mtimespec.tv_nsec == dir_stats.st_mtimespec.tv_nsec) {
+        dir->stats.st_mtim.tv_sec  == dir_stats.st_mtim.tv_sec &&
+        dir->stats.st_mtim.tv_nsec == dir_stats.st_mtim.tv_nsec) {
 
         dir->stats = dir_stats;
         *files     = dir->files;

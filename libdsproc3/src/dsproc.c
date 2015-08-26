@@ -2113,29 +2113,29 @@ int dsproc_is_fatal(int last_errno)
 //        case ENODATA:       /* No data available */
 //        case ETIME:         /* Timer expired */
         case ENOSR:           /* Out of streams resources */
-//        case ENONET:          /* Machine is not on the network */
-//        case ENOPKG:          /* Package not installed */
+        case ENONET:          /* Machine is not on the network */
+        case ENOPKG:          /* Package not installed */
 //        case EREMOTE:       /* Object is remote */
         case ENOLINK:         /* Link has been severed */
-//        case EADV:            /* Advertise error */
-//        case ESRMNT:          /* Srmount error */
-//        case ECOMM:           /* Communication error on send */
+        case EADV:            /* Advertise error */
+        case ESRMNT:          /* Srmount error */
+        case ECOMM:           /* Communication error on send */
 //        case EPROTO:        /* Protocol error */
 //        case EMULTIHOP:     /* Multihop attempted */
 //        case EDOTDOT:       /* RFS specific error */
 //        case EBADMSG:       /* Not a data message */
 //        case EOVERFLOW:     /* Value too large for defined data type */
 //        case ENOTUNIQ:      /* Name not unique on network */
-//        case EBADFD:          /* File descriptor in bad state */
+        case EBADFD:          /* File descriptor in bad state */
 //        case EREMCHG:       /* Remote address changed */
-//        case ELIBACC:         /* Can not access a needed shared library */
-//        case ELIBBAD:         /* Accessing a corrupted shared library */
-//        case ELIBSCN:         /* .lib section in a.out corrupted */
-//        case ELIBMAX:         /* Attempting to link in too many shared libraries */
-//        case ELIBEXEC:        /* Cannot exec a shared library directly */
+        case ELIBACC:         /* Can not access a needed shared library */
+        case ELIBBAD:         /* Accessing a corrupted shared library */
+        case ELIBSCN:         /* .lib section in a.out corrupted */
+        case ELIBMAX:         /* Attempting to link in too many shared libraries */
+        case ELIBEXEC:        /* Cannot exec a shared library directly */
         case EILSEQ:          /* Illegal byte sequence */
-//        case ERESTART:        /* Interrupted system call should be restarted */
-//        case ESTRPIPE:        /* Streams pipe error */
+        case ERESTART:        /* Interrupted system call should be restarted */
+        case ESTRPIPE:        /* Streams pipe error */
 //        case EUSERS:        /* Too many users */
         case ENOTSOCK:        /* Socket operation on non-socket */
 //        case EDESTADDRREQ:  /* Destination address required */
@@ -2170,24 +2170,24 @@ int dsproc_is_fatal(int last_errno)
 //        case ENOTNAM:       /* Not a XENIX named type file */
 //        case ENAVAIL:       /* No XENIX semaphores available */
 //        case EISNAM:        /* Is a named type file */
-//        case EREMOTEIO:       /* Remote I/O error */
+        case EREMOTEIO:       /* Remote I/O error */
         case EDQUOT:          /* Quota exceeded */
 
 //        case ENOMEDIUM:     /* No medium found */
 //        case EMEDIUMTYPE:   /* Wrong medium type */
         case ECANCELED:       /* Operation Canceled */
-//        case ENOKEY:          /* Required key not available */
-//        case EKEYEXPIRED:     /* Key has expired */
-//        case EKEYREVOKED:     /* Key has been revoked */
-//        case EKEYREJECTED:    /* Key was rejected by service */
+        case ENOKEY:          /* Required key not available */
+        case EKEYEXPIRED:     /* Key has expired */
+        case EKEYREVOKED:     /* Key has been revoked */
+        case EKEYREJECTED:    /* Key was rejected by service */
 
 /* for robust mutexes */
         case EOWNERDEAD:      /* Owner died */
         case ENOTRECOVERABLE: /* State not recoverable */
 
-//        case ERFKILL:         /* Operation not possible due to RF-kill */
+        case ERFKILL:         /* Operation not possible due to RF-kill */
 
-//        case EHWPOISON:       /* Memory page has hardware error */
+        case EHWPOISON:       /* Memory page has hardware error */
 
             DEBUG_LV1( DSPROC_LIB_NAME,
                 " - last errno indicates a fatal system error\n");
@@ -2513,11 +2513,27 @@ void dsproc_initialize(
     *  Set process type and parse command line arguments
     *************************************************************/
 
-    if (proc_model == PM_INGEST) {
+    if (proc_model & DSP_INGEST) {
+
         if (!(_DSProc->type = strdup("Ingest"))) {
             goto MEMORY_ERROR;
         }
-        _dsproc_ingest_parse_args(argc, argv, nproc_names, proc_names);
+
+        if (proc_model & DSP_RETRIEVER ||
+            proc_model & DSP_TRANSFORM) {
+
+            /* Ingest/VAP Hybrid so set real-time mode
+             * use VAP parse args */
+
+            if (!dsproc_get_real_time_mode()) {
+                dsproc_set_real_time_mode(1, 72);
+            }
+
+            _dsproc_vap_parse_args(argc, argv, nproc_names, proc_names);
+        }
+        else {
+            _dsproc_ingest_parse_args(argc, argv, nproc_names, proc_names);
+        }
     }
     else {
         if (!(_DSProc->type = strdup("VAP"))) {

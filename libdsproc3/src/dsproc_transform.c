@@ -16,9 +16,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 55440 $
+*    $Revision: 63191 $
 *    $Author: ermold $
-*    $Date: 2014-07-07 22:50:40 +0000 (Mon, 07 Jul 2014) $
+*    $Date: 2015-08-12 19:07:48 +0000 (Wed, 12 Aug 2015) $
 *
 ********************************************************************************
 *
@@ -2047,6 +2047,27 @@ trans_obs_group = trans_ds_group;
         }
     }
 
+// This is probably not the correct approach because the user may want to
+// pull through the primary datastream as is, and map the secondary datastreams
+// to it. In this case the user may want the original QC to be preserved.
+//
+// If the user wants the transform to attempt to fill in missing values via
+// interpolation or averaging they should explicitly specify this.
+//
+//    /* We *always* want to run the data through the transform logic if it was
+//     * explicitly mapped to a transformation coordinate system.  This is
+//     * because the transformation logic will attempt to fill in missing values
+//     * and create the expected QC field in the output.
+//     *
+//     * I left the existing "do_transform" logic in the code in the off chance
+//     * it might be useful later... */
+//
+//    if (ret_var->ndims &&
+//        ret_var_tag->coordsys_name) {
+//
+//        do_transform = 1;
+//    }
+
     if (do_transform) {
 
         DEBUG_LV1( DSPROC_LIB_NAME,
@@ -2453,6 +2474,9 @@ int dsproc_transform_data(
     int         status;
     int         csi, dsi, vari;
 
+    CDSGroup   *trans_coordsys;
+    CDSGroup   *trans_ds_group;
+
     *trans_data = (CDSGroup *)NULL;
 
     /* Get the retriever information */
@@ -2632,13 +2656,25 @@ ret_obs_group = ret_ds_group->groups[0];
     } /* end ds loop */
 
     /* Remove empty coordinate systems. This can happen if all variables
-     * in a coordinate system are optional and a mapped coordinate variable
-     * was not found. */
+     * in a coordinate system are optional and were not found. */
 
     for (csi = 0; csi < (*trans_data)->ngroups; csi++) {
 
-        if ((*trans_data)->groups[csi]->nvars == 0) {
-            cds_delete_group((*trans_data)->groups[csi]);
+        trans_coordsys = (*trans_data)->groups[csi];
+
+        for (dsi = 0; dsi < trans_coordsys->ngroups; dsi++) {
+
+            trans_ds_group = trans_coordsys->groups[dsi];
+
+            if (trans_ds_group->nvars == 0) {
+                cds_delete_group(trans_ds_group);
+                dsi--;
+            }
+        }
+
+        if (trans_coordsys->ngroups == 0) {
+            cds_delete_group(trans_coordsys);
+            csi--;
         }
     }
 

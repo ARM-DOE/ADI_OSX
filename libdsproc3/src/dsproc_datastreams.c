@@ -435,7 +435,7 @@ int dsproc_init_datastream(
 
         /* Set datastream file splitting mode */
 
-        if (_DSProc->model == PM_INGEST) {
+        if (_DSProc->model & DSP_INGEST) {
             dsproc_set_datastream_split_mode(ds_id, SPLIT_ON_HOURS, 0.0, 24.0);
         }
         else {

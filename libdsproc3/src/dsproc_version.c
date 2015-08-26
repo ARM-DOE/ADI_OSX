@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 61405 $
+*    $Revision: 63192 $
 *    $Author: ermold $
-*    $Date: 2015-05-07 18:30:19 +0000 (Thu, 07 May 2015) $
+*    $Date: 2015-08-12 19:08:29 +0000 (Wed, 12 Aug 2015) $
 *
 ********************************************************************************
 *
@@ -32,7 +32,7 @@
 
 /** @privatesection */
 
-static char *_VersionTag = "$Version: dslib-libdsproc3-2.26-devel $";
+static char *_VersionTag = "$Version: dslib-libdsproc3-2.26 $";
 static char  _Version[64];
 
 static char  _ADI_Version[128];

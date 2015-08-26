@@ -160,7 +160,7 @@ static void _dsproc_ingest_exit_usage(
 "\n"
 "    -a alias     - Specify the .db_connect alias to use (default: dsdb_data).\n"
 "    -h           - Display help message.\n"
-"    -v           - Display ingest version.\n"
+"    -v           - Display process version.\n"
 "\n"
 "    -D [level]   - Turn on debug mode.\n"
 "    -F           - Force processing to filter out overlapping records and\n"
@@ -250,7 +250,7 @@ static void _dsproc_vap_exit_usage(
 "\n"
 "    -a alias      - Specify the .db_connect alias to use (default: dsdb_data).\n"
 "    -h            - Display help message.\n"
-"    -v            - Display VAP version.\n"
+"    -v            - Display process version.\n"
 "%s"
 "\n"
 "    -D [level]    - Turn on debug mode.\n"
@@ -511,7 +511,7 @@ void _dsproc_vap_parse_args(
     const char **proc_names)
 {
     const char  *program_name = argv[0];
-    int          rt_mode      = dsproc_get_real_time_mode();
+    int          rt_mode;
     int          debug_level;
     float        max_real_time_wait;
     int          prov_level;
@@ -675,6 +675,8 @@ void _dsproc_vap_parse_args(
     /************************************************************
     *  Check for required fields
     *************************************************************/
+
+    rt_mode = dsproc_get_real_time_mode();
 
     if (!_DSProc->site     ||
         !_DSProc->facility ||
