@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 61402 $
+*    $Revision: 63482 $
 *    $Author: ermold $
-*    $Date: 2015-05-07 18:26:36 +0000 (Thu, 07 May 2015) $
+*    $Date: 2015-08-26 23:29:42 +0000 (Wed, 26 Aug 2015) $
 *
 ********************************************************************************
 *
@@ -882,8 +882,13 @@ int _dsproc_get_dsdir_files(DSDir *dir, char ***files)
     }
 
     if (dir->stats.st_mtime        == dir_stats.st_mtime       &&
+#ifdef __APPLE__
+        dir->stats.st_mtimespec.tv_sec  == dir_stats.st_mtimespec.tv_sec &&
+        dir->stats.st_mtimespec.tv_nsec == dir_stats.st_mtimespec.tv_nsec) {
+#else
         dir->stats.st_mtim.tv_sec  == dir_stats.st_mtim.tv_sec &&
         dir->stats.st_mtim.tv_nsec == dir_stats.st_mtim.tv_nsec) {
+#endif
 
         dir->stats = dir_stats;
         *files     = dir->files;
