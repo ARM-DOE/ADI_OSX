@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 63477 $
+*    $Revision: 63481 $
 *    $Author: ermold $
-*    $Date: 2015-08-26 22:47:45 +0000 (Wed, 26 Aug 2015) $
+*    $Date: 2015-08-26 23:09:52 +0000 (Wed, 26 Aug 2015) $
 *
 ********************************************************************************
 *
@@ -108,6 +108,9 @@ Mail *mail_create(
 
         if (access("/usr/lib/sendmail", X_OK) == 0) {
             strcpy(gSendMailPath, "/usr/lib/sendmail");
+        }
+        else if (access("/usr/sbin/sendmail", X_OK) == 0) {
+            strcpy(gSendMailPath, "/usr/sbin/sendmail");
         }
         else {
 

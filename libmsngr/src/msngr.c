@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 63477 $
+*    $Revision: 63480 $
 *    $Author: ermold $
-*    $Date: 2015-08-26 22:47:45 +0000 (Wed, 26 Aug 2015) $
+*    $Date: 2015-08-26 23:09:36 +0000 (Wed, 26 Aug 2015) $
 *
 ********************************************************************************
 *
@@ -880,7 +880,7 @@ void msngr_vsend(
 
             if (gDebug.footer) {
                 fprintf(stdout, gDebug.fl_format, "");
-                fprintf(stdout, gDebug.footer);
+                fprintf(stdout, "%s", gDebug.footer);
                 gDebug.footer = (char *)NULL;
                 fprintf(stdout, "\n");
             }
