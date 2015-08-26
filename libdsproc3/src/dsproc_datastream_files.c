@@ -364,9 +364,13 @@ static int _dsproc_refresh_dsfile_info(DSFile *dsfile)
     /* Check if the file has been updated */
 
     if (dsfile->stats.st_mtime        != file_stats.st_mtime       ||
+#ifdef __APPLE__
+        dsfile->stats.st_mtimespec.tv_sec  != file_stats.st_mtimespec.tv_sec ||
+        dsfile->stats.st_mtimespec.tv_nsec != file_stats.st_mtimespec.tv_nsec) {
+#else
         dsfile->stats.st_mtim.tv_sec  != file_stats.st_mtim.tv_sec ||
         dsfile->stats.st_mtim.tv_nsec != file_stats.st_mtim.tv_nsec) {
-
+#endif
         if (!_dsproc_open_dsfile(dsfile, 0)) {
             return(-1);
         }

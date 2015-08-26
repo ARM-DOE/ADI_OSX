@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 61403 $
+*    $Revision: 63473 $
 *    $Author: ermold $
-*    $Date: 2015-05-07 18:27:12 +0000 (Thu, 07 May 2015) $
+*    $Date: 2015-08-26 20:44:23 +0000 (Wed, 26 Aug 2015) $
 *
 ********************************************************************************
 *
@@ -2113,29 +2113,29 @@ int dsproc_is_fatal(int last_errno)
 //        case ENODATA:       /* No data available */
 //        case ETIME:         /* Timer expired */
         case ENOSR:           /* Out of streams resources */
-        case ENONET:          /* Machine is not on the network */
-        case ENOPKG:          /* Package not installed */
+// !OSX        case ENONET:          /* Machine is not on the network */
+// !OSX        case ENOPKG:          /* Package not installed */
 //        case EREMOTE:       /* Object is remote */
         case ENOLINK:         /* Link has been severed */
-        case EADV:            /* Advertise error */
-        case ESRMNT:          /* Srmount error */
-        case ECOMM:           /* Communication error on send */
+// !OSX        case EADV:            /* Advertise error */
+// !OSX        case ESRMNT:          /* Srmount error */
+// !OSX        case ECOMM:           /* Communication error on send */
 //        case EPROTO:        /* Protocol error */
 //        case EMULTIHOP:     /* Multihop attempted */
 //        case EDOTDOT:       /* RFS specific error */
 //        case EBADMSG:       /* Not a data message */
 //        case EOVERFLOW:     /* Value too large for defined data type */
 //        case ENOTUNIQ:      /* Name not unique on network */
-        case EBADFD:          /* File descriptor in bad state */
+// !OSX        case EBADFD:          /* File descriptor in bad state */
 //        case EREMCHG:       /* Remote address changed */
-        case ELIBACC:         /* Can not access a needed shared library */
-        case ELIBBAD:         /* Accessing a corrupted shared library */
-        case ELIBSCN:         /* .lib section in a.out corrupted */
-        case ELIBMAX:         /* Attempting to link in too many shared libraries */
-        case ELIBEXEC:        /* Cannot exec a shared library directly */
+// !OSX        case ELIBACC:         /* Can not access a needed shared library */
+// !OSX        case ELIBBAD:         /* Accessing a corrupted shared library */
+// !OSX        case ELIBSCN:         /* .lib section in a.out corrupted */
+// !OSX        case ELIBMAX:         /* Attempting to link in too many shared libraries */
+// !OSX        case ELIBEXEC:        /* Cannot exec a shared library directly */
         case EILSEQ:          /* Illegal byte sequence */
-        case ERESTART:        /* Interrupted system call should be restarted */
-        case ESTRPIPE:        /* Streams pipe error */
+// !OSX        case ERESTART:        /* Interrupted system call should be restarted */
+// !OSX        case ESTRPIPE:        /* Streams pipe error */
 //        case EUSERS:        /* Too many users */
         case ENOTSOCK:        /* Socket operation on non-socket */
 //        case EDESTADDRREQ:  /* Destination address required */
@@ -2170,24 +2170,22 @@ int dsproc_is_fatal(int last_errno)
 //        case ENOTNAM:       /* Not a XENIX named type file */
 //        case ENAVAIL:       /* No XENIX semaphores available */
 //        case EISNAM:        /* Is a named type file */
-        case EREMOTEIO:       /* Remote I/O error */
+// !OSX        case EREMOTEIO:       /* Remote I/O error */
         case EDQUOT:          /* Quota exceeded */
 
 //        case ENOMEDIUM:     /* No medium found */
 //        case EMEDIUMTYPE:   /* Wrong medium type */
         case ECANCELED:       /* Operation Canceled */
-        case ENOKEY:          /* Required key not available */
-        case EKEYEXPIRED:     /* Key has expired */
-        case EKEYREVOKED:     /* Key has been revoked */
-        case EKEYREJECTED:    /* Key was rejected by service */
+// !OSX        case ENOKEY:          /* Required key not available */
+// !OSX        case EKEYEXPIRED:     /* Key has expired */
+// !OSX        case EKEYREVOKED:     /* Key has been revoked */
+// !OSX        case EKEYREJECTED:    /* Key was rejected by service */
 
 /* for robust mutexes */
         case EOWNERDEAD:      /* Owner died */
         case ENOTRECOVERABLE: /* State not recoverable */
-
-        case ERFKILL:         /* Operation not possible due to RF-kill */
-
-        case EHWPOISON:       /* Memory page has hardware error */
+// !OSX        case ERFKILL:         /* Operation not possible due to RF-kill */
+// !OSX        case EHWPOISON:       /* Memory page has hardware error */
 
             DEBUG_LV1( DSPROC_LIB_NAME,
                 " - last errno indicates a fatal system error\n");

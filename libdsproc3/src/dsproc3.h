@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 60709 $
+*    $Revision: 63473 $
 *    $Author: ermold $
-*    $Date: 2015-03-10 16:21:13 +0000 (Tue, 10 Mar 2015) $
+*    $Date: 2015-08-26 20:44:23 +0000 (Wed, 26 Aug 2015) $
 *
 ********************************************************************************
 *
@@ -62,28 +62,46 @@ typedef enum {
      *  transform logic for any variables that are found in the retrieved
      *  data that have been tagged with a coordinate system name.
      */
-    PM_GENERIC       = DSP_RETRIEVER | DSP_TRANSFORM,
+    PM_GENERIC          = DSP_RETRIEVER | DSP_TRANSFORM,
 
     /** Retriever only VAP.
      *
      *  This VAP requires a retriever definition to be specified in the
      *  database, but will bypass the transformation logic.
      */
-    PM_RETRIEVER_VAP = DSP_RETRIEVER | DSP_RETRIEVER_REQUIRED,
+    PM_RETRIEVER_VAP    = DSP_RETRIEVER | DSP_RETRIEVER_REQUIRED,
 
     /** Transformation VAP.
      *
      *  This VAP requires a retriever definition to be specified in the
      *  database, and will run the transformation logic.
      */
-    PM_TRANSFORM_VAP = DSP_RETRIEVER | DSP_RETRIEVER_REQUIRED | DSP_TRANSFORM,
+    PM_TRANSFORM_VAP    = DSP_RETRIEVER | DSP_RETRIEVER_REQUIRED | DSP_TRANSFORM,
 
     /** Ingest Process.
      *
-     *  This is an ingest process that loops over all raw files in the
+     *  This is an Ingest process that loops over all raw files in the
      *  input datastream directory.
      */
-    PM_INGEST        = DSP_INGEST
+    PM_INGEST          = DSP_INGEST,
+
+    /** Ingest/VAP Hybrid Process that bypasses the transform logic.
+     *
+     *  This is an Ingest process that uses the PM_RETRIEVER_VAP processing
+     *  model, but is designed to run in real-time like an ingest without the
+     *  need for the '-b begin_time' command line argument.  The standard
+     *  VAP -b/-e command line options can still be used for reprocessing.
+     */
+    PM_RETRIEVER_INGEST = DSP_INGEST | DSP_RETRIEVER | DSP_RETRIEVER_REQUIRED,
+
+    /** Ingest/VAP Hybrid Process that bypasses the transform logic.
+     *
+     *  This is an Ingest process that uses the PM_TRANSFORM_VAP processing
+     *  model, but is designed to run in real-time like an ingest without the
+     *  need for the '-b begin_time' command line argument.  The standard
+     *  VAP -b/-e command line options can still be used for reprocessing.
+     */
+    PM_TRANSFORM_INGEST = DSP_INGEST | DSP_RETRIEVER | DSP_RETRIEVER_REQUIRED | DSP_TRANSFORM
 
 } ProcModel;
 

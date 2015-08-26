@@ -32,7 +32,7 @@
 
 /** @privatesection */
 
-static char *_VersionTag = "$Version: dslib-libdsproc3-2.26 $";
+static char *_VersionTag = "$Version: dslib-libdsproc3-2.27-devel $";
 static char  _Version[64];
 
 static char  _ADI_Version[128];
