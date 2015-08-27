@@ -34,10 +34,6 @@
 #include UDUNITS_INCLUDE
 #include <math.h>
 
-#endif
-
-
-
 /*******************************************************************************
  *  Private Data and Functions
  */
