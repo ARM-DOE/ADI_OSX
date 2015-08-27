@@ -18,6 +18,14 @@ AC_CHECK_LIB([udunits2], [main])
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h limits.h stdlib.h string.h unistd.h udunits2.h udunits2/udunits2.h])
 
+AC_CHECK_HEADER([udunits2.h],
+  [AC_DEFINE([UDUNITS_INCLUDE],[<udunits2.h>], [udunits location])]
+  )
+
+AC_CHECK_HEADER([udunits2/udunits2.h],
+  [AC_DEFINE([UDUNITS_INCLUDE],[<udunits2/udunits2.h>], [udunits location])]
+  )
+
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T

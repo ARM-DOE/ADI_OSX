@@ -28,9 +28,10 @@
 
 #include "cds3.h"
 #include "cds_private.h"
+#include "../config.h"
 
 #include <errno.h>
-#include <udunits2/udunits2.h>
+#include UDUNITS_INCLUDE
 #include <math.h>
 
 /*******************************************************************************
