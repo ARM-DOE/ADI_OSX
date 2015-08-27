@@ -12,7 +12,6 @@ AC_PROG_CC
 AC_PROG_LIBTOOL
 
 # Checks for libraries.
-# FIXME: Replace `main' with a function in `-lmsngr':
 AC_CHECK_LIB([msngr], [msngr_send])
 
 # Checks for header files.
