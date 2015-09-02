@@ -1197,7 +1197,7 @@ timeval_t *cds_offsets_to_timevals(
     /* Allocate memory for the output array if necessary */
 
     if (!timevals) {
-        timevals = (timeval_t *)malloc(ntimes * sizeof(timeval_t));
+        timevals = (timeval_t *)calloc(ntimes, sizeof(timeval_t));
         if (!timevals) {
             return(NULL);
         }
