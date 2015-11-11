@@ -1,13 +1,3 @@
 setenv DSDB_HOME "@PREFIX@"
 setenv PERLLIB   "$PERLLIB:@LIBDIR@/perl5/adi"
 
-#setenv DATA_HOME_ROOT   /data/home/$USER
-#setenv DATA_HOME        $DATA_HOME_ROOT/data
-
-#setenv COLLECTION_DATA  $DATA_HOME/collection
-#setenv CONF_DATA        $DATA_HOME/conf
-#setenv DATASTREAM_DATA  $DATA_HOME/datastream
-#setenv LOGS_DATA        $DATA_HOME/logs
-#setenv TMP_DATA         $DATA_HOME/tmp
-#setenv QUICKLOOK_DATA   $DATA_HOME/www/process/vap
-
