@@ -1,0 +1,208 @@
+#!@PERL@
+################################################################################
+#
+#  COPYRIGHT (C) 2007 Battelle Memorial Institute.  All Rights Reserved.
+#
+################################################################################
+#
+#  Author:
+#     name:  Brian Ermold
+#     phone: (509) 375-2277
+#     email: brian.ermold@pnl.gov
+#
+################################################################################
+#
+#  REPOSITORY INFORMATION:
+#    $Revision: 52575 $
+#    $Author: ermold $
+#    $Date: 2014-02-17 20:24:37 +0000 (Mon, 17 Feb 2014) $
+#    $State: Exp $
+#
+################################################################################
+
+use strict;
+
+use DODUtils;
+use DBCORE;
+
+use Getopt::Long;
+Getopt::Long::Configure qw(no_ignore_case);
+
+use vars qw($opt_a $opt_h $opt_help $opt_v);
+use vars qw($gVersion @gCommand $gCommand);
+use vars qw($gDB %gConnArgs %gDSDODS);
+
+$gVersion = '$Id: db_delete_dsdods.perl 52575 2014-02-17 20:24:37Z ermold $';
+@gCommand = split(/\//,$0);
+$gCommand = $gCommand[$#gCommand];
+
+$gConnArgs{'DBAlias'}     = 'dsdb_data';
+$gConnArgs{'Component'}   = 'dsdb';
+$gConnArgs{'ObjectGroup'} = 'dod';
+
+################################################################################
+#
+#  Usage Subroutine
+#
+
+sub exit_usage()
+{
+print STDOUT <<EOF;
+
+USAGE:
+
+  $gCommand [-a alias] file
+
+    [-h|-help] => Display this help message.
+    [-v]       => Print version.
+
+    [-a alias] => The database alias specified in the users .db_connect file.
+                  (default: $gConnArgs{'DBAlias'})
+
+    file       => The DSDODs definition file
+
+EOF
+  exit(1);
+}
+
+################################################################################
+#
+#  Database Subroutines
+#
+
+sub delete_ds_dod($$$$$)
+{
+    #inputs: site, fac, dsc_name, dsc_level, dod_time
+
+    my (@sp_args) = @_;
+    my $retval;
+
+    $retval = $gDB->sp_call('ds_dods', 'delete', @sp_args);
+
+    unless (defined($retval)) {
+        print($gDB->error());
+        return(0);
+    }
+
+    return(1);
+}
+
+################################################################################
+#
+#  Main Subroutines
+#
+
+sub load_dsdods_hash($)
+{
+    my ($file) = @_;
+    my $retval;
+
+    %gDSDODS = ();
+
+    unless ($retval = do $file) {
+        if ($@) {
+            print("Could not compile definition file: $@\n -> $file\n");
+        }
+        elsif (!defined($retval)) {
+            print("Could not read definition file: $!\n -> $file\n");
+        }
+        else {
+            print("Bad return value loading definition file:\n -> $file\n");
+        }
+        return(undef);
+    }
+
+    return(\%gDSDODS);
+}
+
+sub db_delete_dsdods($)
+{
+    my ($file) = @_;
+    my $dsdods;
+    my ($key, $ds_class, $dsc_name, $dsc_level);
+    my ($sitefac, $site, $facs, $fac);
+    my $dod_time;
+
+    # Load the DSDODS Hash Structure
+
+    $dsdods = load_dsdods_hash($file);
+    unless ($dsdods) {
+        return(0);
+    }
+
+    # Loop over the datastream classes
+
+    foreach $key (sort(keys(%{$dsdods}))) {
+
+        foreach $ds_class (split(/\s*,\s*/, $key)) {
+
+            ($dsc_name, $dsc_level) = split(/\./, $ds_class);
+
+            foreach $sitefac (sort(keys(%{$dsdods->{$key}}))) {
+
+                ($site, $facs) = split(/\./, $sitefac);
+
+                foreach $dod_time (sort(keys(%{$dsdods->{$key}{$sitefac}}))) {
+
+                    foreach $fac (split(/\s*,\s*/, $facs)) {
+
+                        unless (delete_ds_dod(
+                            $site, $fac, $dsc_name, $dsc_level, $dod_time)) {
+
+                            return(0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    return(1);
+}
+
+################################################################################
+#
+#  Main
+#
+
+unless (GetOptions("a=s", "h", "help", "v")) {
+    exit_usage();
+}
+
+if ($opt_v) {
+    print("$gVersion\n");
+    exit(0);
+}
+
+if ($opt_h || $opt_help || !$ARGV[0]) {
+    exit_usage();
+}
+
+# Command line options
+
+if ($opt_a) {
+    $gConnArgs{'DBAlias'} = $opt_a;
+}
+
+# Connect to the database
+
+$gDB = DBCORE->new();
+
+unless ($gDB->connect(\%gConnArgs)) {
+    print($gDB->error());
+    exit(1);
+}
+
+# Run the main subroutine
+
+unless (db_delete_dsdods($ARGV[0])) {
+    $gDB->disconnect();
+    exit(1);
+}
+
+# Disconnect from the database
+
+$gDB->disconnect();
+
+exit(0);
+

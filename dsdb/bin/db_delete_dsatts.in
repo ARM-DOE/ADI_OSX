@@ -1,0 +1,365 @@
+#!@PERL@
+################################################################################
+#
+#  COPYRIGHT (C) 2007 Battelle Memorial Institute.  All Rights Reserved.
+#
+################################################################################
+#
+#  Author:
+#     name:  Brian Ermold
+#     phone: (509) 375-2277
+#     email: brian.ermold@pnl.gov
+#
+################################################################################
+#
+#  REPOSITORY INFORMATION:
+#    $Revision: 18495 $
+#    $Author: ermold $
+#    $Date: 2013-07-31 00:18:00 +0000 (Wed, 31 Jul 2013) $
+#    $State: Exp $
+#
+################################################################################
+
+use strict;
+
+use DODUtils;
+use DBCORE;
+use Getopt::Long;
+
+our $gVersion = '$Id: db_delete_dsatts.perl 18495 2013-07-31 00:18:00Z ermold $';
+our @gCommand = split(/\//,$0);
+our $gCommand = $gCommand[$#gCommand];
+
+our $gDB;
+our %gConnArgs = (
+    'DBAlias'     => 'dsdb_data',
+    'Component'   => 'dsdb',
+    'ObjectGroup' => 'dod',
+);
+
+our %gDSATTS;
+
+################################################################################
+#
+#  Exit Usage
+#
+
+sub exit_usage($)
+{
+    my ($status) = @_;
+
+    print STDOUT <<EOF;
+
+NAME
+
+    $gCommand - Delete the entries in a DSATTs file from the database.
+
+SYNOPSIS
+
+    $gCommand file
+
+ARGUMENTS
+
+    file            The DSATTs definition file
+
+OPTIONS
+
+    -alias   alias  The database alias as defined in the .db_connect file
+                    (default: $gConnArgs{'DBAlias'})
+
+    -help           Display help message.
+    -version        Display software version.
+
+EOF
+
+    exit($status);
+}
+
+################################################################################
+#
+#  Database Subroutines
+#
+
+sub delete_ds_att($$$$$)
+{
+    #inputs: site, fac, dsc_name, dsc_level, att_name
+    my (@sp_args) = @_;
+    my $retval;
+
+    $retval = $gDB->sp_call('ds_atts', 'delete', @sp_args);
+
+    unless (defined($retval)) {
+        print($gDB->error());
+        return(0);
+    }
+
+    return(1);
+}
+
+sub delete_ds_time_att($$$$$$)
+{
+    #inputs: site, fac, dsc_name, dsc_level, att_name, att_time
+    my (@sp_args) = @_;
+    my $retval;
+
+    $retval = $gDB->sp_call('ds_time_atts', 'delete', @sp_args);
+
+    unless (defined($retval)) {
+        print($gDB->error());
+        return(0);
+    }
+
+    return(1);
+}
+
+sub delete_ds_var_att($$$$$$)
+{
+    #inputs: site, fac, dsc_name, dsc_level, var_name, att_name
+    my (@sp_args) = @_;
+    my $retval;
+
+    $retval = $gDB->sp_call('ds_var_atts', 'delete', @sp_args);
+
+    unless (defined($retval)) {
+        print($gDB->error());
+        return(0);
+    }
+
+    return(1);
+}
+
+sub delete_ds_var_time_att($$$$$$$)
+{
+    #inputs: site, fac, dsc_name, dsc_level, var_name, att_name, att_time
+    my (@sp_args) = @_;
+    my $retval;
+
+    $retval = $gDB->sp_call('ds_var_time_atts', 'delete', @sp_args);
+
+    unless (defined($retval)) {
+        print($gDB->error());
+        return(0);
+    }
+
+    return(1);
+}
+
+################################################################################
+#
+#  Main Subroutines
+#
+
+sub load_dsatts_hash($)
+{
+    my ($file) = @_;
+    my $retval;
+
+    %gDSATTS = ();
+
+    unless ($retval = do $file) {
+        if ($@) {
+            print("Could not compile definition file: $@\n -> $file\n");
+        }
+        elsif (!defined($retval)) {
+            print("Could not read definition file: $!\n -> $file\n");
+        }
+        else {
+            print("Bad return value loading definition file:\n -> $file\n");
+        }
+        return(undef);
+    }
+
+    return(\%gDSATTS);
+}
+
+sub db_delete_dsatts($)
+{
+    my ($file) = @_;
+    my $dsatts;
+    my (@ds_classes, $ds_class, $dsc_name, $dsc_level);
+    my ($att, $att_name, $att_time);
+    my $sitefac;
+    my ($site, $site_csv, @sites);
+    my ($fac,  $fac_csv,  @facs);
+    my ($var_hash, $var_name, @var_names);
+
+    # Load the DSATTS Hash Structure
+
+    $dsatts = load_dsatts_hash($file);
+    unless ($dsatts) {
+        return(0);
+    }
+
+    # Get the array of datastream classes
+
+    @ds_classes = split(/,/, $dsatts->{'ds_class'});
+
+    # Global Attributes #######################################################
+
+    foreach $att (@{$dsatts->{'global_atts'}}) {
+
+        $att_name = $att->{'name'};
+
+        foreach $sitefac (sort(keys(%{$att->{'value'}}))) {
+
+            ($site_csv, $fac_csv) = split(/\./, $sitefac);
+
+            @sites = split(/\s*,\s*/, $site_csv);
+            @facs  = split(/\s*,\s*/, $fac_csv);
+
+            foreach $site (@sites) {
+            foreach $fac  (@facs) {
+            foreach $ds_class (@ds_classes) {
+
+                ($dsc_name,$dsc_level) = split(/\./, $ds_class);
+
+                unless (delete_ds_att(
+                    $site, $fac, $dsc_name, $dsc_level, $att_name)) {
+
+                    return(0);
+                }
+            }}}
+        }
+    }
+
+    # Global Time Attributes ##################################################
+
+    foreach $att (@{$dsatts->{'global_time_atts'}}) {
+
+        $att_name = $att->{'name'};
+
+        foreach $sitefac  (sort(keys(%{$att->{'value'}}))) {
+
+            ($site_csv, $fac_csv) = split(/\./, $sitefac);
+
+            @sites = split(/\s*,\s*/, $site_csv);
+            @facs  = split(/\s*,\s*/, $fac_csv);
+
+        foreach $att_time (sort(keys(%{$att->{'value'}{$sitefac}}))) {
+
+            foreach $site (@sites) {
+            foreach $fac  (@facs) {
+            foreach $ds_class (@ds_classes) {
+
+                ($dsc_name,$dsc_level) = split(/\./, $ds_class);
+
+                unless (delete_ds_time_att(
+                    $site, $fac, $dsc_name, $dsc_level, $att_name, $att_time)) {
+
+                    return(0);
+                }
+            }}}
+        }}
+    }
+
+    # Variable Attributes #####################################################
+
+    foreach $var_hash (@{$dsatts->{'var_atts'}}) {
+
+        @var_names = @{$var_hash->{'var_names'}};
+
+        foreach $att (@{$var_hash->{'atts'}}) {
+
+            $att_name = $att->{'name'};
+
+            foreach $sitefac (sort(keys(%{$att->{'value'}}))) {
+
+                ($site_csv, $fac_csv) = split(/\./, $sitefac);
+
+                @sites = split(/\s*,\s*/, $site_csv);
+                @facs  = split(/\s*,\s*/, $fac_csv);
+
+                foreach $var_name (@var_names) {
+                foreach $site     (@sites) {
+                foreach $fac      (@facs) {
+                foreach $ds_class (@ds_classes) {
+
+                    ($dsc_name,$dsc_level) = split(/\./, $ds_class);
+
+                    unless (delete_ds_var_att(
+                        $site, $fac, $dsc_name, $dsc_level, $var_name,
+                        $att_name)) {
+
+                        return(0);
+                    }
+                }}}}
+            }
+        }
+    }
+
+    # Variable Time Attributes ################################################
+
+    foreach $var_hash (@{$dsatts->{'var_time_atts'}}) {
+
+        @var_names = @{$var_hash->{'var_names'}};
+
+        foreach $att (@{$var_hash->{'atts'}}) {
+
+            $att_name = $att->{'name'};
+
+            foreach $sitefac (sort(keys(%{$att->{'value'}}))) {
+
+                ($site_csv, $fac_csv) = split(/\./, $sitefac);
+
+                @sites = split(/\s*,\s*/, $site_csv);
+                @facs  = split(/\s*,\s*/, $fac_csv);
+
+            foreach $att_time (sort(keys(%{$att->{'value'}{$sitefac}}))) {
+
+                foreach $var_name (@var_names) {
+                foreach $site     (@sites) {
+                foreach $fac      (@facs) {
+                foreach $ds_class (@ds_classes) {
+
+                    ($dsc_name,$dsc_level) = split(/\./, $ds_class);
+
+                    unless (delete_ds_var_time_att(
+                        $site, $fac, $dsc_name, $dsc_level, $var_name,
+                        $att_name, $att_time)) {
+
+                        return(0);
+                    }
+                }}}}
+            }}
+        }
+    }
+
+    return(1);
+}
+
+################################################################################
+#
+#  Main
+#
+
+# Get command line options
+
+exit_usage(2) unless (GetOptions(
+    "alias=s" => \$gConnArgs{'DBAlias'},
+    "help"    => sub { exit_usage(1); },
+    "version" => sub { print("$gVersion\n"); exit(1); },
+));
+
+exit_usage(1) unless ($ARGV[0]);
+
+# Connect to the database
+
+$gDB = DBCORE->new();
+
+unless ($gDB->connect(\%gConnArgs)) {
+    print($gDB->error());
+    exit(1);
+}
+
+# Run the main subroutine
+
+unless (db_delete_dsatts($ARGV[0])) {
+    $gDB->disconnect();
+    exit(1);
+}
+
+# Disconnect from the database
+
+$gDB->disconnect();
+
+exit(0);

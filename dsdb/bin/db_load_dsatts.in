@@ -1,0 +1,383 @@
+#!@PERL@
+################################################################################
+#
+#  COPYRIGHT (C) 2007 Battelle Memorial Institute.  All Rights Reserved.
+#
+################################################################################
+#
+#  Author:
+#     name:  Brian Ermold
+#     phone: (509) 375-2277
+#     email: brian.ermold@pnl.gov
+#
+################################################################################
+#
+#  REPOSITORY INFORMATION:
+#    $Revision: 2000 $
+#    $Author: ermold $
+#    $Date: 2010-04-02 08:20:45 +0000 (Fri, 02 Apr 2010) $
+#    $State: Exp $
+#
+################################################################################
+
+use strict;
+
+use DODUtils;
+use DBCORE;
+
+use Getopt::Long;
+Getopt::Long::Configure qw(no_ignore_case);
+
+use vars qw($opt_a $opt_h $opt_help $opt_v);
+use vars qw($gVersion @gCommand $gCommand);
+use vars qw($gDB %gConnArgs %gDSATTS);
+
+$gVersion = '$Id: db_load_dsatts.perl 2000 2010-04-02 08:20:45Z ermold $';
+@gCommand = split(/\//,$0);
+$gCommand = $gCommand[$#gCommand];
+
+$gConnArgs{'DBAlias'}     = 'dsdb_data';
+$gConnArgs{'Component'}   = 'dsdb';
+$gConnArgs{'ObjectGroup'} = 'dod';
+
+################################################################################
+#
+#  Usage Subroutine
+#
+
+sub exit_usage()
+{
+print STDOUT <<EOF;
+
+USAGE:
+
+  $gCommand [-a alias] file
+
+    [-h|-help] => Display this help message.
+    [-v]       => Print version.
+
+    [-a alias] => The database alias specified in the users .db_connect file.
+                  (default: $gConnArgs{'DBAlias'})
+
+    file       => The DSATTs definition file
+
+EOF
+  exit(1);
+}
+
+################################################################################
+#
+#  Database Subroutines
+#
+
+sub define_ds_att($$$$$$$)
+{
+    #inputs: site, fac, dsc_name, dsc_level
+    #        att_name, att_type, att_value
+    my (@sp_args) = @_;
+    my $retval;
+
+    $retval = $gDB->sp_call('ds_atts', 'define', @sp_args);
+
+    unless (defined($retval)) {
+        print($gDB->error());
+        return(0);
+    }
+
+    return(1);
+}
+
+sub define_ds_time_att($$$$$$$$)
+{
+    #inputs: site, fac, dsc_name, dsc_level
+    #        att_name, att_time, att_type, att_value
+    my (@sp_args) = @_;
+    my $retval;
+
+    $retval = $gDB->sp_call('ds_time_atts', 'define', @sp_args);
+
+    unless (defined($retval)) {
+        print($gDB->error());
+        return(0);
+    }
+
+    return(1);
+}
+
+sub define_ds_var_att($$$$$$$$)
+{
+    #inputs: site, fac, dsc_name, dsc_level, var_name
+    #        att_name, att_type, att_value
+    my (@sp_args) = @_;
+    my $retval;
+
+    $retval = $gDB->sp_call('ds_var_atts', 'define', @sp_args);
+
+    unless (defined($retval)) {
+        print($gDB->error());
+        return(0);
+    }
+
+    return(1);
+}
+
+sub define_ds_var_time_att($$$$$$$$$)
+{
+    #inputs: site, fac, dsc_name, dsc_level, var_name
+    #        att_name, att_time, att_type, att_value
+    my (@sp_args) = @_;
+    my $retval;
+
+    $retval = $gDB->sp_call('ds_var_time_atts', 'define', @sp_args);
+
+    unless (defined($retval)) {
+        print($gDB->error());
+        return(0);
+    }
+
+    return(1);
+}
+
+################################################################################
+#
+#  Main Subroutines
+#
+
+sub load_dsatts_hash($)
+{
+    my ($file) = @_;
+    my $retval;
+
+    %gDSATTS = ();
+
+    unless ($retval = do $file) {
+        if ($@) {
+            print("Could not compile definition file: $@\n -> $file\n");
+        }
+        elsif (!defined($retval)) {
+            print("Could not read definition file: $!\n -> $file\n");
+        }
+        else {
+            print("Bad return value loading definition file:\n -> $file\n");
+        }
+        return(undef);
+    }
+
+    return(\%gDSATTS);
+}
+
+sub db_load_dsatts($)
+{
+    my ($file) = @_;
+    my $dsatts;
+    my (@ds_classes, $ds_class, $dsc_name, $dsc_level);
+    my ($att, $att_name, $att_type, $att_value, $att_time);
+    my $sitefac;
+    my ($site, $site_csv, @sites);
+    my ($fac,  $fac_csv,  @facs);
+    my ($var_hash, $var_name, @var_names);
+
+    # Load the DSATTS Hash Structure
+
+    $dsatts = load_dsatts_hash($file);
+    unless ($dsatts) {
+        return(0);
+    }
+
+    # Get the array of datastream classes
+
+    @ds_classes = split(/,/, $dsatts->{'ds_class'});
+
+    # Global Attributes #######################################################
+
+    foreach $att (@{$dsatts->{'global_atts'}}) {
+
+        $att_name = $att->{'name'};
+        $att_type = ($att->{'type'}) ? $att->{'type'} : 'char';
+
+        foreach $sitefac (sort(keys(%{$att->{'value'}}))) {
+
+            $att_value = $att->{'value'}{$sitefac};
+
+            ($site_csv, $fac_csv) = split(/\./, $sitefac);
+
+            @sites = split(/\s*,\s*/, $site_csv);
+            @facs  = split(/\s*,\s*/, $fac_csv);
+
+            foreach $site (@sites) {
+            foreach $fac  (@facs) {
+            foreach $ds_class (@ds_classes) {
+
+                ($dsc_name,$dsc_level) = split(/\./, $ds_class);
+
+                unless (define_ds_att(
+                    $site, $fac, $dsc_name, $dsc_level,
+                    $att_name, $att_type, $att_value)) {
+
+                    return(0);
+                }
+            }}}
+        }
+    }
+
+    # Global Time Attributes ##################################################
+
+    foreach $att (@{$dsatts->{'global_time_atts'}}) {
+
+        $att_name = $att->{'name'};
+        $att_type = ($att->{'type'}) ? $att->{'type'} : 'char';
+
+        foreach $sitefac  (sort(keys(%{$att->{'value'}}))) {
+
+            ($site_csv, $fac_csv) = split(/\./, $sitefac);
+
+            @sites = split(/\s*,\s*/, $site_csv);
+            @facs  = split(/\s*,\s*/, $fac_csv);
+
+        foreach $att_time (sort(keys(%{$att->{'value'}{$sitefac}}))) {
+
+            $att_value = $att->{'value'}{$sitefac}{$att_time};
+
+            foreach $site (@sites) {
+            foreach $fac  (@facs) {
+            foreach $ds_class (@ds_classes) {
+
+                ($dsc_name,$dsc_level) = split(/\./, $ds_class);
+
+                unless (define_ds_time_att(
+                    $site, $fac, $dsc_name, $dsc_level,
+                    $att_name, $att_time, $att_type, $att_value)) {
+
+                    return(0);
+                }
+            }}}
+        }}
+    }
+
+    # Variable Attributes #####################################################
+
+    foreach $var_hash (@{$dsatts->{'var_atts'}}) {
+
+        @var_names = @{$var_hash->{'var_names'}};
+
+        foreach $att (@{$var_hash->{'atts'}}) {
+
+            $att_name = $att->{'name'};
+            $att_type = ($att->{'type'}) ? $att->{'type'} : 'char';
+
+            foreach $sitefac (sort(keys(%{$att->{'value'}}))) {
+
+                $att_value = $att->{'value'}{$sitefac};
+
+                ($site_csv, $fac_csv) = split(/\./, $sitefac);
+
+                @sites = split(/\s*,\s*/, $site_csv);
+                @facs  = split(/\s*,\s*/, $fac_csv);
+
+                foreach $var_name (@var_names) {
+                foreach $site     (@sites) {
+                foreach $fac      (@facs) {
+                foreach $ds_class (@ds_classes) {
+
+                    ($dsc_name,$dsc_level) = split(/\./, $ds_class);
+
+                    unless (define_ds_var_att(
+                        $site, $fac, $dsc_name, $dsc_level, $var_name,
+                        $att_name, $att_type, $att_value)) {
+
+                        return(0);
+                    }
+                }}}}
+            }
+        }
+    }
+
+    # Variable Time Attributes ################################################
+
+    foreach $var_hash (@{$dsatts->{'var_time_atts'}}) {
+
+        @var_names = @{$var_hash->{'var_names'}};
+
+        foreach $att (@{$var_hash->{'atts'}}) {
+
+            $att_name = $att->{'name'};
+            $att_type = ($att->{'type'}) ? $att->{'type'} : 'char';
+
+            foreach $sitefac (sort(keys(%{$att->{'value'}}))) {
+
+                ($site_csv, $fac_csv) = split(/\./, $sitefac);
+
+                @sites = split(/\s*,\s*/, $site_csv);
+                @facs  = split(/\s*,\s*/, $fac_csv);
+
+            foreach $att_time (sort(keys(%{$att->{'value'}{$sitefac}}))) {
+
+                $att_value = $att->{'value'}{$sitefac}{$att_time};
+
+                foreach $var_name (@var_names) {
+                foreach $site     (@sites) {
+                foreach $fac      (@facs) {
+                foreach $ds_class (@ds_classes) {
+
+                    ($dsc_name,$dsc_level) = split(/\./, $ds_class);
+
+                    unless (define_ds_var_time_att(
+                        $site, $fac, $dsc_name, $dsc_level, $var_name,
+                        $att_name, $att_time, $att_type, $att_value)) {
+
+                        return(0);
+                    }
+                }}}}
+            }}
+        }
+    }
+
+    return(1);
+}
+
+
+################################################################################
+#
+#  Main
+#
+
+unless (GetOptions("a=s", "h", "help", "v")) {
+    exit_usage();
+}
+
+if ($opt_v) {
+    print("$gVersion\n");
+    exit(0);
+}
+
+if ($opt_h || $opt_help || !$ARGV[0]) {
+    exit_usage();
+}
+
+# Command line options
+
+if ($opt_a) {
+    $gConnArgs{'DBAlias'} = $opt_a;
+}
+
+# Connect to the database
+
+$gDB = DBCORE->new();
+
+unless ($gDB->connect(\%gConnArgs)) {
+    print($gDB->error());
+    exit(1);
+}
+
+# Run the main subroutine
+
+unless (db_load_dsatts($ARGV[0])) {
+    $gDB->disconnect();
+    exit(1);
+}
+
+# Disconnect from the database
+
+$gDB->disconnect();
+
+exit(0);
