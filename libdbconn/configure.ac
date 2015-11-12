@@ -3,7 +3,12 @@
 
 AC_PREREQ([2.63])
 AC_INIT([ADI libdbconn], [1.8], [brian.ermold@pnnl.gov])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
+
+AM_INIT_AUTOMAKE([1.11 foreign -Wall -Werror])
+
 AC_CONFIG_SRCDIR([src/dbconn_pgsql.c])
 AC_CONFIG_HEADERS([config.h])
 
@@ -12,12 +17,10 @@ AC_PROG_CC
 AC_PROG_LIBTOOL
 
 # Checks for libraries.
-AC_CHECK_LIB([msngr], [msngr_send])
 
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h inttypes.h limits.h malloc.h stddef.h stdint.h stdlib.h string.h sys/file.h sys/ioctl.h sys/mount.h sys/param.h sys/statvfs.h sys/time.h unistd.h utime.h])
 AC_CHECK_HEADERS([libpq-fe.h pgsql/libpq-fe.h], [AC_DEFINE([HAVE_POSTGRES], [1], [Defined if postgres is available])])
-
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL

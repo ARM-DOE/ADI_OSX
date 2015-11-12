@@ -3,27 +3,19 @@
 
 AC_PREREQ([2.63])
 AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
+
+AM_INIT_AUTOMAKE([1.11 foreign -Wall -Werror])
+
 AC_CONFIG_SRCDIR([src/dsproc.c])
-AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_LIBTOOL
 
 # Checks for libraries.
-# FIXME: Replace `main' with a function in `-larmutils':
-AC_CHECK_LIB([armutils], [main])
-# FIXME: Replace `main' with a function in `-lcds3':
-AC_CHECK_LIB([cds3], [main])
-# FIXME: Replace `main' with a function in `-ldsdb3':
-AC_CHECK_LIB([dsdb3], [main])
-# FIXME: Replace `main' with a function in `-lmsngr':
-AC_CHECK_LIB([msngr], [main])
-# FIXME: Replace `main' with a function in `-lncds3':
-AC_CHECK_LIB([ncds3], [main])
-# FIXME: Replace `main' with a function in `-lnetcdf':
-AC_CHECK_LIB([netcdf], [main])
 
 # Checks for header files.
 AC_CHECK_HEADERS([string.h unistd.h])

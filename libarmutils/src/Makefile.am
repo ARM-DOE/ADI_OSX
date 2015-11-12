@@ -12,3 +12,5 @@ libarmutils_la_LDFLAGS = -no-undefined -avoid-version -L${libdir} -lmsngr -L/usr
 
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
+
+MAINTAINERCLEANFILES = Makefile.in

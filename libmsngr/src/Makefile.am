@@ -8,3 +8,5 @@ pkgconfig_DATA = msngr.pc
 libmsngr_la_LDFLAGS = -no-undefined -avoid-version
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
+
+MAINTAINERCLEANFILES = Makefile.in

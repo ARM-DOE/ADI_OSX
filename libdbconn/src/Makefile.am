@@ -9,3 +9,5 @@ libdbconn_la_LDFLAGS = $(POSTGRESQL_LDFLAGS) $(CURL_LIBS) -lmsngr
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = dbconn.pc
+
+MAINTAINERCLEANFILES = Makefile.in

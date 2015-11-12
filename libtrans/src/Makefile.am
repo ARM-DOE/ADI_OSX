@@ -10,3 +10,5 @@ pkgconfig_DATA = trans.pc
 
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
+
+MAINTAINERCLEANFILES = Makefile.in

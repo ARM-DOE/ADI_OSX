@@ -8,8 +8,10 @@ include_HEADERS = dsproc3.h dsproc3_internal.h dsproc_private.h
 libdsproc3_la_CFLAGS = -I${includedir}
 libdsproc3_la_LDFLAGS = -no-undefined -avoid-version -L${libdir} -ldsdb3 -lncds3 -ltrans -lcds3 -larmutils -lmsngr -lnetcdf -ldbconn
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = dsproc3.pc
+
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
 
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = dsproc3.pc
+MAINTAINERCLEANFILES = Makefile.in

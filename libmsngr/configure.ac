@@ -3,9 +3,13 @@
 
 AC_PREREQ([2.63])
 AC_INIT([ADI libmsngr], [1.6], [brian.ermold@pnnl.gov])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
+
+AM_INIT_AUTOMAKE([1.11 foreign -Wall -Werror])
+
 AC_CONFIG_SRCDIR([src/msngr_utils.c])
-AC_CONFIG_HEADERS([config.h])
 
 AC_SUBST(PACKAGE_VERSION)
 

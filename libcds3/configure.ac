@@ -3,7 +3,12 @@
 
 AC_PREREQ([2.63])
 AC_INIT([ADI libcds3], [1.16], [brian.ermold@pnnl.gov])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
+
+AM_INIT_AUTOMAKE([1.11 foreign -Wall -Werror])
+
 AC_CONFIG_SRCDIR([src/cds_print.c])
 AC_CONFIG_HEADERS([config.h])
 
@@ -13,18 +18,13 @@ AC_PROG_LIBTOOL
 
 # Checks for libraries.
 # FIXME: Replace `main' with a function in `-ludunits2':
-AC_CHECK_LIB([udunits2], [main])
+#AC_CHECK_LIB([udunits2], [main])
 
 # Checks for header files.
-AC_CHECK_HEADERS([fcntl.h limits.h stdlib.h string.h unistd.h udunits2.h udunits2/udunits2.h])
+AC_CHECK_HEADERS([fcntl.h limits.h stdlib.h string.h unistd.h])
 
-AC_CHECK_HEADER([udunits2.h],
-  [AC_DEFINE([UDUNITS_INCLUDE],[<udunits2.h>], [udunits location])]
-  )
-
-AC_CHECK_HEADER([udunits2/udunits2.h],
-  [AC_DEFINE([UDUNITS_INCLUDE],[<udunits2/udunits2.h>], [udunits location])]
-  )
+AC_CHECK_HEADER([udunits2.h], [AC_DEFINE([UDUNITS_INCLUDE],[<udunits2.h>], [udunits location])])
+AC_CHECK_HEADER([udunits2/udunits2.h], [AC_DEFINE([UDUNITS_INCLUDE],[<udunits2/udunits2.h>], [udunits location])])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_OFF_T

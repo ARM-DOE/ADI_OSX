@@ -12,3 +12,5 @@ pkgconfig_DATA = ncds3.pc
 
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
+
+MAINTAINERCLEANFILES = Makefile.in

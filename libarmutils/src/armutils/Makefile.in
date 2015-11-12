@@ -42,7 +42,6 @@ am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
-CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 SOURCES =
@@ -186,6 +185,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 hdrdir = $(includedir)/armutils
 hdr_HEADERS = armutils_version.h benchmark.h dir_utils.h dsenv.h endian_swap.h file_utils.h regex_time.h regex_utils.h string_utils.h time_utils.h
+MAINTAINERCLEANFILES = Makefile.in
 all: all-am
 
 .SUFFIXES:
@@ -360,6 +360,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
 clean-am: clean-generic clean-libtool mostlyclean-am

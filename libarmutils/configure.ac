@@ -3,24 +3,21 @@
 
 AC_PREREQ([2.63])
 AC_INIT([ADI libarmutils], [1.7], [brian.ermold@pnnl.gov])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
+
+AM_INIT_AUTOMAKE([1.11 foreign -Wall -Werror])
+
 AC_CONFIG_SRCDIR([src/dir_utils.c])
-AC_CONFIG_HEADERS([config.h])
+
+AC_SUBST(PACKAGE_VERSION)
 
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_LIBTOOL
 
 # Checks for libraries.
-
-# FIXME: Replace `main' with a function in `-larmutils':
-#->AC_CHECK_LIB([armutils], [main])
-
-# FIXME: Replace `main' with a function in `-lcrypto':
-#->AC_CHECK_LIB([crypto], [main])
-
-# FIXME: Replace `main' with a function in `-lmsngr':
-#->AC_CHECK_LIB([msngr], [main])
 
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h limits.h stdint.h stdlib.h string.h sys/time.h unistd.h utime.h openssl/md5.h])

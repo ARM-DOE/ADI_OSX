@@ -305,7 +305,7 @@ DBConn *dbconn_create(const char *db_alias)
     switch (dbconn->db_type) {
 
         case DB_PGSQL:
-            #ifdef HAVE_POSTGRES
+#ifdef HAVE_POSTGRES
             DBI(dbconn)->connect          = pgsql_connect;
             DBI(dbconn)->disconnect       = pgsql_disconnect;
             DBI(dbconn)->reset            = pgsql_reset;
@@ -324,7 +324,7 @@ DBConn *dbconn_create(const char *db_alias)
             DBI(dbconn)->text_to_time     = pgsql_text_to_time;
             DBI(dbconn)->timeval_to_text  = pgsql_timeval_to_text;
             DBI(dbconn)->text_to_timeval  = pgsql_text_to_timeval;
-            #else
+#else
             ERROR( DBCONN_LIB_NAME,
                 "Could not create database connection\n"
                 " -> libdbconn not built with postgres.\n"
@@ -333,7 +333,7 @@ DBConn *dbconn_create(const char *db_alias)
             free(dbconn->dbi);
             free(dbconn);
             return((DBConn *)NULL);
-            #endif
+#endif
             break;
 
         case DB_WSPC:

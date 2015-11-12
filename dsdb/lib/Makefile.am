@@ -11,3 +11,5 @@ perllib_DATA = \
 	PGSQL.pm \
 	SQLite.pm
 
+MAINTAINERCLEANFILES = Makefile.in
+

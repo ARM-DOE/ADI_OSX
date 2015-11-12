@@ -2023,10 +2023,9 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-am__api_version='1.11'
 
 ac_aux_dir=
-for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
+for ac_dir in build-aux "$srcdir"/build-aux; do
   if test -f "$ac_dir/install-sh"; then
     ac_aux_dir=$ac_dir
     ac_install_sh="$ac_aux_dir/install-sh -c"
@@ -2042,8 +2041,8 @@ for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
   fi
 done
 if test -z "$ac_aux_dir"; then
-  { { $as_echo "$as_me:$LINENO: error: cannot find install-sh or install.sh in \"$srcdir\" \"$srcdir/..\" \"$srcdir/../..\"" >&5
-$as_echo "$as_me: error: cannot find install-sh or install.sh in \"$srcdir\" \"$srcdir/..\" \"$srcdir/../..\"" >&2;}
+  { { $as_echo "$as_me:$LINENO: error: cannot find install-sh or install.sh in build-aux \"$srcdir\"/build-aux" >&5
+$as_echo "$as_me: error: cannot find install-sh or install.sh in build-aux \"$srcdir\"/build-aux" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
@@ -2055,6 +2054,10 @@ ac_config_guess="$SHELL $ac_aux_dir/config.guess"  # Please don't use this var.
 ac_config_sub="$SHELL $ac_aux_dir/config.sub"  # Please don't use this var.
 ac_configure="$SHELL $ac_aux_dir/configure"  # Please don't use this var.
 
+
+
+
+am__api_version='1.11'
 
 # Find a good install program.  We prefer a C program (faster),
 # so one script is as good as another.  But avoid the broken or
@@ -2539,6 +2542,7 @@ MAKEINFO=${MAKEINFO-"${am_missing_run}makeinfo"}
 AMTAR=${AMTAR-"${am_missing_run}tar"}
 
 am__tar='${AMTAR} chof - "$$tardir"'; am__untar='${AMTAR} xf -'
+
 
 
 
@@ -4373,13 +4377,13 @@ if test "${lt_cv_nm_interface+set}" = set; then
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:4376: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:4380: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:4379: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:4383: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:4382: output\"" >&5)
+  (eval echo "\"\$as_me:4386: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -5585,7 +5589,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5588 "configure"' > conftest.$ac_ext
+  echo '#line 5592 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -7438,11 +7442,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7441: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7445: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7445: \$? = $ac_status" >&5
+   echo "$as_me:7449: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -7777,11 +7781,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7780: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7784: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7784: \$? = $ac_status" >&5
+   echo "$as_me:7788: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -7882,11 +7886,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7885: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7889: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:7889: \$? = $ac_status" >&5
+   echo "$as_me:7893: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -7937,11 +7941,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7940: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7944: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:7944: \$? = $ac_status" >&5
+   echo "$as_me:7948: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10740,7 +10744,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 10743 "configure"
+#line 10747 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -10836,7 +10840,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 10839 "configure"
+#line 10843 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11065,82 +11069,6 @@ CC="$lt_save_CC"
 
 
 # Checks for libraries.
-# FIXME: Replace `main' with a function in `-lmsngr':
-
-{ $as_echo "$as_me:$LINENO: checking for msngr_send in -lmsngr" >&5
-$as_echo_n "checking for msngr_send in -lmsngr... " >&6; }
-if test "${ac_cv_lib_msngr_msngr_send+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lmsngr  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char msngr_send ();
-int
-main ()
-{
-return msngr_send ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
-$as_echo "$ac_try_echo") >&5
-  (eval "$ac_link") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && {
-	 test -z "$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest$ac_exeext && {
-	 test "$cross_compiling" = yes ||
-	 $as_test_x conftest$ac_exeext
-       }; then
-  ac_cv_lib_msngr_msngr_send=yes
-else
-  $as_echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_lib_msngr_msngr_send=no
-fi
-
-rm -rf conftest.dSYM
-rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ $as_echo "$as_me:$LINENO: result: $ac_cv_lib_msngr_msngr_send" >&5
-$as_echo "$ac_cv_lib_msngr_msngr_send" >&6; }
-if test "x$ac_cv_lib_msngr_msngr_send" = x""yes; then
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBMSNGR 1
-_ACEOF
-
-  LIBS="-lmsngr $LIBS"
-
-fi
-
 
 # Checks for header files.
 
@@ -11464,7 +11392,6 @@ _ACEOF
 fi
 
 done
-
 
 
 # Checks for typedefs, structures, and compiler characteristics.

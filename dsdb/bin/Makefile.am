@@ -38,9 +38,9 @@ EXTRA_DIST = \
 	db_update_dstimes.in \
 	db_update.in
 
-
 do_subst = sed -e 's,[@]PERL[@],$(PERL),g'
 
 $(bin_SCRIPTS): %: %.in
 	$(do_subst) < $< > $@
 
+MAINTAINERCLEANFILES = Makefile.in

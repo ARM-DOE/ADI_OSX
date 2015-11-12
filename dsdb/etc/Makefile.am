@@ -11,3 +11,4 @@ do_subst = sed \
 .cshrc: .cshrc.in
 	$(do_subst) < .cshrc.in > .cshrc
 
+MAINTAINERCLEANFILES = Makefile.in

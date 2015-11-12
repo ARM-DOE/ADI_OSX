@@ -9,8 +9,10 @@ include_HEADERS = dsdb3.h
 libdsdb3_la_CFLAGS = -I${includedir}
 libdsdb3_la_LDFLAGS = --no-undefined -avoid-version -L${libdir} -ldbconn -lcds3 -lmsngr
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = dsdb3.pc
+
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
 
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = dsdb3.pc
+MAINTAINERCLEANFILES = Makefile.in
