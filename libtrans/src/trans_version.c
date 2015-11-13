@@ -28,7 +28,7 @@
 
 /** @privatesection */
 
-static char *_VersionTag = "$Version: $";
+static char *_VersionTag = "$Version: afl-libtrans-1.7 $";
 static char  _Version[64];
 
 /** @publicsection */
