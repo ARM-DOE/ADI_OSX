@@ -2,7 +2,6 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
-tag=@datarootdir@/doc/libcds3/libcds3.tag
 
 Name: cds3
 Description: cds3

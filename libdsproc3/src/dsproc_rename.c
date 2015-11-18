@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 57299 $
+*    $Revision: 64431 $
 *    $Author: ermold $
-*    $Date: 2014-10-06 19:59:52 +0000 (Mon, 06 Oct 2014) $
+*    $Date: 2015-10-09 19:38:11 +0000 (Fri, 09 Oct 2015) $
 *
 ********************************************************************************
 *
@@ -640,6 +640,76 @@ int dsproc_rename_bad(
 
     return(_dsproc_rename(
         ds_id, file_path, file_name, &begin, NULL, "bad"));
+}
+
+/**
+ *  Determine the portion of the original file name to preserve.
+ *
+ *  If an error occurs in this function it will be appended to the log and
+ *  error mail messages, and the process status will be set appropriately.
+ *
+ *  @param  ds_id      datastream ID
+ *  @param  file_name  name of the raw data file
+ *
+ *  @retval  1  if successful
+ *  @retval  0  if a pattern matching error occurred
+ */
+int dsproc_set_preserve_dots_from_name(int ds_id, const char *file_name)
+{
+    DataStream *ds = _DSProc->datastreams[ds_id];
+
+    char        pattern[512];
+    regex_t     preg;
+    regmatch_t  pmatch[1];
+    const char *strp;
+    int         status;
+    int         ndots;
+
+    sprintf(pattern, "^%s\\.[[:digit:]]{8}\\.[[:digit:]]{6}\\.[[:alpha:]]+\\.",
+        ds->name);
+
+    if (!re_compile(&preg, pattern, REG_EXTENDED)) {
+
+        DSPROC_ERROR( NULL,
+            "Could not compile regular expression: '%s'",
+            pattern);
+
+        return(0);
+    }
+
+    status = re_execute(&preg, file_name, 1, pmatch, 0);
+    if (status < 0) {
+
+        DSPROC_ERROR( NULL,
+            "Could not execute regular expression: '%s'",
+            pattern);
+
+        re_free(&preg);
+        return(0);
+    }
+
+    strp = file_name;
+
+    if (status == 1) {
+         strp += pmatch[0].rm_eo;
+    }
+
+    ndots = 1;
+
+    while ((strp = strchr(strp, '.'))) {
+        ++ndots;
+        ++strp;
+    }
+
+    re_free(&preg);
+
+    DEBUG_LV1( DSPROC_LIB_NAME,
+        "%s: Setting rename preserve dots value to: %d\n",
+        ds->name, ndots);
+
+    ds->preserve_dots = ndots;
+
+    return(1);
 }
 
 /**

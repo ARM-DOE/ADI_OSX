@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.63])
-AC_INIT([ADI libcds3], [1.16], [brian.ermold@pnnl.gov])
+AC_INIT([ADI libcds3], [1.17], [brian.ermold@pnnl.gov])
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])

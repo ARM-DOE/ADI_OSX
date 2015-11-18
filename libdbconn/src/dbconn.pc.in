@@ -2,11 +2,10 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
-tag=@datarootdir@/doc/libdbconn/libdbconn.tag
 
 Name: dbconn
 Description: dbconn
 Version: @VERSION@
 Requires: msngr libcurl
 Cflags: -I${includedir} 
-Libs: -L${libdir} -ldbconn -lpq
+Libs: -L${libdir} -ldbconn

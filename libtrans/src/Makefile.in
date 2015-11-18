@@ -212,9 +212,9 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libtrans.la
-libtrans_la_SOURCES = cds_transform_driver.c trans_bin_average.c trans_subsample.c trans_interpolate.c trans_utils.c trans_passthrough.c trans_version.c trans_quadrature.c
 include_HEADERS = trans.h
-libtrans_la_CFLAGS = -I${includedir}
+libtrans_la_SOURCES = cds_transform_driver.c trans_bin_average.c trans_subsample.c trans_interpolate.c trans_utils.c trans_passthrough.c trans_version.c trans_quadrature.c
+libtrans_la_CFLAGS = -I${includedir} -Wall -Wextra -std=c99
 libtrans_la_LDFLAGS = -no-undefined -avoid-version -L${libdir} -lcds3 -lmsngr
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = trans.pc
@@ -632,9 +632,6 @@ uninstall-am: uninstall-includeHEADERS uninstall-libLTLIBRARIES \
 	uninstall-includeHEADERS uninstall-libLTLIBRARIES \
 	uninstall-pkgconfigDATA
 
-
-libtool: $(LIBTOOL_DEPS)
-	$(SHELL) ./config.status --recheck
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

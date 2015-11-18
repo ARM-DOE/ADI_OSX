@@ -72,15 +72,18 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgconfigdir)" \
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libdsproc3_la_LIBADD =
 am_libdsproc3_la_OBJECTS = libdsproc3_la-dsproc.lo \
+	libdsproc3_la-dsproc_csv2cds.lo \
+	libdsproc3_la-dsproc_csv_ingest_config.lo \
+	libdsproc3_la-dsproc_csv_parser.lo \
 	libdsproc3_la-dsproc_dataset_atts.lo \
 	libdsproc3_la-dsproc_dataset_compare.lo \
 	libdsproc3_la-dsproc_dataset_dims.lo \
 	libdsproc3_la-dsproc_dataset_fetch.lo \
 	libdsproc3_la-dsproc_dataset_filters.lo \
+	libdsproc3_la-dsproc_datasets.lo \
 	libdsproc3_la-dsproc_dataset_store.lo \
 	libdsproc3_la-dsproc_dataset_times.lo \
 	libdsproc3_la-dsproc_dataset_vars.lo \
-	libdsproc3_la-dsproc_datasets.lo \
 	libdsproc3_la-dsproc_datastream_dod.lo \
 	libdsproc3_la-dsproc_datastream_files.lo \
 	libdsproc3_la-dsproc_datastreams.lo \
@@ -97,8 +100,8 @@ am_libdsproc3_la_OBJECTS = libdsproc3_la-dsproc.lo \
 	libdsproc3_la-dsproc_retriever.lo \
 	libdsproc3_la-dsproc_standard_qc.lo \
 	libdsproc3_la-dsproc_stats.lo \
-	libdsproc3_la-dsproc_trans_params.lo \
 	libdsproc3_la-dsproc_transform.lo \
+	libdsproc3_la-dsproc_trans_params.lo \
 	libdsproc3_la-dsproc_update_stored_metadata.lo \
 	libdsproc3_la-dsproc_var_tag.lo \
 	libdsproc3_la-dsproc_version.lo
@@ -236,11 +239,49 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBPACKAGE = libdsproc3
 lib_LTLIBRARIES = libdsproc3.la
-libdsproc3_la_SOURCES = dsproc.c dsproc_dataset_atts.c dsproc_dataset_compare.c dsproc_dataset_dims.c dsproc_dataset_fetch.c dsproc_dataset_filters.c dsproc_dataset_store.c dsproc_dataset_times.c dsproc_dataset_vars.c dsproc_datasets.c dsproc_datastream_dod.c dsproc_datastream_files.c dsproc_datastreams.c dsproc_deprecated.c dsproc_dqrdb.c dsproc_dsdb.c dsproc_file_utils.c dsproc_hooks.c dsproc_main.c dsproc_map_data.c dsproc_merge_obs.c dsproc_messages.c dsproc_parse_args.c dsproc_print.c dsproc_qc_utils.c dsproc_rename.c dsproc_retriever.c dsproc_standard_qc.c dsproc_stats.c dsproc_trans_params.c dsproc_transform.c dsproc_update_stored_metadata.c dsproc_var_tag.c dsproc_version.c 
-include_HEADERS = dsproc3.h dsproc3_internal.h dsproc_private.h
-libdsproc3_la_CFLAGS = -I${includedir}
+include_HEADERS = dsproc3.h dsproc3_internal.h
+libdsproc3_la_SOURCES = \
+	dsproc.c \
+	dsproc_csv2cds.c \
+	dsproc_csv_ingest_config.c \
+	dsproc_csv_parser.c \
+	dsproc_dataset_atts.c \
+	dsproc_dataset_compare.c \
+	dsproc_dataset_dims.c \
+	dsproc_dataset_fetch.c \
+	dsproc_dataset_filters.c \
+	dsproc_datasets.c \
+	dsproc_dataset_store.c \
+	dsproc_dataset_times.c \
+	dsproc_dataset_vars.c \
+	dsproc_datastream_dod.c \
+	dsproc_datastream_files.c \
+	dsproc_datastreams.c \
+	dsproc_deprecated.c \
+	dsproc_dqrdb.c \
+	dsproc_dsdb.c \
+	dsproc_file_utils.c \
+	dsproc_hooks.c \
+	dsproc_main.c \
+	dsproc_map_data.c \
+	dsproc_merge_obs.c \
+	dsproc_messages.c \
+	dsproc_parse_args.c \
+	dsproc_print.c \
+	dsproc_private.h \
+	dsproc_qc_utils.c \
+	dsproc_rename.c \
+	dsproc_retriever.c \
+	dsproc_standard_qc.c \
+	dsproc_stats.c \
+	dsproc_transform.c \
+	dsproc_trans_params.c \
+	dsproc_update_stored_metadata.c \
+	dsproc_var_tag.c \
+	dsproc_version.c
+
+libdsproc3_la_CFLAGS = -I${includedir} -Wall -Wextra
 libdsproc3_la_LDFLAGS = -no-undefined -avoid-version -L${libdir} -ldsdb3 -lncds3 -ltrans -lcds3 -larmutils -lmsngr -lnetcdf -ldbconn
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = dsproc3.pc
@@ -322,6 +363,9 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsproc3_la-dsproc.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsproc3_la-dsproc_csv2cds.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsproc3_la-dsproc_csv_ingest_config.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsproc3_la-dsproc_csv_parser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsproc3_la-dsproc_dataset_atts.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsproc3_la-dsproc_dataset_compare.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsproc3_la-dsproc_dataset_dims.Plo@am__quote@
@@ -384,6 +428,27 @@ libdsproc3_la-dsproc.lo: dsproc.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -c -o libdsproc3_la-dsproc.lo `test -f 'dsproc.c' || echo '$(srcdir)/'`dsproc.c
 
+libdsproc3_la-dsproc_csv2cds.lo: dsproc_csv2cds.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -MT libdsproc3_la-dsproc_csv2cds.lo -MD -MP -MF $(DEPDIR)/libdsproc3_la-dsproc_csv2cds.Tpo -c -o libdsproc3_la-dsproc_csv2cds.lo `test -f 'dsproc_csv2cds.c' || echo '$(srcdir)/'`dsproc_csv2cds.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsproc3_la-dsproc_csv2cds.Tpo $(DEPDIR)/libdsproc3_la-dsproc_csv2cds.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dsproc_csv2cds.c' object='libdsproc3_la-dsproc_csv2cds.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -c -o libdsproc3_la-dsproc_csv2cds.lo `test -f 'dsproc_csv2cds.c' || echo '$(srcdir)/'`dsproc_csv2cds.c
+
+libdsproc3_la-dsproc_csv_ingest_config.lo: dsproc_csv_ingest_config.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -MT libdsproc3_la-dsproc_csv_ingest_config.lo -MD -MP -MF $(DEPDIR)/libdsproc3_la-dsproc_csv_ingest_config.Tpo -c -o libdsproc3_la-dsproc_csv_ingest_config.lo `test -f 'dsproc_csv_ingest_config.c' || echo '$(srcdir)/'`dsproc_csv_ingest_config.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsproc3_la-dsproc_csv_ingest_config.Tpo $(DEPDIR)/libdsproc3_la-dsproc_csv_ingest_config.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dsproc_csv_ingest_config.c' object='libdsproc3_la-dsproc_csv_ingest_config.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -c -o libdsproc3_la-dsproc_csv_ingest_config.lo `test -f 'dsproc_csv_ingest_config.c' || echo '$(srcdir)/'`dsproc_csv_ingest_config.c
+
+libdsproc3_la-dsproc_csv_parser.lo: dsproc_csv_parser.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -MT libdsproc3_la-dsproc_csv_parser.lo -MD -MP -MF $(DEPDIR)/libdsproc3_la-dsproc_csv_parser.Tpo -c -o libdsproc3_la-dsproc_csv_parser.lo `test -f 'dsproc_csv_parser.c' || echo '$(srcdir)/'`dsproc_csv_parser.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsproc3_la-dsproc_csv_parser.Tpo $(DEPDIR)/libdsproc3_la-dsproc_csv_parser.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dsproc_csv_parser.c' object='libdsproc3_la-dsproc_csv_parser.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -c -o libdsproc3_la-dsproc_csv_parser.lo `test -f 'dsproc_csv_parser.c' || echo '$(srcdir)/'`dsproc_csv_parser.c
+
 libdsproc3_la-dsproc_dataset_atts.lo: dsproc_dataset_atts.c
 @am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -MT libdsproc3_la-dsproc_dataset_atts.lo -MD -MP -MF $(DEPDIR)/libdsproc3_la-dsproc_dataset_atts.Tpo -c -o libdsproc3_la-dsproc_dataset_atts.lo `test -f 'dsproc_dataset_atts.c' || echo '$(srcdir)/'`dsproc_dataset_atts.c
 @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsproc3_la-dsproc_dataset_atts.Tpo $(DEPDIR)/libdsproc3_la-dsproc_dataset_atts.Plo
@@ -419,6 +484,13 @@ libdsproc3_la-dsproc_dataset_filters.lo: dsproc_dataset_filters.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -c -o libdsproc3_la-dsproc_dataset_filters.lo `test -f 'dsproc_dataset_filters.c' || echo '$(srcdir)/'`dsproc_dataset_filters.c
 
+libdsproc3_la-dsproc_datasets.lo: dsproc_datasets.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -MT libdsproc3_la-dsproc_datasets.lo -MD -MP -MF $(DEPDIR)/libdsproc3_la-dsproc_datasets.Tpo -c -o libdsproc3_la-dsproc_datasets.lo `test -f 'dsproc_datasets.c' || echo '$(srcdir)/'`dsproc_datasets.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsproc3_la-dsproc_datasets.Tpo $(DEPDIR)/libdsproc3_la-dsproc_datasets.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dsproc_datasets.c' object='libdsproc3_la-dsproc_datasets.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -c -o libdsproc3_la-dsproc_datasets.lo `test -f 'dsproc_datasets.c' || echo '$(srcdir)/'`dsproc_datasets.c
+
 libdsproc3_la-dsproc_dataset_store.lo: dsproc_dataset_store.c
 @am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -MT libdsproc3_la-dsproc_dataset_store.lo -MD -MP -MF $(DEPDIR)/libdsproc3_la-dsproc_dataset_store.Tpo -c -o libdsproc3_la-dsproc_dataset_store.lo `test -f 'dsproc_dataset_store.c' || echo '$(srcdir)/'`dsproc_dataset_store.c
 @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsproc3_la-dsproc_dataset_store.Tpo $(DEPDIR)/libdsproc3_la-dsproc_dataset_store.Plo
@@ -439,13 +511,6 @@ libdsproc3_la-dsproc_dataset_vars.lo: dsproc_dataset_vars.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dsproc_dataset_vars.c' object='libdsproc3_la-dsproc_dataset_vars.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -c -o libdsproc3_la-dsproc_dataset_vars.lo `test -f 'dsproc_dataset_vars.c' || echo '$(srcdir)/'`dsproc_dataset_vars.c
-
-libdsproc3_la-dsproc_datasets.lo: dsproc_datasets.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -MT libdsproc3_la-dsproc_datasets.lo -MD -MP -MF $(DEPDIR)/libdsproc3_la-dsproc_datasets.Tpo -c -o libdsproc3_la-dsproc_datasets.lo `test -f 'dsproc_datasets.c' || echo '$(srcdir)/'`dsproc_datasets.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsproc3_la-dsproc_datasets.Tpo $(DEPDIR)/libdsproc3_la-dsproc_datasets.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dsproc_datasets.c' object='libdsproc3_la-dsproc_datasets.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -c -o libdsproc3_la-dsproc_datasets.lo `test -f 'dsproc_datasets.c' || echo '$(srcdir)/'`dsproc_datasets.c
 
 libdsproc3_la-dsproc_datastream_dod.lo: dsproc_datastream_dod.c
 @am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -MT libdsproc3_la-dsproc_datastream_dod.lo -MD -MP -MF $(DEPDIR)/libdsproc3_la-dsproc_datastream_dod.Tpo -c -o libdsproc3_la-dsproc_datastream_dod.lo `test -f 'dsproc_datastream_dod.c' || echo '$(srcdir)/'`dsproc_datastream_dod.c
@@ -580,19 +645,19 @@ libdsproc3_la-dsproc_stats.lo: dsproc_stats.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -c -o libdsproc3_la-dsproc_stats.lo `test -f 'dsproc_stats.c' || echo '$(srcdir)/'`dsproc_stats.c
 
-libdsproc3_la-dsproc_trans_params.lo: dsproc_trans_params.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -MT libdsproc3_la-dsproc_trans_params.lo -MD -MP -MF $(DEPDIR)/libdsproc3_la-dsproc_trans_params.Tpo -c -o libdsproc3_la-dsproc_trans_params.lo `test -f 'dsproc_trans_params.c' || echo '$(srcdir)/'`dsproc_trans_params.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsproc3_la-dsproc_trans_params.Tpo $(DEPDIR)/libdsproc3_la-dsproc_trans_params.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dsproc_trans_params.c' object='libdsproc3_la-dsproc_trans_params.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -c -o libdsproc3_la-dsproc_trans_params.lo `test -f 'dsproc_trans_params.c' || echo '$(srcdir)/'`dsproc_trans_params.c
-
 libdsproc3_la-dsproc_transform.lo: dsproc_transform.c
 @am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -MT libdsproc3_la-dsproc_transform.lo -MD -MP -MF $(DEPDIR)/libdsproc3_la-dsproc_transform.Tpo -c -o libdsproc3_la-dsproc_transform.lo `test -f 'dsproc_transform.c' || echo '$(srcdir)/'`dsproc_transform.c
 @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsproc3_la-dsproc_transform.Tpo $(DEPDIR)/libdsproc3_la-dsproc_transform.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dsproc_transform.c' object='libdsproc3_la-dsproc_transform.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -c -o libdsproc3_la-dsproc_transform.lo `test -f 'dsproc_transform.c' || echo '$(srcdir)/'`dsproc_transform.c
+
+libdsproc3_la-dsproc_trans_params.lo: dsproc_trans_params.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -MT libdsproc3_la-dsproc_trans_params.lo -MD -MP -MF $(DEPDIR)/libdsproc3_la-dsproc_trans_params.Tpo -c -o libdsproc3_la-dsproc_trans_params.lo `test -f 'dsproc_trans_params.c' || echo '$(srcdir)/'`dsproc_trans_params.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsproc3_la-dsproc_trans_params.Tpo $(DEPDIR)/libdsproc3_la-dsproc_trans_params.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dsproc_trans_params.c' object='libdsproc3_la-dsproc_trans_params.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -c -o libdsproc3_la-dsproc_trans_params.lo `test -f 'dsproc_trans_params.c' || echo '$(srcdir)/'`dsproc_trans_params.c
 
 libdsproc3_la-dsproc_update_stored_metadata.lo: dsproc_update_stored_metadata.c
 @am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -MT libdsproc3_la-dsproc_update_stored_metadata.lo -MD -MP -MF $(DEPDIR)/libdsproc3_la-dsproc_update_stored_metadata.Tpo -c -o libdsproc3_la-dsproc_update_stored_metadata.lo `test -f 'dsproc_update_stored_metadata.c' || echo '$(srcdir)/'`dsproc_update_stored_metadata.c
@@ -866,9 +931,6 @@ uninstall-am: uninstall-includeHEADERS uninstall-libLTLIBRARIES \
 	uninstall-includeHEADERS uninstall-libLTLIBRARIES \
 	uninstall-pkgconfigDATA
 
-
-libtool: $(LIBTOOL_DEPS)
-	$(SHELL) ./config.status --recheck
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 6424 $
+*    $Revision: 65910 $
 *    $Author: ermold $
-*    $Date: 2011-04-26 01:42:06 +0000 (Tue, 26 Apr 2011) $
+*    $Date: 2015-11-17 00:12:02 +0000 (Tue, 17 Nov 2015) $
 *
 ********************************************************************************
 *
@@ -30,15 +30,11 @@
 #define _DBCONN_PGSQL_H_ 1
 
 #include "dbconn.h"
-#include "../config.h"
 
+#include "../config.h"
 #ifdef HAVE_POSTGRES
 
-#ifdef HAVE_LIBPQ_FE_H
 #include "libpq-fe.h"
-#else
-#include "pgsql/libpq-fe.h"
-#endif
 
 /***************************************
 * Connection Functions
@@ -121,5 +117,5 @@ time_t     *pgsql_text_to_time(const char *text, time_t *time);
 char       *pgsql_timeval_to_text(const timeval_t *tval, char *text);
 timeval_t  *pgsql_text_to_timeval(const char *text, timeval_t *tval);
 
-#endif /* HAVE_LIBPQ_FE_H */
+#endif /* HAVE_POSTGRES */
 #endif /* _DBCONN_PGSQL_H_ */

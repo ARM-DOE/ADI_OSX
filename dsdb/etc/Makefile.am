@@ -1,14 +1,14 @@
-adietcdir = $(sysconfdir)/adi
-adietc_DATA = .cshrc
+adietcdir = $(sysconfdir)
+adietc_DATA = adi-setenv
 
 CLEANFILES = $(adietc_DATA)
-EXTRA_DIST = .cshr.in
+EXTRA_DIST = adi-setenv.in
 
 do_subst = sed \
 	-e 's,[@]PREFIX[@],$(prefix),g' \
 	-e 's,[@]LIBDIR[@],$(libdir),g'
 
-.cshrc: .cshrc.in
-	$(do_subst) < .cshrc.in > .cshrc
+adi-setenv: adi-setenv.in
+	$(do_subst) < adi-setenv.in > adi-setenv
 
 MAINTAINERCLEANFILES = Makefile.in

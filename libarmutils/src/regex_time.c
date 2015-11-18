@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 61068 $
+*    $Revision: 65877 $
 *    $Author: ermold $
-*    $Date: 2015-04-14 21:59:50 +0000 (Tue, 14 Apr 2015) $
+*    $Date: 2015-11-13 20:56:54 +0000 (Fri, 13 Nov 2015) $
 *
 ********************************************************************************
 *
@@ -66,7 +66,10 @@ static DateTimeCode _DateTimeCodes[] = {
     { 'm', "([[:digit:]]{1,2})" }, // month number (1-12)
     { 'M', "([[:digit:]]{1,2})" }, // minute (0-59)
     { 'n', "[[:space:]]+"       }, // arbitrary whitespace
-    { 's', "([[:digit:]]+)"     }, // seconds since Epoch, 1970-01-01 00:00:00 +0000 (UTC)
+    // Mac-Time: seconds since 1904-01-01 00:00:00 +0000 (UTC) with optional fractional seconds
+    { 'q', "([[:digit:]]+\\.[[:digit:]]+|[[:digit:]]+)" },
+    // seconds since Epoch, 1970-01-01 00:00:00 +0000 (UTC) with optional fractional seconds
+    { 's', "([[:digit:]]+\\.[[:digit:]]+|[[:digit:]]+)" },
     // second (0-60; 60 may occur for leap seconds) with optional fractional seconds
     { 'S', "([[:digit:]]{1,2}\\.[[:digit:]]+|[[:digit:]]{1,2})" },
     { 't', "[[:space:]]+"       }, // arbitrary whitespace
@@ -87,6 +90,7 @@ static DateTimeCode _DateTimeCodes0[] = {
     { 'm', "([[:digit:]]{2})"   }, // month number (01-12)
     { 'M', "([[:digit:]]{2})"   }, // minute (00-59)
     { 'n', "[[:space:]]+"       }, // arbitrary whitespace
+    { 'q', "([[:digit:]]+)"     }, // Mac-Time: seconds since 1904-01-01 00:00:00 +0000 (UTC)
     { 's', "([[:digit:]]+)"     }, // seconds since Epoch, 1970-01-01 00:00:00 +0000 (UTC)
     { 'S', "([[:digit:]]{2})"   }, // second (00-60; 60 may occur for leap seconds)
     { 't', "[[:space:]]+"       }, // arbitrary whitespace
@@ -230,6 +234,7 @@ static int __retime_parse(RETime *retime, const char *pattern)
  *    - 'm' month number (1-12)
  *    - 'M' minute (0-59)
  *    - 'n' arbitrary whitespace
+ *    - 'q' Mac-Time: seconds since 1904-01-01 00:00:00 +0000 (UTC)
  *    - 's' seconds since Epoch, 1970-01-01 00:00:00 +0000 (UTC)
  *    - 'S' second (0-60; 60 may occur for leap seconds)
  *    - 't' arbitrary whitespace
@@ -460,18 +465,49 @@ int retime_execute(RETime *retime, const char *string, RETimeRes *res)
             case 'M': // minute (0-59)
                 res->min = atoi(substr);
                 break;
-            case 's': // seconds since Epoch, 1970-01-01 00:00:00 +0000 (UTC)
-                res->secs1970 = atoi(substr);
-                break;
-            case 'S': // second (0-60; 60 may occur for leap seconds)
+            case 'q': // seconds since Epoch, 1904-01-01 00:00:00 +0000 (UTC)
+
+                res->secs1970 = (time_t)(atoll(substr) - 2082844800LL);
+
                 chrp = strchr(substr, '.');
                 if (chrp) {
-                    res->sec  = atoi(substr);
                     res->usec = (int)(atof(chrp) * 1.0E6 + 0.5);
+                    if (res->usec == 1.0E6) {
+                        res->secs1970 += 1;
+                        res->usec      = 0;
+                    }
                 }
-                else {
-                    res->sec = atoi(substr);
+
+                break;
+
+            case 's': // seconds since Epoch, 1970-01-01 00:00:00 +0000 (UTC)
+
+                res->secs1970 = atoi(substr);
+
+                chrp = strchr(substr, '.');
+                if (chrp) {
+                    res->usec = (int)(atof(chrp) * 1.0E6 + 0.5);
+                    if (res->usec == 1.0E6) {
+                        res->secs1970 += 1;
+                        res->usec      = 0;
+                    }
                 }
+
+                break;
+
+            case 'S': // second (0-60; 60 may occur for leap seconds)
+
+                res->sec = atoi(substr);
+
+                chrp = strchr(substr, '.');
+                if (chrp) {
+                    res->usec = (int)(atof(chrp) * 1.0E6 + 0.5);
+                    if (res->usec == 1.0E6) {
+                        res->sec  += 1;
+                        res->usec  = 0;
+                    }
+                }
+
                 break;
             case 'y': // year within century (0-99)
                 res->yy = atoi(substr);
@@ -580,17 +616,20 @@ time_t retime_get_secs1970(RETimeRes *res)
 
     memset(&tm_time, 0, sizeof(struct tm));
 
-    if (res->year == -1) return(-1);
+    if (res->secs1970 == -1) {
 
-    tm_time.tm_year = res->year - 1900;
+        if (res->year == -1) return(-1);
 
-    if (res->month != -1) tm_time.tm_mon  = res->month - 1;
-    if (res->mday  != -1) tm_time.tm_mday = res->mday;
-    if (res->hour  != -1) tm_time.tm_hour = res->hour;
-    if (res->min   != -1) tm_time.tm_min  = res->min;
-    if (res->sec   != -1) tm_time.tm_sec  = res->sec;
+        tm_time.tm_year = res->year - 1900;
 
-    res->secs1970 = timegm(&tm_time);
+        if (res->month != -1) tm_time.tm_mon  = res->month - 1;
+        if (res->mday  != -1) tm_time.tm_mday = res->mday;
+        if (res->hour  != -1) tm_time.tm_hour = res->hour;
+        if (res->min   != -1) tm_time.tm_min  = res->min;
+        if (res->sec   != -1) tm_time.tm_sec  = res->sec;
+
+        res->secs1970 = timegm(&tm_time);
+    }
 
     return(res->secs1970);
 }
@@ -612,9 +651,15 @@ time_t retime_get_secs1970(RETimeRes *res)
  */
 timeval_t retime_get_timeval(RETimeRes *res)
 {
-    res->tv.tv_sec = retime_get_secs1970(res);
+    if (res->tv.tv_sec == -1) {
 
-    if (res->tv.tv_sec != -1) {
+        res->tv.tv_sec = retime_get_secs1970(res);
+
+        if (res->tv.tv_sec != -1) {
+            res->tv.tv_usec = (res->usec == -1) ? 0 : res->usec;
+        }
+    }
+    else if (res->tv.tv_usec == -1) {
         res->tv.tv_usec = (res->usec == -1) ? 0 : res->usec;
     }
 

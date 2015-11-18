@@ -2,7 +2,6 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
-tag=@datarootdir@/doc/libdsdb3/libdsdb3.tag
 
 Name: dsdb3
 Description: dsdb3

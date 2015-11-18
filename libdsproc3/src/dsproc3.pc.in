@@ -6,6 +6,6 @@ includedir=@includedir@
 Name: dsproc3
 Description: dsproc3
 Version: @VERSION@
-Requires: dsdb3 ncds3 cds3 armutils msngr
+Requires: dsdb3 trans ncds3 cds3 armutils msngr
 Cflags: -I${includedir} 
 Libs: -L${libdir} -ldsproc3

@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.63])
-AC_INIT([ADI libmsngr], [1.6], [brian.ermold@pnnl.gov])
+AC_INIT([ADI libmsngr], [1.7], [brian.ermold@pnnl.gov])
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])

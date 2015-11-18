@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 60772 $
+*    $Revision: 65910 $
 *    $Author: ermold $
-*    $Date: 2015-03-17 20:34:57 +0000 (Tue, 17 Mar 2015) $
+*    $Date: 2015-11-17 00:12:02 +0000 (Tue, 17 Nov 2015) $
 *
 ********************************************************************************
 *
@@ -305,6 +305,7 @@ DBConn *dbconn_create(const char *db_alias)
     switch (dbconn->db_type) {
 
         case DB_PGSQL:
+
 #ifdef HAVE_POSTGRES
             DBI(dbconn)->connect          = pgsql_connect;
             DBI(dbconn)->disconnect       = pgsql_disconnect;
@@ -327,9 +328,7 @@ DBConn *dbconn_create(const char *db_alias)
 #else
             ERROR( DBCONN_LIB_NAME,
                 "Could not create database connection\n"
-                " -> libdbconn not built with postgres.\n"
-                "    To connect to postgres database,\n"
-                "    install postgres and rebuild libdbconn\n");
+                " -> The PostgreSQL libraries were not found when libdbconn was built.\n");
             free(dbconn->dbi);
             free(dbconn);
             return((DBConn *)NULL);

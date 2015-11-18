@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 63482 $
+*    $Revision: 64432 $
 *    $Author: ermold $
-*    $Date: 2015-08-26 23:29:42 +0000 (Wed, 26 Aug 2015) $
+*    $Date: 2015-10-09 19:48:49 +0000 (Fri, 09 Oct 2015) $
 *
 ********************************************************************************
 *
@@ -2032,6 +2032,9 @@ int dsproc_is_fatal(int last_errno)
 //        DSPROC_ETRANSQCVAR,     // "Could Not Create Consolidated Transformation QC Variable"
         DSPROC_EUNLINK,         // "Could Not Delete File"
 //        DSPROC_EVARMAP,         // "Could Not Map Input Variable To Output Variable"
+//        DSPROC_ECSVPARSER,      // "Could Not Parse CSV File"
+        DSPROC_ECSVCONF,        // "Could Not Read CSV Ingest Configuration File"
+//        DSPROC_ECSV2CDS,        // "Could Not Map Input CSV Data To Output Dataset"
         NULL
     };
 

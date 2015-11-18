@@ -2,7 +2,6 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
-tag=@datarootdir@/doc/libarmutils/libarmutils.tag
 
 Name: ADI Utilities Library
 Description: ADI Utilities Library

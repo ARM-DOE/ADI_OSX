@@ -9,6 +9,7 @@ build-aux/install-sh \
 build-aux/ltmain.sh \
 build-aux/missing \
 config.h.in \
+config.h.in~ \
 configure \
 m4/libtool.m4 \
 m4/ltoptions.m4 \

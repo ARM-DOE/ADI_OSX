@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 57860 $
+*    $Revision: 65910 $
 *    $Author: ermold $
-*    $Date: 2014-10-27 19:58:40 +0000 (Mon, 27 Oct 2014) $
+*    $Date: 2015-11-17 00:12:02 +0000 (Tue, 17 Nov 2015) $
 *
 ********************************************************************************
 *
@@ -33,7 +33,7 @@
 
 /** @privatesection */
 
-static char *_VersionTag = "$Version: afl-libdbconn-1.8-0 $";
+static char *_VersionTag = "$Version: afl-libdbconn-1.10-0 $";
 static char  _Version[64];
 
 /** @publicsection */

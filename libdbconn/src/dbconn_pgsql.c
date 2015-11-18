@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 6424 $
+*    $Revision: 65910 $
 *    $Author: ermold $
-*    $Date: 2011-04-26 01:42:06 +0000 (Tue, 26 Apr 2011) $
+*    $Date: 2015-11-17 00:12:02 +0000 (Tue, 17 Nov 2015) $
 *
 ********************************************************************************
 *
@@ -31,10 +31,12 @@
 #include <stdarg.h>
 #include <ctype.h>
 #include <errno.h>
+#include "../config.h"
+
+#ifdef HAVE_POSTGRES
 
 #include "dbconn_pgsql.h"
 
-#ifdef HAVE_POSTGRES
 /**
  *  Macro for setting PGSQL Errors.
  */
@@ -1277,4 +1279,5 @@ timeval_t *pgsql_text_to_timeval(
 
     return(tval);
 }
+
 #endif

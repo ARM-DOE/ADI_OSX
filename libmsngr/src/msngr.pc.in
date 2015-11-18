@@ -7,5 +7,5 @@ Name: ADI Messenger Library
 Description: ADI Messenger Library
 Version: @VERSION@
 Requires:
-Libs: -L${libdir} -lmsngr
 Cflags: -I${includedir} 
+Libs: -L${libdir} -lmsngr

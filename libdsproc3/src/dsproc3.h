@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 63473 $
+*    $Revision: 64432 $
 *    $Author: ermold $
-*    $Date: 2015-08-26 20:44:23 +0000 (Wed, 26 Aug 2015) $
+*    $Date: 2015-10-09 19:48:49 +0000 (Fri, 09 Oct 2015) $
 *
 ********************************************************************************
 *
@@ -1146,7 +1146,28 @@ void      dsproc_print_dataset_object(
 #define DSPROC_ETRANSPARAMLOAD "Could Not Load Transform Parameters File"
 
 /** Could Not Map Input Variable To Output Variable */
-#define DSPROC_EVARMAP         "Could Not Map Input Variable To Output Variable"
+#define DSPROC_EVARMAP       "Could Not Map Input Variable To Output Variable"
+
+/** Could Not Parse Input CSV File */
+#define DSPROC_ECSVPARSER    "Could Not Parse CSV File"
+
+/** Could Not Read CSV Ingest Configuration File */
+#define DSPROC_ECSVCONF      "Could Not Read CSV Ingest Configuration File"
+
+/** Could Not Map Input CSV Data To Output Dataset */
+#define DSPROC_ECSV2CDS      "Could Not Map Input CSV Data To Output Dataset"
+
+/*@}*/
+
+/******************************************************************************/
+/**
+ *  @defgroup DSPROC_FILE_UTILS File Utilities
+ */
+/*@{*/
+
+int     dsproc_copy_file(const char *src_file, const char *dest_file);
+int     dsproc_move_file(const char *src_file, const char *dest_file);
+FILE   *dsproc_open_file(const char *file);
 
 /*@}*/
 
@@ -1176,19 +1197,330 @@ int     dsproc_rename_bad(
             const char *file_name,
             time_t      file_time);
 
+int     dsproc_set_preserve_dots_from_name(int ds_id, const char *file_name);
+
 void    dsproc_set_rename_preserve_dots(int ds_id, int preserve_dots);
 
 /*@}*/
 
 /******************************************************************************/
 /**
- *  @defgroup DSPROC_FILE_UTILS File Utilities
+ *  @defgroup DSPROC_CSV_UTILITIES Ingest: CSV Utility Functions
  */
 /*@{*/
 
-int     dsproc_copy_file(const char *src_file, const char *dest_file);
-int     dsproc_move_file(const char *src_file, const char *dest_file);
-FILE   *dsproc_open_file(const char *file);
+int         dsproc_count_csv_delims(const char *strp, char delim);
+char       *dsproc_find_csv_delim(const char *strp, char delim);
+char       *dsproc_skip_csv_whitespace(const char *strp, char delim);
+int         dsproc_split_csv_string(char *strp, char delim, int length, char **list);
+
+/*@}*/
+
+/******************************************************************************/
+/**
+ *  @defgroup DSPROC_CSV_FILE_PARSING Ingest: CSV Parser
+ */
+/*@{*/
+
+/**
+ *  CSV Parsing Structure.
+ */
+typedef struct
+{
+    char        *file_path;       /**< path to the directory the file is in    */
+    char        *file_name;       /**< name of the file                        */
+    struct stat  file_stats;      /**< file stats                              */
+    char        *file_data;       /**< in memory copy of the parsed data file  */
+    int          nlines;          /**< number of lines in the file             */
+    char       **lines;           /**< array of line pointers                  */
+    int          linenum;         /**< current line number                     */
+    char        *linep;           /**< pointer to the current line in memory   */
+
+    char       **headers;         /**< pointers to the header fields           */
+    char      ***values;          /**< pointers to the field values            */
+    int          nfields;         /**< number of fields per record             */
+    int          nrecs;           /**< number of records                       */
+
+    char        *header_data;     /**< parsed copy of header line              */
+    int         *free_header;     /**< only used when adding headers manually  */
+    char       **rec_buff;        /**< buffer used to parse record lines       */
+
+    int          nbytes_alloced;  /**< allocated length of the file_data array */
+    int          nlines_alloced;  /**< allocated length of the lines array     */
+    int          nfields_alloced; /**< number of fields allocated              */
+    int          nrecs_alloced;   /**< number of records allocated             */
+
+    char         delim;           /**< CSV column delimiter                    */
+    int          nlines_guess;    /**< estimated number of lines in a file     */
+    int          nfields_guess;   /**< only used when adding headers manually  */
+
+    RETimeList  *ft_patterns;     /**< compiled list of file time patterns     */
+    RETimeRes   *ft_result;       /**< file time used internally               */
+
+    int          ntc;             /**< number of time columns                  */
+    char       **tc_names;        /**< list of time column names               */
+    RETimeList **tc_patterns;     /**< compiled list of time string patterns   */
+    int         *tc_index;        /**< indexes of time columns                 */
+
+    timeval_t   *tvs;             /**< array of record times                   */
+
+    time_t       time_offset;     /**< offset to apply to record times         */
+
+    int          tro_threshold;   /**< threshold used to detect time rollovers */
+    time_t       tro_offset;      /**< offset used to track time rollovers     */
+
+} CSVParser;
+
+void        dsproc_free_csv_parser(CSVParser *csv);
+
+char      **dsproc_get_csv_field_strvals(CSVParser *csv, const char *name);
+
+time_t      dsproc_get_csv_file_name_time(
+                CSVParser  *csv,
+                const char *name,
+                RETimeRes  *result);
+
+char       *dsproc_get_next_csv_line(CSVParser *csv);
+
+CSVParser  *dsproc_init_csv_parser(CSVParser *csv);
+int         dsproc_load_csv_file(CSVParser *csv, const char *path, const char *name);
+
+int         dsproc_parse_csv_header(CSVParser *csv, const char *linep);
+int         dsproc_parse_csv_record(CSVParser *csv, char *linep, int flags);
+
+int         dsproc_print_csv(FILE *fp, CSVParser *csv);
+int         dsproc_print_csv_header(FILE *fp, CSVParser *csv);
+int         dsproc_print_csv_record(FILE *fp, CSVParser *csv);
+
+int         dsproc_set_csv_column_name(
+                CSVParser  *csv,
+                int         index,
+                const char *name);
+
+void        dsproc_set_csv_delimiter(
+                CSVParser *csv,
+                char       delim);
+
+int         dsproc_set_csv_file_time_patterns(
+                CSVParser   *csv,
+                int          npatterns,
+                const char **patterns);
+
+int         dsproc_set_csv_time_patterns(
+                CSVParser   *csv,
+                const char  *name,
+                int          npatterns,
+                const char **patterns);
+
+/*@}*/
+
+/******************************************************************************/
+/**
+ *  @defgroup DSPROC_CSV2CDS Ingest: CSV to CDS Mapping Functions
+ */
+/*@{*/
+
+/** Mapping flag to specify that existing data should be overwritten */
+#define CSV_OVERWRITE  0x1
+
+/**
+ *  Structure used to map a string to a data value.
+ */
+typedef struct {
+
+    const char *strval;
+    double      dblval;
+
+} CSVStrMap;
+
+/**
+ *  Structure used to map CSVParser data to a CDSGroup.
+ */
+typedef struct {
+
+    const char   *csv_name;     /**< column name in the CSV file        */
+    const char   *csv_units;    /**< units string                       */
+    const char  **csv_missings; /**< list if missing values in CSV data */
+    const char   *cds_name;     /**< variable name in the CDS structure */
+
+    /** list of string to double mapping structures */
+    CSVStrMap    *str_map;
+
+    /** function used to translate a string to a double */
+    double      (*str_to_dbl)(const char *strval, int *status);
+
+    /** advanced function for mapping CSV data to CDS variable data */
+    int         (*set_data)(
+        const char  *csv_strval,
+        const char **csv_missings,
+        CDSVar      *cds_var,
+        size_t       cds_sample_size,
+        CDSData      cds_missing,
+        CDSData      cds_datap);
+
+} CSV2CDSMap;
+
+int     dsproc_map_csv_to_cds(
+            CSVParser  *csv,
+            int         csv_start,
+            int         csv_count,
+            CSV2CDSMap *map,
+            CDSGroup   *cds,
+            int         cds_start,
+            int         flags);
+
+int     dsproc_map_csv_to_cds_by_index(
+            CSVParser  *csv,
+            int        *csv_indexes,
+            int         csv_count,
+            CSV2CDSMap *map,
+            CDSGroup   *cds,
+            int         cds_start,
+            int         flags);
+
+/*@}*/
+
+/******************************************************************************/
+/**
+ *  @defgroup DSPROC_CSV_INGEST_CONFIG Ingest: CSV Ingest Config
+ */
+/*@{*/
+
+/** Flag used by csv_read_conf_file() to check for config files under
+ *  the root directory defined by the CONF_DATA environment variable. */
+
+#define CSV_CHECK_DATA_CONF  0x01
+
+/**
+ *  CSV Time Column Names and Patterns.
+ */
+typedef struct
+{
+    const char  *name;
+    int          npatterns;
+    const char **patterns;
+
+} CSVTimeCol;
+
+/**
+ *  CSV Field Map Structure.
+ */
+typedef struct
+{
+    const char  *out_name;
+    const char  *col_name;
+    const char  *units;
+    int          nmissings;
+    const char **missings;
+    char        *missbuf;
+
+} CSVFieldMap;
+
+/**
+ *  CSV Configuration Structure.
+ */
+typedef struct
+{
+    /* Set by csv_init_conf function */
+
+    const char   *proc;           /**< the process name                      */
+    const char   *site;           /**< the site name                         */
+    const char   *fac;            /**< the facility name                     */
+    const char   *name;           /**< the name used to find conf files      */
+
+    /* Set by csv_read_conf_file */
+
+    const char   *file_path;      /**< path to the configuration file        */
+    const char   *file_name;      /**< name of the configuration file        */
+
+    /* Used to find configuration files */
+
+    int           search_npaths;  /**< number of conf file search paths      */
+    const char  **search_paths;   /**< list of conf file search paths        */
+    DirList      *dirlist;        /**< list of time varying conf files       */
+
+    /* Read from conf file */
+
+    int           fn_npatterns;   /**< number of csv file name patterns      */
+    const char  **fn_patterns;    /**< list of csv file name patterns        */
+
+    int           ft_npatterns;   /**< number of csv file time patterns      */
+    const char  **ft_patterns;    /**< list of csv file time patterns        */
+
+    char          delim;          /**< column delimiter                      */
+
+    const char   *header_line;    /**< string containing the header line     */
+    const char   *header_tag;     /**< string identifier for the header line */
+    int           header_linenum; /**< line number of the first header line  */
+    int           header_nlines;  /**< number of header lines                */
+
+    int           exp_ncols;      /**< expected number of columns            */
+
+    int           time_ncols;     /**< number of time columns                */
+    CSVTimeCol   *time_cols;      /**< list of time columns                  */
+
+    int           field_nmaps;    /**< number of entries in the field map     */
+    CSVFieldMap  *field_maps;     /**< field map                              */
+
+    const char   *split_interval; /**< split interval for output files        */
+
+} CSVConf;
+
+int         dsproc_add_csv_field_map(
+                CSVConf     *conf,
+                const char  *out_name,
+                const char  *col_name,
+                int          nargs,
+                const char **args);
+
+int         dsproc_add_csv_file_name_patterns(
+                CSVConf     *conf,
+                int          npatterns,
+                const char **patterns);
+
+int         dsproc_add_csv_file_time_patterns(
+                CSVConf     *conf,
+                int          npatterns,
+                const char **patterns);
+
+int         dsproc_add_csv_time_column_patterns(
+                CSVConf     *conf,
+                const char  *name,
+                int          npatterns,
+                const char **patterns);
+
+int         dsproc_append_csv_header_line(
+                CSVConf    *conf,
+                const char *string);
+
+void        dsproc_clear_csv_field_maps(CSVConf *conf);
+void        dsproc_clear_csv_file_name_patterns(CSVConf *conf);
+void        dsproc_clear_csv_file_time_patterns(CSVConf *conf);
+void        dsproc_clear_csv_time_column_patterns(CSVConf *conf);
+
+int         dsproc_configure_csv_parser(CSVConf *conf, CSVParser *csv);
+
+CSV2CDSMap *dsproc_create_csv_to_cds_map(
+                CSVConf   *conf,
+                CSVParser *csv,
+                CDSGroup  *cds,
+                int        flags);
+
+void        dsproc_free_csv_conf(CSVConf *conf);
+
+void        dsproc_free_csv_to_cds_map(
+                CSV2CDSMap *map);
+
+CSVConf    *dsproc_init_csv_conf(
+                const char *conf_name);
+
+int         dsproc_load_csv_conf(
+                CSVConf *conf,
+                time_t   data_time,
+                int      flags);
+
+int         dsproc_print_csv_conf(
+                FILE *fp, CSVConf *conf);
 
 /*@}*/
 

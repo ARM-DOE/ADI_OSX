@@ -146,10 +146,10 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-adietcdir = $(sysconfdir)/adi
-adietc_DATA = .cshrc
+adietcdir = $(sysconfdir)
+adietc_DATA = adi-setenv
 CLEANFILES = $(adietc_DATA)
-EXTRA_DIST = .cshr.in
+EXTRA_DIST = adi-setenv.in
 do_subst = sed \
 	-e 's,[@]PREFIX[@],$(prefix),g' \
 	-e 's,[@]LIBDIR[@],$(libdir),g'
@@ -359,8 +359,8 @@ uninstall-am: uninstall-adietcDATA
 	pdf-am ps ps-am uninstall uninstall-adietcDATA uninstall-am
 
 
-.cshrc: .cshrc.in
-	$(do_subst) < .cshrc.in > .cshrc
+adi-setenv: adi-setenv.in
+	$(do_subst) < adi-setenv.in > adi-setenv
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

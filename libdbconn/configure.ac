@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.63])
-AC_INIT([ADI libdbconn], [1.8], [brian.ermold@pnnl.gov])
+AC_INIT([ADI libdbconn], [1.10], [brian.ermold@pnnl.gov])
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
@@ -18,9 +18,12 @@ AC_PROG_LIBTOOL
 
 # Checks for libraries.
 
+m4_include([m4/ax_lib_postgresql.m4])
+AX_LIB_POSTGRESQL([8.4])
+
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h inttypes.h limits.h malloc.h stddef.h stdint.h stdlib.h string.h sys/file.h sys/ioctl.h sys/mount.h sys/param.h sys/statvfs.h sys/time.h unistd.h utime.h])
-AC_CHECK_HEADERS([libpq-fe.h pgsql/libpq-fe.h], [AC_DEFINE([HAVE_POSTGRES], [1], [Defined if postgres is available])])
+#AC_CHECK_HEADERS([libpq-fe.h pgsql/libpq-fe.h], [AC_DEFINE([HAVE_POSTGRES], [1], [Defined if postgres is available])])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
