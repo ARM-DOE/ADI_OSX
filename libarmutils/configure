@@ -11205,7 +11205,7 @@ fi
 
             # no such luck; use some default ssldirs
             if ! $found; then
-                ssldirs="/usr/local/ssl /usr/lib/ssl /usr/ssl /usr/pkg /usr/local /usr"
+                ssldirs="/usr/local/ssl /usr/lib/ssl /usr/ssl /usr/pkg /usr/local /usr /usr/local/opt"
             fi
 
 
@@ -11301,7 +11301,9 @@ sed 's/^/| /' conftest.$ac_ext >&5
 
             { $as_echo "$as_me:$LINENO: result: no" >&5
 $as_echo "no" >&6; }
-
+            { { $as_echo "$as_me:$LINENO: error: OPENSSL Not Found" >&5
+$as_echo "$as_me: error: OPENSSL Not Found" >&2;}
+   { (exit 1); exit 1; }; }
 
 fi
 
