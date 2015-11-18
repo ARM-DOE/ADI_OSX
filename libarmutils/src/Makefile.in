@@ -40,7 +40,8 @@ subdir = src
 DIST_COMMON = $(include_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/armutils.pc.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/ax_check_openssl.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -182,6 +183,9 @@ NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
+OPENSSL_INCLUDES = @OPENSSL_INCLUDES@
+OPENSSL_LDFLAGS = @OPENSSL_LDFLAGS@
+OPENSSL_LIBS = @OPENSSL_LIBS@
 OTOOL = @OTOOL@
 OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
@@ -191,6 +195,7 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PKG_CONFIG = @PKG_CONFIG@
 POW_LIB = @POW_LIB@
 RANLIB = @RANLIB@
 SED = @SED@
@@ -254,10 +259,10 @@ SUBDIRS = armutils
 lib_LTLIBRARIES = libarmutils.la
 include_HEADERS = armutils.h
 libarmutils_la_SOURCES = armutils_version.c benchmark.c dir_utils.c dsenv.c endian_swap.c file_utils.c regex_time.c regex_utils.c string_utils.c time_utils.c
+libarmutils_la_CFLAGS = -I${includedir} $(OPENSSL_INCLUDES) -Wall -Wextra
+libarmutils_la_LDFLAGS = -no-undefined -avoid-version -L${libdir} -lmsngr $(OPENSSL_LDFLAGS) $(OPENSSL_LIBS)
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = armutils.pc
-libarmutils_la_CFLAGS = -I${includedir}
-libarmutils_la_LDFLAGS = -no-undefined -avoid-version -L${libdir} -lmsngr -L/usr/lib -lcrypto
 MAINTAINERCLEANFILES = Makefile.in
 all: all-recursive
 
@@ -803,9 +808,6 @@ uninstall-am: uninstall-includeHEADERS uninstall-libLTLIBRARIES \
 	uninstall-includeHEADERS uninstall-libLTLIBRARIES \
 	uninstall-pkgconfigDATA
 
-
-libtool: $(LIBTOOL_DEPS)
-	$(SHELL) ./config.status --recheck
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
