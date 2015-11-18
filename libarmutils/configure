@@ -11205,7 +11205,7 @@ fi
 
             # no such luck; use some default ssldirs
             if ! $found; then
-                ssldirs="/usr/local/ssl /usr/lib/ssl /usr/ssl /usr/pkg /usr/local /usr /usr/local/opt"
+                ssldirs="/usr/local/ssl /usr/lib/ssl /usr/ssl /usr/pkg /usr/local /usr /usr/local/opt/openssl"
             fi
 
 
