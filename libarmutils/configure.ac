@@ -20,7 +20,7 @@ AC_PROG_LIBTOOL
 # Checks for libraries.
 
 m4_include([m4/ax_check_openssl.m4])
-AX_CHECK_OPENSSL()
+AX_CHECK_OPENSSL([], [AC_MSG_ERROR([OPENSSL Not Found])])
 
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h limits.h stdint.h stdlib.h string.h sys/time.h unistd.h utime.h openssl/md5.h])
