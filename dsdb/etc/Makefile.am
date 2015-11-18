@@ -1,14 +1,13 @@
-adietcdir = $(sysconfdir)
-adietc_DATA = adi-setenv
+sysconf_DATA = adi-setenv
 
-CLEANFILES = $(adietc_DATA)
+CLEANFILES = $(sysconf_DATA)
 EXTRA_DIST = adi-setenv.in
 
 do_subst = sed \
 	-e 's,[@]PREFIX[@],$(prefix),g' \
 	-e 's,[@]LIBDIR[@],$(libdir),g'
 
-adi-setenv: adi-setenv.in
-	$(do_subst) < adi-setenv.in > adi-setenv
+$(sysconf_DATA): %: %.in
+	$(do_subst) < $< > $@
 
 MAINTAINERCLEANFILES = Makefile.in
