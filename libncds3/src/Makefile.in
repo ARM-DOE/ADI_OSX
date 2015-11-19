@@ -78,7 +78,10 @@ am_libncds3_la_OBJECTS = libncds3_la-ncds_data_types.lo \
 	libncds3_la-ncds_write.lo libncds3_la-ncwrap_dataset.lo \
 	libncds3_la-ncwrap_inquire.lo
 libncds3_la_OBJECTS = $(am_libncds3_la_OBJECTS)
-libncds3_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
+libncds3_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libncds3_la_CFLAGS) \
 	$(CFLAGS) $(libncds3_la_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@
@@ -87,13 +90,26 @@ am__depfiles_maybe = depfiles
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_$(V))
+am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
+am__v_CC_0 = @echo "  CC    " $@;
+AM_V_at = $(am__v_at_$(V))
+am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
+am__v_at_0 = @
 CCLD = $(CC)
-LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
+LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_$(V))
+am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CCLD_0 = @echo "  CCLD  " $@;
+AM_V_GEN = $(am__v_GEN_$(V))
+am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
+am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(libncds3_la_SOURCES)
 DIST_SOURCES = $(libncds3_la_SOURCES)
 DATA = $(pkgconfig_DATA)
@@ -103,6 +119,7 @@ CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
+AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -214,7 +231,7 @@ top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libncds3.la
 include_HEADERS = ncds3.h
 libncds3_la_SOURCES = ncds_data_types.c ncds_datastreams.c ncds_find_files.c ncds_get.c ncds_private.h ncds_read.c ncds_utils.c ncds_version.c ncds_write.c ncwrap_dataset.c ncwrap_inquire.c
-libncds3_la_CFLAGS = -I${includedir}
+libncds3_la_CFLAGS = -I${includedir} -Wall -Wextra
 libncds3_la_LDFLAGS = -no-undefined -avoid-version -L${libdir} -lnetcdf -lcds3 -lmsngr
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = ncds3.pc
@@ -287,7 +304,7 @@ clean-libLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 libncds3.la: $(libncds3_la_OBJECTS) $(libncds3_la_DEPENDENCIES) 
-	$(libncds3_la_LINK) -rpath $(libdir) $(libncds3_la_OBJECTS) $(libncds3_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libncds3_la_LINK) -rpath $(libdir) $(libncds3_la_OBJECTS) $(libncds3_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -307,95 +324,111 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libncds3_la-ncwrap_inquire.Plo@am__quote@
 
 .c.o:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c $<
+@am__fastdepCC_FALSE@	$(COMPILE) -c -o $@ $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
+@am__fastdepCC_FALSE@	$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 .c.lo:
-@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.lo$$||'`;\
+@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
 libncds3_la-ncds_data_types.lo: ncds_data_types.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_data_types.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_data_types.Tpo -c -o libncds3_la-ncds_data_types.lo `test -f 'ncds_data_types.c' || echo '$(srcdir)/'`ncds_data_types.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libncds3_la-ncds_data_types.Tpo $(DEPDIR)/libncds3_la-ncds_data_types.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_data_types.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_data_types.Tpo -c -o libncds3_la-ncds_data_types.lo `test -f 'ncds_data_types.c' || echo '$(srcdir)/'`ncds_data_types.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libncds3_la-ncds_data_types.Tpo $(DEPDIR)/libncds3_la-ncds_data_types.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ncds_data_types.c' object='libncds3_la-ncds_data_types.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_data_types.lo `test -f 'ncds_data_types.c' || echo '$(srcdir)/'`ncds_data_types.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_data_types.lo `test -f 'ncds_data_types.c' || echo '$(srcdir)/'`ncds_data_types.c
 
 libncds3_la-ncds_datastreams.lo: ncds_datastreams.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_datastreams.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_datastreams.Tpo -c -o libncds3_la-ncds_datastreams.lo `test -f 'ncds_datastreams.c' || echo '$(srcdir)/'`ncds_datastreams.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libncds3_la-ncds_datastreams.Tpo $(DEPDIR)/libncds3_la-ncds_datastreams.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_datastreams.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_datastreams.Tpo -c -o libncds3_la-ncds_datastreams.lo `test -f 'ncds_datastreams.c' || echo '$(srcdir)/'`ncds_datastreams.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libncds3_la-ncds_datastreams.Tpo $(DEPDIR)/libncds3_la-ncds_datastreams.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ncds_datastreams.c' object='libncds3_la-ncds_datastreams.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_datastreams.lo `test -f 'ncds_datastreams.c' || echo '$(srcdir)/'`ncds_datastreams.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_datastreams.lo `test -f 'ncds_datastreams.c' || echo '$(srcdir)/'`ncds_datastreams.c
 
 libncds3_la-ncds_find_files.lo: ncds_find_files.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_find_files.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_find_files.Tpo -c -o libncds3_la-ncds_find_files.lo `test -f 'ncds_find_files.c' || echo '$(srcdir)/'`ncds_find_files.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libncds3_la-ncds_find_files.Tpo $(DEPDIR)/libncds3_la-ncds_find_files.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_find_files.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_find_files.Tpo -c -o libncds3_la-ncds_find_files.lo `test -f 'ncds_find_files.c' || echo '$(srcdir)/'`ncds_find_files.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libncds3_la-ncds_find_files.Tpo $(DEPDIR)/libncds3_la-ncds_find_files.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ncds_find_files.c' object='libncds3_la-ncds_find_files.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_find_files.lo `test -f 'ncds_find_files.c' || echo '$(srcdir)/'`ncds_find_files.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_find_files.lo `test -f 'ncds_find_files.c' || echo '$(srcdir)/'`ncds_find_files.c
 
 libncds3_la-ncds_get.lo: ncds_get.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_get.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_get.Tpo -c -o libncds3_la-ncds_get.lo `test -f 'ncds_get.c' || echo '$(srcdir)/'`ncds_get.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libncds3_la-ncds_get.Tpo $(DEPDIR)/libncds3_la-ncds_get.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_get.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_get.Tpo -c -o libncds3_la-ncds_get.lo `test -f 'ncds_get.c' || echo '$(srcdir)/'`ncds_get.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libncds3_la-ncds_get.Tpo $(DEPDIR)/libncds3_la-ncds_get.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ncds_get.c' object='libncds3_la-ncds_get.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_get.lo `test -f 'ncds_get.c' || echo '$(srcdir)/'`ncds_get.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_get.lo `test -f 'ncds_get.c' || echo '$(srcdir)/'`ncds_get.c
 
 libncds3_la-ncds_read.lo: ncds_read.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_read.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_read.Tpo -c -o libncds3_la-ncds_read.lo `test -f 'ncds_read.c' || echo '$(srcdir)/'`ncds_read.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libncds3_la-ncds_read.Tpo $(DEPDIR)/libncds3_la-ncds_read.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_read.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_read.Tpo -c -o libncds3_la-ncds_read.lo `test -f 'ncds_read.c' || echo '$(srcdir)/'`ncds_read.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libncds3_la-ncds_read.Tpo $(DEPDIR)/libncds3_la-ncds_read.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ncds_read.c' object='libncds3_la-ncds_read.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_read.lo `test -f 'ncds_read.c' || echo '$(srcdir)/'`ncds_read.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_read.lo `test -f 'ncds_read.c' || echo '$(srcdir)/'`ncds_read.c
 
 libncds3_la-ncds_utils.lo: ncds_utils.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_utils.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_utils.Tpo -c -o libncds3_la-ncds_utils.lo `test -f 'ncds_utils.c' || echo '$(srcdir)/'`ncds_utils.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libncds3_la-ncds_utils.Tpo $(DEPDIR)/libncds3_la-ncds_utils.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_utils.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_utils.Tpo -c -o libncds3_la-ncds_utils.lo `test -f 'ncds_utils.c' || echo '$(srcdir)/'`ncds_utils.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libncds3_la-ncds_utils.Tpo $(DEPDIR)/libncds3_la-ncds_utils.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ncds_utils.c' object='libncds3_la-ncds_utils.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_utils.lo `test -f 'ncds_utils.c' || echo '$(srcdir)/'`ncds_utils.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_utils.lo `test -f 'ncds_utils.c' || echo '$(srcdir)/'`ncds_utils.c
 
 libncds3_la-ncds_version.lo: ncds_version.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_version.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_version.Tpo -c -o libncds3_la-ncds_version.lo `test -f 'ncds_version.c' || echo '$(srcdir)/'`ncds_version.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libncds3_la-ncds_version.Tpo $(DEPDIR)/libncds3_la-ncds_version.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_version.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_version.Tpo -c -o libncds3_la-ncds_version.lo `test -f 'ncds_version.c' || echo '$(srcdir)/'`ncds_version.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libncds3_la-ncds_version.Tpo $(DEPDIR)/libncds3_la-ncds_version.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ncds_version.c' object='libncds3_la-ncds_version.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_version.lo `test -f 'ncds_version.c' || echo '$(srcdir)/'`ncds_version.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_version.lo `test -f 'ncds_version.c' || echo '$(srcdir)/'`ncds_version.c
 
 libncds3_la-ncds_write.lo: ncds_write.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_write.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_write.Tpo -c -o libncds3_la-ncds_write.lo `test -f 'ncds_write.c' || echo '$(srcdir)/'`ncds_write.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libncds3_la-ncds_write.Tpo $(DEPDIR)/libncds3_la-ncds_write.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncds_write.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncds_write.Tpo -c -o libncds3_la-ncds_write.lo `test -f 'ncds_write.c' || echo '$(srcdir)/'`ncds_write.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libncds3_la-ncds_write.Tpo $(DEPDIR)/libncds3_la-ncds_write.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ncds_write.c' object='libncds3_la-ncds_write.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_write.lo `test -f 'ncds_write.c' || echo '$(srcdir)/'`ncds_write.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncds_write.lo `test -f 'ncds_write.c' || echo '$(srcdir)/'`ncds_write.c
 
 libncds3_la-ncwrap_dataset.lo: ncwrap_dataset.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncwrap_dataset.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncwrap_dataset.Tpo -c -o libncds3_la-ncwrap_dataset.lo `test -f 'ncwrap_dataset.c' || echo '$(srcdir)/'`ncwrap_dataset.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libncds3_la-ncwrap_dataset.Tpo $(DEPDIR)/libncds3_la-ncwrap_dataset.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncwrap_dataset.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncwrap_dataset.Tpo -c -o libncds3_la-ncwrap_dataset.lo `test -f 'ncwrap_dataset.c' || echo '$(srcdir)/'`ncwrap_dataset.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libncds3_la-ncwrap_dataset.Tpo $(DEPDIR)/libncds3_la-ncwrap_dataset.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ncwrap_dataset.c' object='libncds3_la-ncwrap_dataset.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncwrap_dataset.lo `test -f 'ncwrap_dataset.c' || echo '$(srcdir)/'`ncwrap_dataset.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncwrap_dataset.lo `test -f 'ncwrap_dataset.c' || echo '$(srcdir)/'`ncwrap_dataset.c
 
 libncds3_la-ncwrap_inquire.lo: ncwrap_inquire.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncwrap_inquire.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncwrap_inquire.Tpo -c -o libncds3_la-ncwrap_inquire.lo `test -f 'ncwrap_inquire.c' || echo '$(srcdir)/'`ncwrap_inquire.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libncds3_la-ncwrap_inquire.Tpo $(DEPDIR)/libncds3_la-ncwrap_inquire.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -MT libncds3_la-ncwrap_inquire.lo -MD -MP -MF $(DEPDIR)/libncds3_la-ncwrap_inquire.Tpo -c -o libncds3_la-ncwrap_inquire.lo `test -f 'ncwrap_inquire.c' || echo '$(srcdir)/'`ncwrap_inquire.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libncds3_la-ncwrap_inquire.Tpo $(DEPDIR)/libncds3_la-ncwrap_inquire.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ncwrap_inquire.c' object='libncds3_la-ncwrap_inquire.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncwrap_inquire.lo `test -f 'ncwrap_inquire.c' || echo '$(srcdir)/'`ncwrap_inquire.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libncds3_la_CFLAGS) $(CFLAGS) -c -o libncds3_la-ncwrap_inquire.lo `test -f 'ncwrap_inquire.c' || echo '$(srcdir)/'`ncwrap_inquire.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -648,9 +681,6 @@ uninstall-am: uninstall-includeHEADERS uninstall-libLTLIBRARIES \
 	uninstall-includeHEADERS uninstall-libLTLIBRARIES \
 	uninstall-pkgconfigDATA
 
-
-libtool: $(LIBTOOL_DEPS)
-	$(SHELL) ./config.status --recheck
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -82,7 +82,10 @@ am_libdsdb3_la_OBJECTS = libdsdb3_la-datastream_config.lo \
 	libdsdb3_la-process_state.lo libdsdb3_la-process_status.lo \
 	libdsdb3_la-retriever.lo
 libdsdb3_la_OBJECTS = $(am_libdsdb3_la_OBJECTS)
-libdsdb3_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
+libdsdb3_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libdsdb3_la_CFLAGS) \
 	$(CFLAGS) $(libdsdb3_la_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@
@@ -91,13 +94,26 @@ am__depfiles_maybe = depfiles
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_$(V))
+am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
+am__v_CC_0 = @echo "  CC    " $@;
+AM_V_at = $(am__v_at_$(V))
+am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
+am__v_at_0 = @
 CCLD = $(CC)
-LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
+LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_$(V))
+am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CCLD_0 = @echo "  CCLD  " $@;
+AM_V_GEN = $(am__v_GEN_$(V))
+am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
+am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(libdsdb3_la_SOURCES)
 DIST_SOURCES = $(libdsdb3_la_SOURCES)
 DATA = $(pkgconfig_DATA)
@@ -107,6 +123,7 @@ CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
+AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -291,7 +308,7 @@ clean-libLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 libdsdb3.la: $(libdsdb3_la_OBJECTS) $(libdsdb3_la_DEPENDENCIES) 
-	$(libdsdb3_la_LINK) -rpath $(libdir) $(libdsdb3_la_OBJECTS) $(libdsdb3_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libdsdb3_la_LINK) -rpath $(libdir) $(libdsdb3_la_OBJECTS) $(libdsdb3_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -319,151 +336,175 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsdb3_la-retriever.Plo@am__quote@
 
 .c.o:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c $<
+@am__fastdepCC_FALSE@	$(COMPILE) -c -o $@ $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
+@am__fastdepCC_FALSE@	$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 .c.lo:
-@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.lo$$||'`;\
+@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
 libdsdb3_la-datastream_config.lo: datastream_config.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-datastream_config.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-datastream_config.Tpo -c -o libdsdb3_la-datastream_config.lo `test -f 'datastream_config.c' || echo '$(srcdir)/'`datastream_config.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-datastream_config.Tpo $(DEPDIR)/libdsdb3_la-datastream_config.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-datastream_config.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-datastream_config.Tpo -c -o libdsdb3_la-datastream_config.lo `test -f 'datastream_config.c' || echo '$(srcdir)/'`datastream_config.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-datastream_config.Tpo $(DEPDIR)/libdsdb3_la-datastream_config.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='datastream_config.c' object='libdsdb3_la-datastream_config.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-datastream_config.lo `test -f 'datastream_config.c' || echo '$(srcdir)/'`datastream_config.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-datastream_config.lo `test -f 'datastream_config.c' || echo '$(srcdir)/'`datastream_config.c
 
 libdsdb3_la-dbog_dod.lo: dbog_dod.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-dbog_dod.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-dbog_dod.Tpo -c -o libdsdb3_la-dbog_dod.lo `test -f 'dbog_dod.c' || echo '$(srcdir)/'`dbog_dod.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-dbog_dod.Tpo $(DEPDIR)/libdsdb3_la-dbog_dod.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-dbog_dod.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-dbog_dod.Tpo -c -o libdsdb3_la-dbog_dod.lo `test -f 'dbog_dod.c' || echo '$(srcdir)/'`dbog_dod.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-dbog_dod.Tpo $(DEPDIR)/libdsdb3_la-dbog_dod.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dbog_dod.c' object='libdsdb3_la-dbog_dod.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-dbog_dod.lo `test -f 'dbog_dod.c' || echo '$(srcdir)/'`dbog_dod.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-dbog_dod.lo `test -f 'dbog_dod.c' || echo '$(srcdir)/'`dbog_dod.c
 
 libdsdb3_la-dbog_dsdb.lo: dbog_dsdb.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-dbog_dsdb.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-dbog_dsdb.Tpo -c -o libdsdb3_la-dbog_dsdb.lo `test -f 'dbog_dsdb.c' || echo '$(srcdir)/'`dbog_dsdb.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-dbog_dsdb.Tpo $(DEPDIR)/libdsdb3_la-dbog_dsdb.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-dbog_dsdb.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-dbog_dsdb.Tpo -c -o libdsdb3_la-dbog_dsdb.lo `test -f 'dbog_dsdb.c' || echo '$(srcdir)/'`dbog_dsdb.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-dbog_dsdb.Tpo $(DEPDIR)/libdsdb3_la-dbog_dsdb.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dbog_dsdb.c' object='libdsdb3_la-dbog_dsdb.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-dbog_dsdb.lo `test -f 'dbog_dsdb.c' || echo '$(srcdir)/'`dbog_dsdb.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-dbog_dsdb.lo `test -f 'dbog_dsdb.c' || echo '$(srcdir)/'`dbog_dsdb.c
 
 libdsdb3_la-dbog_retriever.lo: dbog_retriever.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-dbog_retriever.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-dbog_retriever.Tpo -c -o libdsdb3_la-dbog_retriever.lo `test -f 'dbog_retriever.c' || echo '$(srcdir)/'`dbog_retriever.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-dbog_retriever.Tpo $(DEPDIR)/libdsdb3_la-dbog_retriever.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-dbog_retriever.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-dbog_retriever.Tpo -c -o libdsdb3_la-dbog_retriever.lo `test -f 'dbog_retriever.c' || echo '$(srcdir)/'`dbog_retriever.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-dbog_retriever.Tpo $(DEPDIR)/libdsdb3_la-dbog_retriever.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dbog_retriever.c' object='libdsdb3_la-dbog_retriever.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-dbog_retriever.lo `test -f 'dbog_retriever.c' || echo '$(srcdir)/'`dbog_retriever.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-dbog_retriever.lo `test -f 'dbog_retriever.c' || echo '$(srcdir)/'`dbog_retriever.c
 
 libdsdb3_la-dqrdb.lo: dqrdb.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-dqrdb.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-dqrdb.Tpo -c -o libdsdb3_la-dqrdb.lo `test -f 'dqrdb.c' || echo '$(srcdir)/'`dqrdb.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-dqrdb.Tpo $(DEPDIR)/libdsdb3_la-dqrdb.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-dqrdb.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-dqrdb.Tpo -c -o libdsdb3_la-dqrdb.lo `test -f 'dqrdb.c' || echo '$(srcdir)/'`dqrdb.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-dqrdb.Tpo $(DEPDIR)/libdsdb3_la-dqrdb.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dqrdb.c' object='libdsdb3_la-dqrdb.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-dqrdb.lo `test -f 'dqrdb.c' || echo '$(srcdir)/'`dqrdb.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-dqrdb.lo `test -f 'dqrdb.c' || echo '$(srcdir)/'`dqrdb.c
 
 libdsdb3_la-ds_class.lo: ds_class.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-ds_class.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-ds_class.Tpo -c -o libdsdb3_la-ds_class.lo `test -f 'ds_class.c' || echo '$(srcdir)/'`ds_class.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-ds_class.Tpo $(DEPDIR)/libdsdb3_la-ds_class.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-ds_class.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-ds_class.Tpo -c -o libdsdb3_la-ds_class.lo `test -f 'ds_class.c' || echo '$(srcdir)/'`ds_class.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-ds_class.Tpo $(DEPDIR)/libdsdb3_la-ds_class.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ds_class.c' object='libdsdb3_la-ds_class.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-ds_class.lo `test -f 'ds_class.c' || echo '$(srcdir)/'`ds_class.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-ds_class.lo `test -f 'ds_class.c' || echo '$(srcdir)/'`ds_class.c
 
 libdsdb3_la-dsdb.lo: dsdb.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-dsdb.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-dsdb.Tpo -c -o libdsdb3_la-dsdb.lo `test -f 'dsdb.c' || echo '$(srcdir)/'`dsdb.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-dsdb.Tpo $(DEPDIR)/libdsdb3_la-dsdb.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-dsdb.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-dsdb.Tpo -c -o libdsdb3_la-dsdb.lo `test -f 'dsdb.c' || echo '$(srcdir)/'`dsdb.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-dsdb.Tpo $(DEPDIR)/libdsdb3_la-dsdb.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dsdb.c' object='libdsdb3_la-dsdb.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-dsdb.lo `test -f 'dsdb.c' || echo '$(srcdir)/'`dsdb.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-dsdb.lo `test -f 'dsdb.c' || echo '$(srcdir)/'`dsdb.c
 
 libdsdb3_la-dsdb_version.lo: dsdb_version.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-dsdb_version.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-dsdb_version.Tpo -c -o libdsdb3_la-dsdb_version.lo `test -f 'dsdb_version.c' || echo '$(srcdir)/'`dsdb_version.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-dsdb_version.Tpo $(DEPDIR)/libdsdb3_la-dsdb_version.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-dsdb_version.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-dsdb_version.Tpo -c -o libdsdb3_la-dsdb_version.lo `test -f 'dsdb_version.c' || echo '$(srcdir)/'`dsdb_version.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-dsdb_version.Tpo $(DEPDIR)/libdsdb3_la-dsdb_version.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dsdb_version.c' object='libdsdb3_la-dsdb_version.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-dsdb_version.lo `test -f 'dsdb_version.c' || echo '$(srcdir)/'`dsdb_version.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-dsdb_version.lo `test -f 'dsdb_version.c' || echo '$(srcdir)/'`dsdb_version.c
 
 libdsdb3_la-ds_dod.lo: ds_dod.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-ds_dod.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-ds_dod.Tpo -c -o libdsdb3_la-ds_dod.lo `test -f 'ds_dod.c' || echo '$(srcdir)/'`ds_dod.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-ds_dod.Tpo $(DEPDIR)/libdsdb3_la-ds_dod.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-ds_dod.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-ds_dod.Tpo -c -o libdsdb3_la-ds_dod.lo `test -f 'ds_dod.c' || echo '$(srcdir)/'`ds_dod.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-ds_dod.Tpo $(DEPDIR)/libdsdb3_la-ds_dod.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ds_dod.c' object='libdsdb3_la-ds_dod.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-ds_dod.lo `test -f 'ds_dod.c' || echo '$(srcdir)/'`ds_dod.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-ds_dod.lo `test -f 'ds_dod.c' || echo '$(srcdir)/'`ds_dod.c
 
 libdsdb3_la-ds_properties.lo: ds_properties.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-ds_properties.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-ds_properties.Tpo -c -o libdsdb3_la-ds_properties.lo `test -f 'ds_properties.c' || echo '$(srcdir)/'`ds_properties.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-ds_properties.Tpo $(DEPDIR)/libdsdb3_la-ds_properties.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-ds_properties.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-ds_properties.Tpo -c -o libdsdb3_la-ds_properties.lo `test -f 'ds_properties.c' || echo '$(srcdir)/'`ds_properties.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-ds_properties.Tpo $(DEPDIR)/libdsdb3_la-ds_properties.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ds_properties.c' object='libdsdb3_la-ds_properties.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-ds_properties.lo `test -f 'ds_properties.c' || echo '$(srcdir)/'`ds_properties.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-ds_properties.lo `test -f 'ds_properties.c' || echo '$(srcdir)/'`ds_properties.c
 
 libdsdb3_la-ds_times.lo: ds_times.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-ds_times.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-ds_times.Tpo -c -o libdsdb3_la-ds_times.lo `test -f 'ds_times.c' || echo '$(srcdir)/'`ds_times.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-ds_times.Tpo $(DEPDIR)/libdsdb3_la-ds_times.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-ds_times.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-ds_times.Tpo -c -o libdsdb3_la-ds_times.lo `test -f 'ds_times.c' || echo '$(srcdir)/'`ds_times.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-ds_times.Tpo $(DEPDIR)/libdsdb3_la-ds_times.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='ds_times.c' object='libdsdb3_la-ds_times.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-ds_times.lo `test -f 'ds_times.c' || echo '$(srcdir)/'`ds_times.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-ds_times.lo `test -f 'ds_times.c' || echo '$(srcdir)/'`ds_times.c
 
 libdsdb3_la-facility_location.lo: facility_location.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-facility_location.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-facility_location.Tpo -c -o libdsdb3_la-facility_location.lo `test -f 'facility_location.c' || echo '$(srcdir)/'`facility_location.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-facility_location.Tpo $(DEPDIR)/libdsdb3_la-facility_location.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-facility_location.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-facility_location.Tpo -c -o libdsdb3_la-facility_location.lo `test -f 'facility_location.c' || echo '$(srcdir)/'`facility_location.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-facility_location.Tpo $(DEPDIR)/libdsdb3_la-facility_location.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='facility_location.c' object='libdsdb3_la-facility_location.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-facility_location.lo `test -f 'facility_location.c' || echo '$(srcdir)/'`facility_location.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-facility_location.lo `test -f 'facility_location.c' || echo '$(srcdir)/'`facility_location.c
 
 libdsdb3_la-family_process.lo: family_process.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-family_process.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-family_process.Tpo -c -o libdsdb3_la-family_process.lo `test -f 'family_process.c' || echo '$(srcdir)/'`family_process.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-family_process.Tpo $(DEPDIR)/libdsdb3_la-family_process.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-family_process.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-family_process.Tpo -c -o libdsdb3_la-family_process.lo `test -f 'family_process.c' || echo '$(srcdir)/'`family_process.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-family_process.Tpo $(DEPDIR)/libdsdb3_la-family_process.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='family_process.c' object='libdsdb3_la-family_process.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-family_process.lo `test -f 'family_process.c' || echo '$(srcdir)/'`family_process.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-family_process.lo `test -f 'family_process.c' || echo '$(srcdir)/'`family_process.c
 
 libdsdb3_la-process_config.lo: process_config.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-process_config.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-process_config.Tpo -c -o libdsdb3_la-process_config.lo `test -f 'process_config.c' || echo '$(srcdir)/'`process_config.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-process_config.Tpo $(DEPDIR)/libdsdb3_la-process_config.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-process_config.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-process_config.Tpo -c -o libdsdb3_la-process_config.lo `test -f 'process_config.c' || echo '$(srcdir)/'`process_config.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-process_config.Tpo $(DEPDIR)/libdsdb3_la-process_config.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='process_config.c' object='libdsdb3_la-process_config.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-process_config.lo `test -f 'process_config.c' || echo '$(srcdir)/'`process_config.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-process_config.lo `test -f 'process_config.c' || echo '$(srcdir)/'`process_config.c
 
 libdsdb3_la-process_location.lo: process_location.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-process_location.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-process_location.Tpo -c -o libdsdb3_la-process_location.lo `test -f 'process_location.c' || echo '$(srcdir)/'`process_location.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-process_location.Tpo $(DEPDIR)/libdsdb3_la-process_location.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-process_location.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-process_location.Tpo -c -o libdsdb3_la-process_location.lo `test -f 'process_location.c' || echo '$(srcdir)/'`process_location.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-process_location.Tpo $(DEPDIR)/libdsdb3_la-process_location.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='process_location.c' object='libdsdb3_la-process_location.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-process_location.lo `test -f 'process_location.c' || echo '$(srcdir)/'`process_location.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-process_location.lo `test -f 'process_location.c' || echo '$(srcdir)/'`process_location.c
 
 libdsdb3_la-process_state.lo: process_state.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-process_state.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-process_state.Tpo -c -o libdsdb3_la-process_state.lo `test -f 'process_state.c' || echo '$(srcdir)/'`process_state.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-process_state.Tpo $(DEPDIR)/libdsdb3_la-process_state.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-process_state.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-process_state.Tpo -c -o libdsdb3_la-process_state.lo `test -f 'process_state.c' || echo '$(srcdir)/'`process_state.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-process_state.Tpo $(DEPDIR)/libdsdb3_la-process_state.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='process_state.c' object='libdsdb3_la-process_state.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-process_state.lo `test -f 'process_state.c' || echo '$(srcdir)/'`process_state.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-process_state.lo `test -f 'process_state.c' || echo '$(srcdir)/'`process_state.c
 
 libdsdb3_la-process_status.lo: process_status.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-process_status.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-process_status.Tpo -c -o libdsdb3_la-process_status.lo `test -f 'process_status.c' || echo '$(srcdir)/'`process_status.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-process_status.Tpo $(DEPDIR)/libdsdb3_la-process_status.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-process_status.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-process_status.Tpo -c -o libdsdb3_la-process_status.lo `test -f 'process_status.c' || echo '$(srcdir)/'`process_status.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-process_status.Tpo $(DEPDIR)/libdsdb3_la-process_status.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='process_status.c' object='libdsdb3_la-process_status.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-process_status.lo `test -f 'process_status.c' || echo '$(srcdir)/'`process_status.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-process_status.lo `test -f 'process_status.c' || echo '$(srcdir)/'`process_status.c
 
 libdsdb3_la-retriever.lo: retriever.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-retriever.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-retriever.Tpo -c -o libdsdb3_la-retriever.lo `test -f 'retriever.c' || echo '$(srcdir)/'`retriever.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libdsdb3_la-retriever.Tpo $(DEPDIR)/libdsdb3_la-retriever.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -MT libdsdb3_la-retriever.lo -MD -MP -MF $(DEPDIR)/libdsdb3_la-retriever.Tpo -c -o libdsdb3_la-retriever.lo `test -f 'retriever.c' || echo '$(srcdir)/'`retriever.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsdb3_la-retriever.Tpo $(DEPDIR)/libdsdb3_la-retriever.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='retriever.c' object='libdsdb3_la-retriever.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-retriever.lo `test -f 'retriever.c' || echo '$(srcdir)/'`retriever.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsdb3_la_CFLAGS) $(CFLAGS) -c -o libdsdb3_la-retriever.lo `test -f 'retriever.c' || echo '$(srcdir)/'`retriever.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

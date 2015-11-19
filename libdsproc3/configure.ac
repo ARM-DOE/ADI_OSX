@@ -7,7 +7,7 @@ AC_INIT([ADI libdsproc3], [2.29], [BUG-REPORT-ADDRESS])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 
-AM_INIT_AUTOMAKE([1.11 foreign -Wall -Werror])
+AM_INIT_AUTOMAKE([1.11 foreign silent-rules subdir-objects -Wall -Werror])
 
 AC_CONFIG_SRCDIR([src/dsproc.c])
 

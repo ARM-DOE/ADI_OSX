@@ -82,7 +82,10 @@ am_libcds3_la_OBJECTS = libcds3_la-cds_atts.lo \
 	libcds3_la-cds_var_data.lo libcds3_la-cds_vargroups.lo \
 	libcds3_la-cds_vars.lo libcds3_la-cds_version.lo
 libcds3_la_OBJECTS = $(am_libcds3_la_OBJECTS)
-libcds3_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
+libcds3_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libcds3_la_CFLAGS) \
 	$(CFLAGS) $(libcds3_la_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
@@ -91,13 +94,26 @@ am__depfiles_maybe = depfiles
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_$(V))
+am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
+am__v_CC_0 = @echo "  CC    " $@;
+AM_V_at = $(am__v_at_$(V))
+am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
+am__v_at_0 = @
 CCLD = $(CC)
-LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
+LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_$(V))
+am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CCLD_0 = @echo "  CCLD  " $@;
+AM_V_GEN = $(am__v_GEN_$(V))
+am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
+am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(libcds3_la_SOURCES)
 DIST_SOURCES = $(libcds3_la_SOURCES)
 DATA = $(pkgconfig_DATA)
@@ -107,6 +123,7 @@ CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
+AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -292,7 +309,7 @@ clean-libLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 libcds3.la: $(libcds3_la_OBJECTS) $(libcds3_la_DEPENDENCIES) 
-	$(libcds3_la_LINK) -rpath $(libdir) $(libcds3_la_OBJECTS) $(libcds3_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(libcds3_la_LINK) -rpath $(libdir) $(libcds3_la_OBJECTS) $(libcds3_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -319,144 +336,167 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcds3_la-cds_version.Plo@am__quote@
 
 .c.o:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c $<
+@am__fastdepCC_FALSE@	$(COMPILE) -c -o $@ $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
+@am__fastdepCC_FALSE@	$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 .c.lo:
-@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.lo$$||'`;\
+@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
 libcds3_la-cds_atts.lo: cds_atts.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_atts.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_atts.Tpo -c -o libcds3_la-cds_atts.lo `test -f 'cds_atts.c' || echo '$(srcdir)/'`cds_atts.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_atts.Tpo $(DEPDIR)/libcds3_la-cds_atts.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_atts.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_atts.Tpo -c -o libcds3_la-cds_atts.lo `test -f 'cds_atts.c' || echo '$(srcdir)/'`cds_atts.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_atts.Tpo $(DEPDIR)/libcds3_la-cds_atts.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_atts.c' object='libcds3_la-cds_atts.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_atts.lo `test -f 'cds_atts.c' || echo '$(srcdir)/'`cds_atts.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_atts.lo `test -f 'cds_atts.c' || echo '$(srcdir)/'`cds_atts.c
 
 libcds3_la-cds_converter.lo: cds_converter.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_converter.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_converter.Tpo -c -o libcds3_la-cds_converter.lo `test -f 'cds_converter.c' || echo '$(srcdir)/'`cds_converter.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_converter.Tpo $(DEPDIR)/libcds3_la-cds_converter.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_converter.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_converter.Tpo -c -o libcds3_la-cds_converter.lo `test -f 'cds_converter.c' || echo '$(srcdir)/'`cds_converter.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_converter.Tpo $(DEPDIR)/libcds3_la-cds_converter.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_converter.c' object='libcds3_la-cds_converter.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_converter.lo `test -f 'cds_converter.c' || echo '$(srcdir)/'`cds_converter.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_converter.lo `test -f 'cds_converter.c' || echo '$(srcdir)/'`cds_converter.c
 
 libcds3_la-cds_copy.lo: cds_copy.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_copy.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_copy.Tpo -c -o libcds3_la-cds_copy.lo `test -f 'cds_copy.c' || echo '$(srcdir)/'`cds_copy.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_copy.Tpo $(DEPDIR)/libcds3_la-cds_copy.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_copy.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_copy.Tpo -c -o libcds3_la-cds_copy.lo `test -f 'cds_copy.c' || echo '$(srcdir)/'`cds_copy.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_copy.Tpo $(DEPDIR)/libcds3_la-cds_copy.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_copy.c' object='libcds3_la-cds_copy.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_copy.lo `test -f 'cds_copy.c' || echo '$(srcdir)/'`cds_copy.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_copy.lo `test -f 'cds_copy.c' || echo '$(srcdir)/'`cds_copy.c
 
 libcds3_la-cds_data_types.lo: cds_data_types.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_data_types.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_data_types.Tpo -c -o libcds3_la-cds_data_types.lo `test -f 'cds_data_types.c' || echo '$(srcdir)/'`cds_data_types.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_data_types.Tpo $(DEPDIR)/libcds3_la-cds_data_types.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_data_types.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_data_types.Tpo -c -o libcds3_la-cds_data_types.lo `test -f 'cds_data_types.c' || echo '$(srcdir)/'`cds_data_types.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_data_types.Tpo $(DEPDIR)/libcds3_la-cds_data_types.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_data_types.c' object='libcds3_la-cds_data_types.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_data_types.lo `test -f 'cds_data_types.c' || echo '$(srcdir)/'`cds_data_types.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_data_types.lo `test -f 'cds_data_types.c' || echo '$(srcdir)/'`cds_data_types.c
 
 libcds3_la-cds_dims.lo: cds_dims.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_dims.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_dims.Tpo -c -o libcds3_la-cds_dims.lo `test -f 'cds_dims.c' || echo '$(srcdir)/'`cds_dims.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_dims.Tpo $(DEPDIR)/libcds3_la-cds_dims.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_dims.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_dims.Tpo -c -o libcds3_la-cds_dims.lo `test -f 'cds_dims.c' || echo '$(srcdir)/'`cds_dims.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_dims.Tpo $(DEPDIR)/libcds3_la-cds_dims.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_dims.c' object='libcds3_la-cds_dims.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_dims.lo `test -f 'cds_dims.c' || echo '$(srcdir)/'`cds_dims.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_dims.lo `test -f 'cds_dims.c' || echo '$(srcdir)/'`cds_dims.c
 
 libcds3_la-cds_groups.lo: cds_groups.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_groups.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_groups.Tpo -c -o libcds3_la-cds_groups.lo `test -f 'cds_groups.c' || echo '$(srcdir)/'`cds_groups.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_groups.Tpo $(DEPDIR)/libcds3_la-cds_groups.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_groups.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_groups.Tpo -c -o libcds3_la-cds_groups.lo `test -f 'cds_groups.c' || echo '$(srcdir)/'`cds_groups.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_groups.Tpo $(DEPDIR)/libcds3_la-cds_groups.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_groups.c' object='libcds3_la-cds_groups.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_groups.lo `test -f 'cds_groups.c' || echo '$(srcdir)/'`cds_groups.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_groups.lo `test -f 'cds_groups.c' || echo '$(srcdir)/'`cds_groups.c
 
 libcds3_la-cds_objects.lo: cds_objects.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_objects.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_objects.Tpo -c -o libcds3_la-cds_objects.lo `test -f 'cds_objects.c' || echo '$(srcdir)/'`cds_objects.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_objects.Tpo $(DEPDIR)/libcds3_la-cds_objects.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_objects.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_objects.Tpo -c -o libcds3_la-cds_objects.lo `test -f 'cds_objects.c' || echo '$(srcdir)/'`cds_objects.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_objects.Tpo $(DEPDIR)/libcds3_la-cds_objects.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_objects.c' object='libcds3_la-cds_objects.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_objects.lo `test -f 'cds_objects.c' || echo '$(srcdir)/'`cds_objects.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_objects.lo `test -f 'cds_objects.c' || echo '$(srcdir)/'`cds_objects.c
 
 libcds3_la-cds_print.lo: cds_print.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_print.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_print.Tpo -c -o libcds3_la-cds_print.lo `test -f 'cds_print.c' || echo '$(srcdir)/'`cds_print.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_print.Tpo $(DEPDIR)/libcds3_la-cds_print.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_print.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_print.Tpo -c -o libcds3_la-cds_print.lo `test -f 'cds_print.c' || echo '$(srcdir)/'`cds_print.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_print.Tpo $(DEPDIR)/libcds3_la-cds_print.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_print.c' object='libcds3_la-cds_print.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_print.lo `test -f 'cds_print.c' || echo '$(srcdir)/'`cds_print.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_print.lo `test -f 'cds_print.c' || echo '$(srcdir)/'`cds_print.c
 
 libcds3_la-cds_times.lo: cds_times.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_times.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_times.Tpo -c -o libcds3_la-cds_times.lo `test -f 'cds_times.c' || echo '$(srcdir)/'`cds_times.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_times.Tpo $(DEPDIR)/libcds3_la-cds_times.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_times.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_times.Tpo -c -o libcds3_la-cds_times.lo `test -f 'cds_times.c' || echo '$(srcdir)/'`cds_times.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_times.Tpo $(DEPDIR)/libcds3_la-cds_times.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_times.c' object='libcds3_la-cds_times.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_times.lo `test -f 'cds_times.c' || echo '$(srcdir)/'`cds_times.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_times.lo `test -f 'cds_times.c' || echo '$(srcdir)/'`cds_times.c
 
 libcds3_la-cds_transform_params.lo: cds_transform_params.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_transform_params.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_transform_params.Tpo -c -o libcds3_la-cds_transform_params.lo `test -f 'cds_transform_params.c' || echo '$(srcdir)/'`cds_transform_params.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_transform_params.Tpo $(DEPDIR)/libcds3_la-cds_transform_params.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_transform_params.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_transform_params.Tpo -c -o libcds3_la-cds_transform_params.lo `test -f 'cds_transform_params.c' || echo '$(srcdir)/'`cds_transform_params.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_transform_params.Tpo $(DEPDIR)/libcds3_la-cds_transform_params.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_transform_params.c' object='libcds3_la-cds_transform_params.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_transform_params.lo `test -f 'cds_transform_params.c' || echo '$(srcdir)/'`cds_transform_params.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_transform_params.lo `test -f 'cds_transform_params.c' || echo '$(srcdir)/'`cds_transform_params.c
 
 libcds3_la-cds_units.lo: cds_units.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_units.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_units.Tpo -c -o libcds3_la-cds_units.lo `test -f 'cds_units.c' || echo '$(srcdir)/'`cds_units.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_units.Tpo $(DEPDIR)/libcds3_la-cds_units.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_units.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_units.Tpo -c -o libcds3_la-cds_units.lo `test -f 'cds_units.c' || echo '$(srcdir)/'`cds_units.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_units.Tpo $(DEPDIR)/libcds3_la-cds_units.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_units.c' object='libcds3_la-cds_units.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_units.lo `test -f 'cds_units.c' || echo '$(srcdir)/'`cds_units.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_units.lo `test -f 'cds_units.c' || echo '$(srcdir)/'`cds_units.c
 
 libcds3_la-cds_utils.lo: cds_utils.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_utils.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_utils.Tpo -c -o libcds3_la-cds_utils.lo `test -f 'cds_utils.c' || echo '$(srcdir)/'`cds_utils.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_utils.Tpo $(DEPDIR)/libcds3_la-cds_utils.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_utils.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_utils.Tpo -c -o libcds3_la-cds_utils.lo `test -f 'cds_utils.c' || echo '$(srcdir)/'`cds_utils.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_utils.Tpo $(DEPDIR)/libcds3_la-cds_utils.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_utils.c' object='libcds3_la-cds_utils.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_utils.lo `test -f 'cds_utils.c' || echo '$(srcdir)/'`cds_utils.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_utils.lo `test -f 'cds_utils.c' || echo '$(srcdir)/'`cds_utils.c
 
 libcds3_la-cds_vararrays.lo: cds_vararrays.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_vararrays.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_vararrays.Tpo -c -o libcds3_la-cds_vararrays.lo `test -f 'cds_vararrays.c' || echo '$(srcdir)/'`cds_vararrays.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_vararrays.Tpo $(DEPDIR)/libcds3_la-cds_vararrays.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_vararrays.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_vararrays.Tpo -c -o libcds3_la-cds_vararrays.lo `test -f 'cds_vararrays.c' || echo '$(srcdir)/'`cds_vararrays.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_vararrays.Tpo $(DEPDIR)/libcds3_la-cds_vararrays.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_vararrays.c' object='libcds3_la-cds_vararrays.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_vararrays.lo `test -f 'cds_vararrays.c' || echo '$(srcdir)/'`cds_vararrays.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_vararrays.lo `test -f 'cds_vararrays.c' || echo '$(srcdir)/'`cds_vararrays.c
 
 libcds3_la-cds_var_data.lo: cds_var_data.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_var_data.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_var_data.Tpo -c -o libcds3_la-cds_var_data.lo `test -f 'cds_var_data.c' || echo '$(srcdir)/'`cds_var_data.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_var_data.Tpo $(DEPDIR)/libcds3_la-cds_var_data.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_var_data.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_var_data.Tpo -c -o libcds3_la-cds_var_data.lo `test -f 'cds_var_data.c' || echo '$(srcdir)/'`cds_var_data.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_var_data.Tpo $(DEPDIR)/libcds3_la-cds_var_data.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_var_data.c' object='libcds3_la-cds_var_data.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_var_data.lo `test -f 'cds_var_data.c' || echo '$(srcdir)/'`cds_var_data.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_var_data.lo `test -f 'cds_var_data.c' || echo '$(srcdir)/'`cds_var_data.c
 
 libcds3_la-cds_vargroups.lo: cds_vargroups.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_vargroups.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_vargroups.Tpo -c -o libcds3_la-cds_vargroups.lo `test -f 'cds_vargroups.c' || echo '$(srcdir)/'`cds_vargroups.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_vargroups.Tpo $(DEPDIR)/libcds3_la-cds_vargroups.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_vargroups.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_vargroups.Tpo -c -o libcds3_la-cds_vargroups.lo `test -f 'cds_vargroups.c' || echo '$(srcdir)/'`cds_vargroups.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_vargroups.Tpo $(DEPDIR)/libcds3_la-cds_vargroups.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_vargroups.c' object='libcds3_la-cds_vargroups.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_vargroups.lo `test -f 'cds_vargroups.c' || echo '$(srcdir)/'`cds_vargroups.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_vargroups.lo `test -f 'cds_vargroups.c' || echo '$(srcdir)/'`cds_vargroups.c
 
 libcds3_la-cds_vars.lo: cds_vars.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_vars.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_vars.Tpo -c -o libcds3_la-cds_vars.lo `test -f 'cds_vars.c' || echo '$(srcdir)/'`cds_vars.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_vars.Tpo $(DEPDIR)/libcds3_la-cds_vars.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_vars.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_vars.Tpo -c -o libcds3_la-cds_vars.lo `test -f 'cds_vars.c' || echo '$(srcdir)/'`cds_vars.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_vars.Tpo $(DEPDIR)/libcds3_la-cds_vars.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_vars.c' object='libcds3_la-cds_vars.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_vars.lo `test -f 'cds_vars.c' || echo '$(srcdir)/'`cds_vars.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_vars.lo `test -f 'cds_vars.c' || echo '$(srcdir)/'`cds_vars.c
 
 libcds3_la-cds_version.lo: cds_version.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_version.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_version.Tpo -c -o libcds3_la-cds_version.lo `test -f 'cds_version.c' || echo '$(srcdir)/'`cds_version.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libcds3_la-cds_version.Tpo $(DEPDIR)/libcds3_la-cds_version.Plo
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -MT libcds3_la-cds_version.lo -MD -MP -MF $(DEPDIR)/libcds3_la-cds_version.Tpo -c -o libcds3_la-cds_version.lo `test -f 'cds_version.c' || echo '$(srcdir)/'`cds_version.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcds3_la-cds_version.Tpo $(DEPDIR)/libcds3_la-cds_version.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cds_version.c' object='libcds3_la-cds_version.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_version.lo `test -f 'cds_version.c' || echo '$(srcdir)/'`cds_version.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcds3_la_CFLAGS) $(CFLAGS) -c -o libcds3_la-cds_version.lo `test -f 'cds_version.c' || echo '$(srcdir)/'`cds_version.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
