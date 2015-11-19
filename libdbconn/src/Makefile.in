@@ -41,7 +41,8 @@ DIST_COMMON = $(include_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/dbconn.pc.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_lib_postgresql.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/ax_compare_version.m4 \
+	$(top_srcdir)/m4/ax_path_generic.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -130,6 +131,9 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CURL_CFLAGS = @CURL_CFLAGS@
+CURL_CONFIG = @CURL_CONFIG@
+CURL_LIBS = @CURL_LIBS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -236,7 +240,7 @@ top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libdbconn.la
 include_HEADERS = dbconn.h
 libdbconn_la_SOURCES = dbconn.c dbconn_pgsql.c dbconn_pgsql.h dbconn_private.h dbconn_sqlite.c dbconn_sqlite.h dbconn_version.c dbconn_wspc.c dbconn_wspc.h sqlite3.c sqlite3.h 
-libdbconn_la_CFLAGS = $(POSTGRESQL_CFLAGS) -I${includedir} -Wall -Wextra
+libdbconn_la_CFLAGS = $(POSTGRESQL_CFLAGS) $(CURL_CFLAGS) -I${includedir} -Wall -Wextra
 libdbconn_la_LDFLAGS = -no-undefined -avoid-version $(POSTGRESQL_LDFLAGS) $(CURL_LIBS) -L${libdir} -lmsngr
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = dbconn.pc

@@ -19,7 +19,11 @@ AC_PROG_LIBTOOL
 # Checks for libraries.
 
 m4_include([m4/ax_lib_postgresql.m4])
-AX_LIB_POSTGRESQL([8.4])
+AX_LIB_POSTGRESQL()
+
+m4_include([m4/ax_compare_version.m4])
+m4_include([m4/ax_path_generic.m4])
+AX_PATH_GENERIC([curl],,[AC_MSG_ERROR([LIBCURL Not Found])])
 
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h inttypes.h limits.h malloc.h stddef.h stdint.h stdlib.h string.h sys/file.h sys/ioctl.h sys/mount.h sys/param.h sys/statvfs.h sys/time.h unistd.h utime.h])
