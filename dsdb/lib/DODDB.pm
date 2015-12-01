@@ -580,51 +580,6 @@ sub get_fields_att {
     return $retval;
 }
 
-################################################################################
-
-sub validadate_dod_units {
-    my ($db, $class, $level, $version) = @_;
-    
-    my $retval = $db->sp_call('dod_var_atts', 'inquire', $class, $level, $version, '%', 'units', '%', '%');
-    unless (defined($retval)) {
-        _set_error(__LINE__, $db->error());
-        return undef;
-    }
-    
-    my @units = ( );
-    for (@{$retval}) {
-        push(@units, $_->{'att_value'});
-    }
-    
-    return validate_units(@units);
-}
-
-sub validate_units {
-    use Physics::Udunits2;
-    my $system = new Physics::Udunits2();
-    my %lookup = ( );
-    my %except = (
-        'C'        => 'degC',
-        'unitless' => 'unitless',
-    );
-    for (@_) {
-        next if (defined($lookup{$_}));
-        if (defined($except{$_})) {
-            $lookup{$_} = $except{$_};
-            next;
-        }
-        my $parsed;
-        eval {
-            my $u = $system->getUnit($_);
-            $parsed = $u->getFormattedASCII() if ($u);
-        };
-        $lookup{$_} = (defined($parsed)) ? $parsed : '';
-    }
-    return \%lookup;
-}
-
-################################################################################
-
 sub get_dod_list {
 	my ($db, $class, $level, $db_prod) = @_;
 	
