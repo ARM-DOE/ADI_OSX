@@ -1,0 +1,8 @@
+setenv DSDB_HOME "@PREFIX@"
+
+if ( $?PERLLIB ) then
+    setenv PERLLIB   "$PERLLIB:@LIBDIR@/perl5/dsdb"
+else
+    setenv PERLLIB   "@LIBDIR@/perl5/dsdb"
+endif
+

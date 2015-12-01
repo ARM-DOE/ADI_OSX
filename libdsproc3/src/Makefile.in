@@ -89,6 +89,7 @@ am_libdsproc3_la_OBJECTS = libdsproc3_la-dsproc.lo \
 	libdsproc3_la-dsproc_datastreams.lo \
 	libdsproc3_la-dsproc_deprecated.lo \
 	libdsproc3_la-dsproc_dqrdb.lo libdsproc3_la-dsproc_dsdb.lo \
+	libdsproc3_la-dsproc_exec.lo \
 	libdsproc3_la-dsproc_file_utils.lo \
 	libdsproc3_la-dsproc_hooks.lo libdsproc3_la-dsproc_main.lo \
 	libdsproc3_la-dsproc_map_data.lo \
@@ -278,6 +279,7 @@ libdsproc3_la_SOURCES = \
 	dsproc_deprecated.c \
 	dsproc_dqrdb.c \
 	dsproc_dsdb.c \
+        dsproc_exec.c \
 	dsproc_file_utils.c \
 	dsproc_hooks.c \
 	dsproc_main.c \
@@ -398,6 +400,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsproc3_la-dsproc_deprecated.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsproc3_la-dsproc_dqrdb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsproc3_la-dsproc_dsdb.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsproc3_la-dsproc_exec.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsproc3_la-dsproc_file_utils.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsproc3_la-dsproc_hooks.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdsproc3_la-dsproc_main.Plo@am__quote@
@@ -595,6 +598,14 @@ libdsproc3_la-dsproc_dsdb.lo: dsproc_dsdb.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dsproc_dsdb.c' object='libdsproc3_la-dsproc_dsdb.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -c -o libdsproc3_la-dsproc_dsdb.lo `test -f 'dsproc_dsdb.c' || echo '$(srcdir)/'`dsproc_dsdb.c
+
+libdsproc3_la-dsproc_exec.lo: dsproc_exec.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -MT libdsproc3_la-dsproc_exec.lo -MD -MP -MF $(DEPDIR)/libdsproc3_la-dsproc_exec.Tpo -c -o libdsproc3_la-dsproc_exec.lo `test -f 'dsproc_exec.c' || echo '$(srcdir)/'`dsproc_exec.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdsproc3_la-dsproc_exec.Tpo $(DEPDIR)/libdsproc3_la-dsproc_exec.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='dsproc_exec.c' object='libdsproc3_la-dsproc_exec.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -c -o libdsproc3_la-dsproc_exec.lo `test -f 'dsproc_exec.c' || echo '$(srcdir)/'`dsproc_exec.c
 
 libdsproc3_la-dsproc_file_utils.lo: dsproc_file_utils.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdsproc3_la_CFLAGS) $(CFLAGS) -MT libdsproc3_la-dsproc_file_utils.lo -MD -MP -MF $(DEPDIR)/libdsproc3_la-dsproc_file_utils.Tpo -c -o libdsproc3_la-dsproc_file_utils.lo `test -f 'dsproc_file_utils.c' || echo '$(srcdir)/'`dsproc_file_utils.c

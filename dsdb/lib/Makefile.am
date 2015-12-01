@@ -1,4 +1,4 @@
-perllibdir = $(libdir)/perl5/adi
+perllibdir = $(libdir)/perl5/dsdb
 perllib_DATA = \
 	CGIUtils.pm \
 	DBCORE.pm \

@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 58129 $
+*    $Revision: 66116 $
 *    $Author: ermold $
-*    $Date: 2014-11-04 19:52:51 +0000 (Tue, 04 Nov 2014) $
+*    $Date: 2015-11-30 21:55:20 +0000 (Mon, 30 Nov 2015) $
 *
 ********************************************************************************
 *
@@ -66,7 +66,9 @@ static time_t _dsproc_get_next_split_time(
     time_t    interval       = 0;
     struct tm gmt;
 
-    if (split_mode == SPLIT_ON_STORE) {
+    if (split_mode == SPLIT_ON_STORE ||
+        split_mode == SPLIT_NONE) {
+
         return(0);
     }
 
@@ -644,7 +646,8 @@ int dsproc_store_dataset(
     dsfile = (DSFile *)NULL;
 
     if (!newfile &&
-        ds->split_mode != SPLIT_ON_STORE) {
+        ds->split_mode != SPLIT_ON_STORE &&
+        ds->split_mode != SPLIT_NONE) {
 
         /************************************************************
         * Check for an existing file we should append this dataset to

@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 64432 $
+*    $Revision: 66117 $
 *    $Author: ermold $
-*    $Date: 2015-10-09 19:48:49 +0000 (Fri, 09 Oct 2015) $
+*    $Date: 2015-11-30 22:10:46 +0000 (Mon, 30 Nov 2015) $
 *    $State:$
 *
 ********************************************************************************
@@ -34,6 +34,9 @@
  */
 /** @privatesection */
 
+/**
+ *  List of config file key words.
+ */
 const char *_ConfKeys[] =
 {
     "FILE_NAME_PATTERNS",
@@ -61,16 +64,30 @@ const char *_ConfKeys[] =
 static time_t _csv_get_conf_file_name_time(const char *file_name)
 {
     int   YYYY, MM, DD, hh, mm, ss;
+    int   count;
     char *chrp;
 
-    /* File names look like: SSSnameF#.YYYYMMDD.hhmmss.csv_conf */
+    /* File names look like:
+     *
+     *     SSSnameF#.YYYYMMDD.hhmmss.csv_conf
+     *
+     * or:
+     *
+     *     SSSnameF#.dl.YYYYMMDD.hhmmss.csv_conf
+     */
 
-    chrp = strchr(file_name, '.');
+    chrp = strrchr(file_name, '.');
     if (!chrp) return(0);
+
+    for (count = 0; count < 2; ++count) {
+        if (chrp != file_name) {
+            for (--chrp; *chrp != '.' && chrp != file_name; --chrp);
+        }
+    }
 
     YYYY = MM = DD = hh = mm = ss = 0;
 
-    sscanf(++chrp, "%4d%2d%2d.%2d%2d%2d", &YYYY, &MM, &DD, &hh, &mm, &ss);
+    sscanf(chrp, "%4d%2d%2d.%2d%2d%2d", &YYYY, &MM, &DD, &hh, &mm, &ss);
 
     return(get_secs1970(YYYY, MM, DD, hh, mm, ss));
 }
@@ -239,9 +256,10 @@ MEMORY_ERROR:
  */
 static int _csv_find_conf_file(CSVConf *conf, time_t data_time, int flags, char *path, char *name)
 {
-    const char  *site        = conf->site;
-    const char  *fac         = conf->fac;
-    const char  *conf_name   = conf->name;
+    const char  *site      = conf->site;
+    const char  *fac       = conf->fac;
+    const char  *base_name = conf->name;
+    const char  *level     = conf->level;
 
     int          search_npaths;
     const char **search_paths;
@@ -301,11 +319,21 @@ static int _csv_find_conf_file(CSVConf *conf, time_t data_time, int flags, char 
 
             for (ni = 0; ni < 2; ++ni) {
 
-                if (ni == 0) {
-                    snprintf(name, PATH_MAX, "%s%s%s.csv_conf", site, conf_name, fac);
+                if (level) {
+                    if (ni == 0) {
+                        snprintf(name, PATH_MAX, "%s%s%s.%s.csv_conf", site, base_name, fac, level);
+                    }
+                    else {
+                        snprintf(name, PATH_MAX, "%s.%s.csv_conf", base_name, level);
+                    }
                 }
                 else {
-                    snprintf(name, PATH_MAX, "%s.csv_conf", conf_name);
+                    if (ni == 0) {
+                        snprintf(name, PATH_MAX, "%s%s%s.csv_conf", site, base_name, fac);
+                    }
+                    else {
+                        snprintf(name, PATH_MAX, "%s.csv_conf", base_name);
+                    }
                 }
 
                 DSPROC_DEBUG_LV1(" - checking for file: %s\n", name);
@@ -363,7 +391,13 @@ static int _csv_find_conf_file(CSVConf *conf, time_t data_time, int flags, char 
         }
         else {
 
-            sprintf(pattern, "^%s%s%s\\.[0-9]{8}\\.[0-9]{6}\\.csv_conf", site, conf_name, fac);
+            if (level) {
+                sprintf(pattern, "^%s%s%s\\.%s\\.[0-9]{8}\\.[0-9]{6}\\.csv_conf", site, base_name, fac, level);
+            }
+            else {
+                sprintf(pattern, "^%s%s%s\\.[0-9]{8}\\.[0-9]{6}\\.csv_conf", site, base_name, fac);
+            }
+
             patternp = &(pattern[0]);
 
             if (!_csv_get_conf_search_paths(conf, flags, &search_npaths, &search_paths)) {
@@ -1003,8 +1037,8 @@ MEMORY_ERROR:
  *  @param  conf      pointer to CSVConf structure to populate
  *  @param  out_name  name of the output variable, or NULL to use the column name
  *  @param  col_name  name of the CSV column
- *  @param  nmeta     number of metadata inputs
- *  @param  metadata  metadata information in the following order
+ *  @param  nargs     length of args list
+ *  @param  args      list of additional arguments in the following order
  *                    (specify NULL or empty string for no value):
  *                      - units
  *                      - comma separated list of missing value strings
@@ -1848,13 +1882,15 @@ void dsproc_free_csv_to_cds_map(CSV2CDSMap *map)
  *  If an error occurs in this function it will be appended to the log and
  *  error mail messages, and the process status will be set appropriately.
  *
- *  @param  conf_name  the name used to find conf files
+ *  @param  name   the base name of the conf file
+ *  @param  level  the data level of the conf file, or NULL
  *
  *  @retval  conf  pointer to the CSVConf structure
  *  @retval  NULL  if an error occurred
  */
 CSVConf *dsproc_init_csv_conf(
-    const char *conf_name)
+    const char *name,
+    const char *level)
 {
     const char *proc = dsproc_get_name();
     const char *site = dsproc_get_site();
@@ -1864,9 +1900,10 @@ CSVConf *dsproc_init_csv_conf(
 
     if (!conf ||
         !(conf->proc = strdup(proc))      ||
-        !(conf->name = strdup(conf_name)) ||
         !(conf->site = strdup(site))      ||
-        !(conf->fac  = strdup(fac))) {
+        !(conf->fac  = strdup(fac))       ||
+        !(conf->name = strdup(name)) ||
+        (level && !(conf->level = strdup(level)))) {
 
         if (conf) {
             dsproc_free_csv_conf(conf);

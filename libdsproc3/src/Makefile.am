@@ -21,6 +21,7 @@ libdsproc3_la_SOURCES = \
 	dsproc_deprecated.c \
 	dsproc_dqrdb.c \
 	dsproc_dsdb.c \
+        dsproc_exec.c \
 	dsproc_file_utils.c \
 	dsproc_hooks.c \
 	dsproc_main.c \

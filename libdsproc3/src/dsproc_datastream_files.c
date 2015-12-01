@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 63482 $
+*    $Revision: 66116 $
 *    $Author: ermold $
-*    $Date: 2015-08-26 23:29:42 +0000 (Wed, 26 Aug 2015) $
+*    $Date: 2015-11-30 21:55:20 +0000 (Mon, 30 Nov 2015) $
 *
 ********************************************************************************
 *
@@ -1578,6 +1578,16 @@ void dsproc_set_datastream_split_mode(
                     "  - split_start:    month %g\n"
                     "  - split_interval: %g months\n",
                     ds->name, split_start, split_interval);
+
+                break;
+
+            case SPLIT_NONE:
+
+                DEBUG_LV1( DSPROC_LIB_NAME,
+                    "%s: Setting datastream file splitting mode:\n"
+                    " -> always append output to the previous file unless otherwise\n"
+                    " -> specified in the call to dsproc_store_dataset.\n",
+                    ds->name);
 
                 break;
 

@@ -1,7 +1,7 @@
-sysconf_DATA = adi-setenv
+sysconf_DATA = dsdb-setenv
 
 CLEANFILES = $(sysconf_DATA)
-EXTRA_DIST = adi-setenv.in
+EXTRA_DIST = dsdb-setenv.in
 
 do_subst = sed \
 	-e 's,[@]PREFIX[@],$(prefix),g' \

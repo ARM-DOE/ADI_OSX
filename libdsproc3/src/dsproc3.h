@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 64432 $
+*    $Revision: 66117 $
 *    $Author: ermold $
-*    $Date: 2015-10-09 19:48:49 +0000 (Fri, 09 Oct 2015) $
+*    $Date: 2015-11-30 22:10:46 +0000 (Mon, 30 Nov 2015) $
 *
 ********************************************************************************
 *
@@ -405,12 +405,20 @@ const char *dsproc_datastream_path(int ds_id);
 typedef enum {
 
     SPLIT_ON_STORE  = 0, /**< Always create a new file when data is stored.   */
+
     SPLIT_ON_HOURS  = 1, /**< Split start is the hour of the day for the first
                               split [0-23], and split interval is in hours.   */
+
     SPLIT_ON_DAYS   = 2, /**< Split start is the day of the month for the first
                               split [1-31], and split interval is in days.    */
-    SPLIT_ON_MONTHS = 3  /**< Split start is the month of the year for the first
+
+    SPLIT_ON_MONTHS = 3, /**< Split start is the month of the year for the first
                               split [1-12], and split interval is in months.  */
+
+    SPLIT_NONE      = 4  /**< Always append output to the previous file
+                              unless otherwise specified in the call to
+                              dsproc_store_dataset. */
+
 } SplitMode;
 
 int     dsproc_add_datastream_file_patterns(
@@ -901,6 +909,19 @@ void      dsproc_print_dataset_object(
 
 /******************************************************************************/
 /**
+ *  @defgroup DSPROC_MISC_UTILITIES Miscellaneous Utilities
+ */
+/*@{*/
+
+int dsproc_execvp(
+    const char *file,
+    char *const argv[],
+    int         flags);
+
+/*@}*/
+
+/******************************************************************************/
+/**
  *  @defgroup DSPROC_STATUS Process Status Definitions
  */
 /*@{*/
@@ -1328,8 +1349,8 @@ int         dsproc_set_csv_time_patterns(
  */
 typedef struct {
 
-    const char *strval;
-    double      dblval;
+    const char *strval; /**< string value in CSV file       */
+    double      dblval; /**< value to use in output dataset */
 
 } CSVStrMap;
 
@@ -1396,9 +1417,9 @@ int     dsproc_map_csv_to_cds_by_index(
  */
 typedef struct
 {
-    const char  *name;
-    int          npatterns;
-    const char **patterns;
+    const char  *name;      /**< name of the date/time column            */
+    int          npatterns; /**< number of possible time string patterns */
+    const char **patterns;  /**< list of possile time string patterns    */
 
 } CSVTimeCol;
 
@@ -1407,12 +1428,12 @@ typedef struct
  */
 typedef struct
 {
-    const char  *out_name;
-    const char  *col_name;
-    const char  *units;
-    int          nmissings;
-    const char **missings;
-    char        *missbuf;
+    const char  *out_name;  /**< name of the variable in the output dataset        */
+    const char  *col_name;  /**< name of the column in the input CSV file          */
+    const char  *units;     /**< units used in the CSV file                        */
+    int          nmissings; /**< number of missing values used in the CSV file     */
+    const char **missings;  /**< list of missing values used in the CSV file       */
+    char        *missbuf;   /**< buffer used to parse the string of missing values */
 
 } CSVFieldMap;
 
@@ -1426,7 +1447,8 @@ typedef struct
     const char   *proc;           /**< the process name                      */
     const char   *site;           /**< the site name                         */
     const char   *fac;            /**< the facility name                     */
-    const char   *name;           /**< the name used to find conf files      */
+    const char   *name;           /**< the conf file base name               */
+    const char   *level;          /**< the conf file level                   */
 
     /* Set by csv_read_conf_file */
 
@@ -1512,7 +1534,8 @@ void        dsproc_free_csv_to_cds_map(
                 CSV2CDSMap *map);
 
 CSVConf    *dsproc_init_csv_conf(
-                const char *conf_name);
+                const char *name,
+                const char *level);
 
 int         dsproc_load_csv_conf(
                 CSVConf *conf,

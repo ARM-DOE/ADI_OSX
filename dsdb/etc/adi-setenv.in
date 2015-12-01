@@ -1,3 +1,0 @@
-setenv DSDB_HOME "@PREFIX@"
-setenv PERLLIB   "$PERLLIB:@LIBDIR@/perl5/adi"
-
