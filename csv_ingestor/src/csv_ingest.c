@@ -8,9 +8,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 65934 $
+*    $Revision: 66144 $
 *    $Author: ermold $
-*    $Date: 2015-11-18 19:24:30 +0000 (Wed, 18 Nov 2015) $
+*    $Date: 2015-12-01 18:56:24 +0000 (Tue, 01 Dec 2015) $
 *
 ********************************************************************************
 *
@@ -24,7 +24,7 @@
 
 #include "csv_ingest.h"
 
-static char *gVersion = "$State: ingest-csv_ingestor-1.0-alpha $";
+static char *gVersion = "$State: ingest-csv_ingestor-1.0-beta $";
 
 /**
  *  Initialize the CSV process.
@@ -80,7 +80,7 @@ void *csv_ingest_init(void)
     *  Find and load the CSV Ingest configuration file
     *************************************************************/
 
-    conf = dsproc_init_csv_conf(data->proc_name);
+    conf = dsproc_init_csv_conf(data->proc_name, NULL);
     if (!conf) {
         goto ERROR_EXIT;
     }
