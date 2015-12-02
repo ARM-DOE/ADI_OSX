@@ -2339,7 +2339,7 @@ fi
 
 # Checks for library functions.
 
-ac_config_files="$ac_config_files Makefile bin/Makefile conf/Makefile etc/Makefile lib/Makefile"
+ac_config_files="$ac_config_files Makefile bin/Makefile conf/Makefile etc/Makefile lib/Makefile share/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -2959,6 +2959,7 @@ do
     "conf/Makefile") CONFIG_FILES="$CONFIG_FILES conf/Makefile" ;;
     "etc/Makefile") CONFIG_FILES="$CONFIG_FILES etc/Makefile" ;;
     "lib/Makefile") CONFIG_FILES="$CONFIG_FILES lib/Makefile" ;;
+    "share/Makefile") CONFIG_FILES="$CONFIG_FILES share/Makefile" ;;
 
   *) { { $as_echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 $as_echo "$as_me: error: invalid argument: $ac_config_target" >&2;}

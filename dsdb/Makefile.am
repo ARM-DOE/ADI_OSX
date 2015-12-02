@@ -1,4 +1,4 @@
-SUBDIRS = bin conf etc lib
+SUBDIRS = bin conf etc lib share
 
 MAINTAINERCLEANFILES = Makefile.in \
 aclocal.m4 \

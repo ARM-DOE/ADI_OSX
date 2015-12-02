@@ -28,6 +28,7 @@ AC_CONFIG_FILES([Makefile
                  bin/Makefile
                  conf/Makefile
                  etc/Makefile
-                 lib/Makefile])
+                 lib/Makefile
+                 share/Makefile])
 
 AC_OUTPUT
