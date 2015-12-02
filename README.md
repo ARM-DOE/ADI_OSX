@@ -20,7 +20,7 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
   - If you have just installed Anaconda, be sure to restart your bash terminal session so that the new python version has been added to your path. Running `python --version` should show something like 
   
     `Python 2.7.10 :: Anaconda 2.3.0 (x86_64)`.
-  - Download the adi python package from [here](https://engineering.arm.gov/~vonderfecht/adi-python-1.0.tar.gz)
+  - Download the adi python package from [here](https://engineering.arm.gov/~gaustad/adi-python-1.0.tar.gz)
   - untar the file, and from inside it, run:
   - `python setup.py install`
   - This should install the ADI libraries for whichever is your default version of python.
