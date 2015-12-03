@@ -6,14 +6,17 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
 
 ## To Install ADI:
 
-- Install the requisite perl modules. In a terminal, run the commands below. If you have not used cpan before, you will be asked to configure it. Accepting all the defaults will work fine.
-  - `sudo cpan JSON::XS`
-  - `sudo cpan CGI::Session`e
-- Install <a href="http://brew.sh/" target="_blank">Homebrew</a> if it's not already installed
-- Tap the appropriate Homebrew formulas
-  - `brew tap homebrew/science`
-  - `brew tap ARM-DOE/adi`
-- Install the core ADI libraries:
+- Install Homebrew if it's not already installed
+- If you have installed a previous version execute the following
+  - `brew uninstall adi`
+  - `brew untap arm-doe/adi`
+  - `brew tap arm-doe/adi`
+  -  'brew tap homebrew/science'
+  - `brew fetch --force adi`
+  - `brew install adi`
+- Otherwise for a first installation
+  -  'brew tap homebrew/science'
+  - `brew tap arm-doe/adi`
   - `brew install adi`
 - For Python programmers:
   - First, ensure your default version of Python is python 2.7, and has numpy and Cython installed. The easiest way to do this for new users is to install [Anaconda](http://continuum.io/downloads).
