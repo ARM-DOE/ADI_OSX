@@ -27,12 +27,12 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
 
 ## Set Up an Environment for ADI
 
-- Download [adi_home](https://engineering.arm.gov/~vonderfecht/adi_home.tar.gz). This tarfile contains a directory structure to get you started running ADI quickly. Note that you can also configure the directory structure however you like on your own. 
+- Download [adi_home](https://engineering.arm.gov/~gaustad/adi_home.tar.gz). This tarfile contains a directory structure to get you started running ADI quickly. Note that you can also configure the directory structure however you like on your own. 
   
   *A bit of explanation here: ADI's VAPs expect certain directories and environment variables to be present, so to run VAPs, you
   must re-create these directories and environment variables. `adi_home` gets this started for you; it contains all the
   directories needed to run vaps, and provides the required environment variables in the file env_vars. You can use the example1
-  vap to verify the ADI installation worked properly, and as a place to set up new vaps.*
+  vap to verify the ADI installation worked properly.*
 
 - untar the file and copy the resulting `adi_home` directory to somewhere you want to work from, say, `~/Documents`
 - Enter the untarred `adi_home` directory
