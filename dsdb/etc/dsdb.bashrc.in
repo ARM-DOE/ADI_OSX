@@ -1,0 +1,8 @@
+export DSDB_HOME="@PREFIX@"
+
+if [ -z "$PERLLIB" ]; then
+    export PERLLIB="@LIBDIR@/perl5/dsdb"
+else
+    export PERLLIB="${PERLLIB}:@LIBDIR@/perl5/dsdb"
+fi
+
