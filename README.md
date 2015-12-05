@@ -49,13 +49,21 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
   - go into `dev/vap/src/adi_example1/process_dod_defs`
   - import the process by running `db_import_process -a dsdb_data -fmt json adi_example1.json`
   - import the output data definitions by running `db_load_dod -a dsdb_data cpc.json` and `db_load_dod -a dsdb_data met.json`
-- Run the vap process
+
+- Run C version of example1
   - go down one directory into `dev/vap/src/adi_example1/`
   - run `make clean; make`. If successful the binary ~/adi_home/dev/vap/bin/adi_example1_vap will be created.
   - run `adi_example1_vap -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R` this should complete successfully with an exit status of zero.
   - The output data created are:
- ~/adi_home/data/datastream/sbs/sbsadicpcexample1S2.a1/sbsadicpcexample1S2.a1.20110401.000000.cdf
- ~/adi_home/data/datastream/sbs/sbsadimetexample1S2.a1/sbsadimetexample1S2.a1.20110401.000000.cdf
+    ~/adi_home/data/datastream/sbs/sbsadicpcexample1S2.a1/sbsadicpcexample1S2.a1.20110401.000000.cdf
+    ~/adi_home/data/datastream/sbs/sbsadimetexample1S2.a1/sbsadimetexample1S2.a1.20110401.000000.cdf
+
+- Run Python version of example1
+  - go into directory `dev/vap/src/adi_example1_py/`
+  - run `python adi_example1_vap.py -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R'
+  - The output data created is the same as for the C run:
+    ~/adi_home/data/datastream/sbs/sbsadicpcexample1S2.a1/sbsadicpcexample1S2.a1.20110401.000000.cdf
+    ~/adi_home/data/datastream/sbs/sbsadimetexample1S2.a1/sbsadimetexample1S2.a1.20110401.000000.cdf
 
 ## To Add More Process Definitions to the DSDB:
 The process definitions for adi_example1 have been included in your adi_home area. To run additional VAPs against your local database, you will need to import their process information.
