@@ -37,18 +37,28 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
   directories needed to run vaps, and provides the required environment variables in the file env_vars. You can use the example1
   vap to verify the ADI installation worked properly.*
 
-- untar the file and copy the resulting `adi_home` directory to somewhere you want to work from, say, `~/Documents`
+- untar the file and copy the resulting `adi_home` directory to somewhere you want to work from, say, `~/Documents` or your home directory in /Users, i.e. `~`.  These instructions will assume you copied it into `~`.
+- A core database named dsdb has been provided in /usr/local/share.  Create the directory path ~/adi_home/data/db/sqlite
+- Copy the core dsdb into it`cp /usr/local/share/dsdb   ~/adi_home/data/db/sqlite/dsdb.sqlite`
+- Enter your home directory and create a new file named .db_connect with the following entries
+  - dsdb_data    sqlite    ~/adi_home/data/db/sqlite/dsdb.sqlite
+  - dsdb_read    sqlite    ~/adi_home/data/db/sqlite/dsdb.sqlite
 - Enter the untarred `adi_home` directory
-- To set the required enviornment variables, do `source env_vars` while in the adi_home directory
-- Edit `.db_connect` and replace /path/to/adi_home with the actual path to your adi_home directory
-- `cat env_vars`, and copy all the `export` commands into your bash terminal, to set up the enviornment. Later you may want to add these environment variables to your `.bash_profile`.
-- To test your installation:
-  - go into `dev/vap/src/adi_example1`
-  - run `make clean; make`. If this fails, something about the installation has gone wrong.
-  - run `../../bin/adi_example1_vap -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R` this should complete successfully.
+- To set the required environment variables, cat ~/adi_home/env_vars_bash, and copy all the commands into your bash terminal. Later you may want to add these environment variables to your .bash_profile, as THESE WILL HAVE TO BE SET EACH TIME YOU ENTER A NEW TERMINAL.
+- Setup the example vap process:
+  - go into `dev/vap/src/adi_example1/process_dod_defs`
+  - import the process by running `db_import_process -a dsdb_data -fmt json adi_example1.json`
+  - import the output data definitions by running `db_load_dod -a dsdb_data cpc.json` and `db_load_dod -a dsdb_data met.json`
+- Run the vap process
+  - go down one directory into `dev/vap/src/adi_example1/`
+  - run `make clean; make`. If successful the binary ~/adi_home/dev/vap/bin/adi_example1_vap will be created.
+  - run `adi_example1_vap -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R` this should complete successfully with an exit status of zero.
+  - The output data created are:
+ ~/adi_home/data/datastream/sbs/sbsadicpcexample1S2.a1/sbsadicpcexample1S2.a1.20110401.000000.cdf
+ ~/adi_home/data/datastream/sbs/sbsadimetexample1S2.a1/sbsadimetexample1S2.a1.20110401.000000.cdf
 
-## To Add Process Definitions to the DSDB:
-The Sqlite copy of the database that comes with `adi_home` is a minimal copy containing only a handful of example vap process definitions. To run additional VAPs against your local database, you will need to import their process information.
+## To Add More Process Definitions to the DSDB:
+The process definitions for adi_example1 have been included in your adi_home area. To run additional VAPs against your local database, you will need to import their process information.
 
 - Get the process definition from the PCM
   - Go to the <a href="https://engineering.arm.gov/pcm/Main.html" target="_blank">Processing Configuration Manager</a>
@@ -56,7 +66,7 @@ The Sqlite copy of the database that comes with `adi_home` is a minimal copy con
   - Type the name of the process you want in the filter at the bottom, or find it by scrolling through the list
   - Double click the name of the process to bring it up on the right hand side
   - Click *Text Export/Import* in the lower right corner, and copy the text that appears to a file on your machine
-- Set your enviornment variables as specified in `env_vars` from the last section 
+- Set your enviornment variables as specified in `env_vars_bash` from the last section 
 - run `db_import_process` for the definition you retrieved
   - `db_import_process -a dsdb_data -fmt json <process definition file name>`
 - Load the DODs nessecary to run this process. The DODs used by a process are listed on that process's page in the PCM.
