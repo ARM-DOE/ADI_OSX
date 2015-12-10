@@ -44,14 +44,14 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
   - dsdb_data    sqlite    ~/adi_home/data/db/sqlite/dsdb.sqlite
   - dsdb_read    sqlite    ~/adi_home/data/db/sqlite/dsdb.sqlite
 - Enter the untarred `adi_home` directory
-- To set the required environment variables, cat ~/adi_home/env_vars_bash, and copy all the commands into your bash terminal. Later you may want to add these environment variables to your .bash_profile, as THESE WILL HAVE TO BE SET EACH TIME YOU ENTER A NEW TERMINAL.
+- To set the required environment variables for running from ~/adi_home, cat ~/adi_home/env_vars_bash, and copy all the commands into your bash terminal. Later you may want to add these environment variables to your .bash_profile, as THESE WILL HAVE TO BE SET EACH TIME YOU ENTER A NEW TERMINAL.  You will probably want to update ~/adi_home/env_vars_bash to set the locations explicitly so you can run your process from any location rather than from ~/adi_home.
 - Setup the example vap process:
   - go into `dev/vap/src/adi_example1/process_dod_defs`
   - import the process by running `db_import_process -a dsdb_data -fmt json adi_example1.json`
   - import the output data definitions by running `db_load_dod -a dsdb_data cpc.json` and `db_load_dod -a dsdb_data met.json`
 
 - Run C version of example1
-  - go down one directory into `dev/vap/src/adi_example1/`
+  - if you have not edited ~/adi_home/env_vars_bash for your installtion, from the ~/adi_home directory 
   - run `make clean; make`. If successful the binary ~/adi_home/dev/vap/bin/adi_example1_vap will be created.
   - run `adi_example1_vap -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R` this should complete successfully with an exit status of zero.
   - The output data created are:
@@ -59,7 +59,7 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
     ~/adi_home/data/datastream/sbs/sbsadimetexample1S2.a1/sbsadimetexample1S2.a1.20110401.000000.cdf
 
 - Run Python version of example1
-  - go into directory `dev/vap/src/adi_example1_py/`
+  - if you have not edited ~/adi_home/env_vars_bash for your installtion, from the ~/adi_home directory 
   - run `python adi_example1_vap.py -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R'
   - The output data created is the same as for the C run:
     ~/adi_home/data/datastream/sbs/sbsadicpcexample1S2.a1/sbsadicpcexample1S2.a1.20110401.000000.cdf
