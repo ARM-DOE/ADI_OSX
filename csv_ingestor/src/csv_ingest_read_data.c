@@ -8,9 +8,9 @@
 * ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 65933 $
+*    $Revision: 66394 $
 *    $Author: ermold $
-*    $Date: 2015-11-18 19:18:57 +0000 (Wed, 18 Nov 2015) $
+*    $Date: 2015-12-10 23:49:40 +0000 (Thu, 10 Dec 2015) $
 *
 ********************************************************************************
 *
@@ -31,14 +31,15 @@
  *  error mail messages, and the process status will be set appropriately.
  *
  *  @param   data   pointer to the UserData structure
+ *  @param   ds     pointer to the DsData structure
  *
  *  @retval  nrecs  number of records read in
  *  @retval  -1     if a fatal error occurred
  */
-int csv_ingest_read_data(UserData *data)
+int csv_ingest_read_data(UserData *data, DsData *ds)
 {
-    CSVConf    *conf      = data->conf;
-    CSVParser  *csv       = data->csv;
+    CSVConf    *conf      = ds->conf;
+    CSVParser  *csv       = ds->csv;
     char        delim     = conf->delim;
     char        exp_ncols = conf->exp_ncols;
     const char *delims    = ",\t";
@@ -191,7 +192,7 @@ int csv_ingest_read_data(UserData *data)
 
         if (!delim) {
 
-            DSPROC_ERROR( "Could Not Determine Delimiter From Header Line",
+            DSPROC_ERROR( "Could not determine delimiter from header line",
                 "Could not determine delimiter from header line: '%s'\n",
                 linep);
 

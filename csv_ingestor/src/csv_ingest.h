@@ -8,9 +8,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 65934 $
+*    $Revision: 66394 $
 *    $Author: ermold $
-*    $Date: 2015-11-18 19:24:30 +0000 (Wed, 18 Nov 2015) $
+*    $Date: 2015-12-10 23:49:40 +0000 (Thu, 10 Dec 2015) $
 *
 ********************************************************************************
 *
@@ -33,30 +33,44 @@
 /*@{*/
 
 /**
+ *  Datastream Data structure
+ *
+ *  Structure used to read in an input file and map it to an output dataset.
+ */
+typedef struct
+{
+    int         dsid;      /**< output datastream ID                        */
+    CSVConf    *conf;      /**< CSV configuration structure                 */
+    CSVParser  *csv;       /**< pointer to the CSV Parser                   */
+    CSV2CDSMap *map;       /**< pointer to the CSV to CDS mapping structure */
+    REList     *fn_relist; /**< compiled file name patterns                 */
+
+} DsData;
+
+/**
  *  UserData structure passed to all user defined hook functions.
  */
 typedef struct
 {
-    const char *proc_name;   /**< process name                          */
-    const char *site;        /**< process site                          */
-    const char *fac;         /**< process facility                      */
+    const char *proc_name;    /**< process name                          */
+    const char *site;         /**< process site                          */
+    const char *fac;          /**< process facility                      */
 
-    CSVConf    *conf;        /**< CSV configuration structure           */
-    CSVParser  *csv;         /**< pointer to the CSV Parser             */
+    int         raw_in_dsid;  /**< raw data input datastream ID          */
+    int         raw_out_dsid; /**< raw data output datastream ID         */
 
-    int         in_dsid;     /**< input datastream ID                   */
-    int         out_dsid;    /**< output datastream ID                  */
-    int         raw_dsid;    /**< raw output datastream ID              */
+    const char *input_dir;    /**< raw file input directory              */
+    const char *file_name;    /**< name of the file being processed      */
 
-    const char *input_dir;   /**< raw file input directory              */
-    const char *file_name;   /**< name of the file being processed      */
+    time_t      begin_time;   /**< first record time in the current file */
+    time_t      end_time;     /**< last record time in the current file  */
 
-    time_t      begin_time;  /**< first record time in the current file */
-    time_t      end_time;    /**< last record time in the current file  */
+    DsData    **dsp;          /**< array of DsData pointers              */
+    int         ndsp;         /**< number of DsData entries              */
 
 } UserData;
 
-/* Main Ingest Functions */
+/* Main CSV Ingest Functions */
 
 void   *csv_ingest_init(void);
 void    csv_ingest_finish(void *user_data);
@@ -65,25 +79,31 @@ int     csv_ingest_process_file(
             const char *input_dir,
             const char *file_name);
 
+void    csv_ingest_free_dsdata(DsData *ds);
+
+DsData *csv_ingest_init_dsdata(
+            const char *dsname,
+            const char *dslevel);
+
 int     main(int argc, char *argv[]);
 
 /*@}*/
 
 /**
- *  @defgroup CSV2NC_READ_DATA CSV2NC Read Data
+ *  @defgroup CSV_INGESTOR_READ_DATA CSV Ingest Read Data
  */
 /*@{*/
 
-int     csv_ingest_read_data(UserData *data);
+int     csv_ingest_read_data(UserData *data, DsData *ds);
 
 /*@}*/
 
 /**
- *  @defgroup CSV2NC_STORE_DATA CSV2NC Store Data
+ *  @defgroup CSV_INGESTOR_STORE_DATA CSV Ingest Store Data
  */
 /*@{*/
 
-int     csv_ingest_store_data(UserData *data);
+int     csv_ingest_store_data(UserData *data, DsData *ds);
 
 /*@}*/
 
