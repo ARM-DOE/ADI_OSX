@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 66117 $
+*    $Revision: 66393 $
 *    $Author: ermold $
-*    $Date: 2015-11-30 22:10:46 +0000 (Mon, 30 Nov 2015) $
+*    $Date: 2015-12-10 23:38:43 +0000 (Thu, 10 Dec 2015) $
 *    $State:$
 *
 ********************************************************************************
@@ -545,44 +545,63 @@ static char *_csv_split_delim(char *strp, char delim)
 }
 
 /**
- *  Trim end of line comments and whitespace.
+ *  Strip comments from in memory copy of conf file.
+ *
+ *  @param  file_data  pointer to start of the config file data
+ */
+static void _csv_strip_comments(char *file_data)
+{
+    char *cp1   = file_data;
+    char *cp2   = file_data;
+    char  quote = '\0';
+
+    while (*cp2 != '\0') {
+
+        if (*cp2 == '"' || *cp2 == '\'') {
+
+            /* quoted strings */
+
+            quote = *cp2;
+
+            *cp1++ = *cp2++;
+
+            while (*cp2 != '\0') {
+
+                if (*cp2 == quote) {
+
+                    if (*(cp2+1) == quote) {
+                        *cp1++ = *cp2++;
+                    }
+                    else {
+                        break;
+                    }
+                }
+
+                *cp1++ = *cp2++;
+            }
+        }
+        else if (*cp2 == '#') {
+
+            /* comments */
+
+            for (++cp2; *cp2 != '\n' && *cp2 != '\0'; ++cp2);
+        }
+
+        *cp1++ = *cp2++;
+    }
+
+    *cp1++ = *cp2++;
+}
+
+/**
+ *  Trim end of line whitespace.
  *
  *  @param  linep  pointer to the line to trim
  */
 static void _csv_trim_eol(char *linep)
 {
-    char  quote = '\0';
-    char *eol   = linep;
-
-    /* look for end-of-line comment */
-
-    for (; *eol != '\0'; ++eol) {
-        if (quote) {
-            if (*eol == quote) {
-
-                if (*(eol+1) == quote) {
-                    ++eol;
-                }
-                else {
-                    quote = '\0';
-                }
-            }
-        }
-        else if (*eol == '"' || *eol == '\'') {
-            quote = *eol;
-        }
-        else if (*eol == '#') {
-            *eol = '\0';
-            break;
-        }
-    }
-
-    /* trim end-of-line whitespace */
-
-    if (eol != linep) {
-        --eol;
-        while ((eol >= linep) && isspace(*eol)) *eol-- = '\0';
-    }
+    char *eol = linep + strlen(linep) - 1;
+    while ((eol >= linep) && isspace(*eol)) *eol-- = '\0';
 }
 
 /**
@@ -721,6 +740,10 @@ static int _csv_load_conf_file(
 
     file_data[nbytes] = '\0';
 
+    /* Remove comments */
+
+    _csv_strip_comments(file_data);
+
     /* Allocate memory for the buffer */
 
     buflen = 64;
@@ -759,7 +782,7 @@ static int _csv_load_conf_file(
             *eol = '\0';
         }
 
-        /* Trim end-of-line comments and whitespace */
+        /* Trim end-of-line whitespace */
 
         _csv_trim_eol(linep);
 
@@ -771,7 +794,6 @@ static int _csv_load_conf_file(
         }
 
         /* Check if this is a key word. */
-
         if (isalpha(*linep)) {
 
             linelen = strlen(linep);
@@ -781,7 +803,7 @@ static int _csv_load_conf_file(
                 keylen = strlen(_ConfKeys[ki]);
                 if (keylen > linelen) continue;
 
-                chr = linep[keylen + 1];
+                chr = linep[keylen];
                 if (isspace(chr) || chr == ':' || chr == '=' || chr == '\0') {
                     if (strncmp(linep, _ConfKeys[ki], keylen) == 0) {
                         break;
@@ -802,8 +824,9 @@ static int _csv_load_conf_file(
             else {
 
                 ERROR( DSPROC_LIB_NAME,
-                    "Invalid keyword found on line %d in file: %s\n",
-                    linenum, full_path);
+                    "Invalid keyword found on line %d in file: %s\n"
+                    " -> '%s'\n",
+                    linenum, full_path, linep);
 
                 dsproc_set_status(DSPROC_ECSVCONF);
 
@@ -882,7 +905,12 @@ static int _csv_load_conf_file(
         else if (strcmp(key, "DELIMITER") == 0) {
 
             linep = _csv_trim_quotes(linep);
-            conf->delim = *linep;
+            if (*linep == '\\' && *(linep+1) == 't') {
+                conf->delim = '\t';
+            }
+            else {
+                conf->delim = *linep;
+            }
         }
         else if (strcmp(key, "HEADER_LINE") == 0) {
 
@@ -1657,22 +1685,6 @@ CSV2CDSMap *dsproc_create_csv_to_cds_map(
 
 // BDE: Need update to append _ to front of name if it begins with a number
 
-                /* remove quotes from cds variable name */
-/*
-This should no longer be needed
-
-                strp = (char *)var_map->cds_name;
-                if (*strp == '"' || *strp == '\'') {
-
-                    length = strlen(strp);
-
-                    if (length > 2 && strp[length - 1] == *strp) {
-
-                        while ((*strp = *(strp + 1))) ++strp;
-                        *(strp-1) = '\0';
-                    }
-                }
-*/
                 /* change all non-alphanumeric characters to underbars */
 
                 strp = (char *)map->cds_name;
@@ -1758,22 +1770,6 @@ This should no longer be needed
 
 // BDE: Need update to append _ to front of name if it begins with a number
 
-                /* remove quotes from cds variable name */
-/*
-This should no longer be needed
-
-                strp = (char *)var_map->cds_name;
-                if (*strp == '"' || *strp == '\'') {
-
-                    length = strlen(strp);
-
-                    if (length > 2 && strp[length - 1] == *strp) {
-
-                        while ((*strp = *(strp + 1))) ++strp;
-                        *(strp-1) = '\0';
-                    }
-                }
-*/
                 /* change all non-alphanumeric characters to underbars */
 
                 strp = (char *)map->cds_name;
@@ -1813,9 +1809,10 @@ void dsproc_free_csv_conf(CSVConf *conf)
     if (conf) {
 
         if (conf->proc)      free((void *)conf->proc);
-        if (conf->name)      free((void *)conf->name);
         if (conf->site)      free((void *)conf->site);
         if (conf->fac)       free((void *)conf->fac);
+        if (conf->name)      free((void *)conf->name);
+        if (conf->level)     free((void *)conf->level);
 
         if (conf->file_name) free((void *)conf->file_name);
         if (conf->file_path) free((void *)conf->file_path);
@@ -1899,9 +1896,9 @@ CSVConf *dsproc_init_csv_conf(
     CSVConf *conf = (CSVConf *)calloc(1, sizeof(CSVConf));
 
     if (!conf ||
-        !(conf->proc = strdup(proc))      ||
-        !(conf->site = strdup(site))      ||
-        !(conf->fac  = strdup(fac))       ||
+        !(conf->proc = strdup(proc)) ||
+        !(conf->site = strdup(site)) ||
+        !(conf->fac  = strdup(fac))  ||
         !(conf->name = strdup(name)) ||
         (level && !(conf->level = strdup(level)))) {
 

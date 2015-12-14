@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 63473 $
+*    $Revision: 66348 $
 *    $Author: ermold $
-*    $Date: 2015-08-26 20:44:23 +0000 (Wed, 26 Aug 2015) $
+*    $Date: 2015-12-09 22:47:44 +0000 (Wed, 09 Dec 2015) $
 *
 ********************************************************************************
 *
@@ -330,6 +330,9 @@ void _dsproc_ingest_parse_args(
                 if (strcmp(*argv, "--dynamic-dods") == 0) {
                     dsproc_set_dynamic_dods_mode(1);
                 }
+                else if (strcmp(*argv, "--output-csv") == 0) {
+                    dsproc_set_output_format(DSF_CSV);
+                }
                 else {
                     fprintf(stderr,
                         "%s: Ignoring Invalid Long Option: '%s'\n",
@@ -534,6 +537,9 @@ void _dsproc_vap_parse_args(
 
                 if (strcmp(*argv, "--dynamic-dods") == 0) {
                     dsproc_set_dynamic_dods_mode(1);
+                }
+                else if (strcmp(*argv, "--output-csv") == 0) {
+                    dsproc_set_output_format(DSF_CSV);
                 }
                 else if (strcmp(*argv, "--real-time") == 0) {
 

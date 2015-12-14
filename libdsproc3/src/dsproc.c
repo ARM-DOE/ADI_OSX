@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 64432 $
+*    $Revision: 66348 $
 *    $Author: ermold $
-*    $Date: 2015-10-09 19:48:49 +0000 (Fri, 09 Oct 2015) $
+*    $Date: 2015-12-09 22:47:44 +0000 (Wed, 09 Dec 2015) $
 *
 ********************************************************************************
 *
@@ -1962,6 +1962,7 @@ int dsproc_is_fatal(int last_errno)
 //        DSPROC_EBADDSID,        // "Invalid Datastream ID"
 //        DSPROC_EBADINDSC,       // "Invalid Input Datastream Class"
 //        DSPROC_EBADOUTDSC,      // "Invalid Output Datastream Class"
+//        DSPROC_EBADOUTFORMAT,   // "Invalid Output Datastream Format"
         DSPROC_EBADRETRIEVER,   // "Invalid Retriever Definition"
 //        DSPROC_EBASETIME,       // "Could Not Get Base Time For Time Variable"
 //        DSPROC_EBOUNDSVAR,      // "Invalid Cell Boundary Variable or Definition"

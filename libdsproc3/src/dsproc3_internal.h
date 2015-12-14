@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 57311 $
+*    $Revision: 66348 $
 *    $Author: ermold $
-*    $Date: 2014-10-07 17:47:53 +0000 (Tue, 07 Oct 2014) $
+*    $Date: 2015-12-09 22:47:44 +0000 (Wed, 09 Dec 2015) $
 *
 ********************************************************************************
 *
@@ -241,6 +241,7 @@ void        dsproc_set_status(const char *status);
 typedef enum {
 
     DSF_NETCDF =  1, /**< netcdf data file format */
+    DSF_CSV    =  2, /**< csv data file format    */
     DSF_RAW    = 10, /**< generic raw data format */
     DSF_PNG    = 11, /**< png image format        */
     DSF_JPG    = 12  /**< jpg image format        */
@@ -259,6 +260,8 @@ int     dsproc_init_datastream(
 
 void    dsproc_set_datastream_flags(int ds_id, int flags);
 void    dsproc_set_datastream_format(int ds_id, DSFormat format);
+int     dsproc_set_output_format(DSFormat format);
+
 void    dsproc_unset_datastream_flags(int ds_id, int flags);
 
 void    dsproc_update_datastream_data_stats(

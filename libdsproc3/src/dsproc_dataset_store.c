@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 66116 $
+*    $Revision: 66348 $
 *    $Author: ermold $
-*    $Date: 2015-11-30 21:55:20 +0000 (Mon, 30 Nov 2015) $
+*    $Date: 2015-12-09 22:47:44 +0000 (Wed, 09 Dec 2015) $
 *
 ********************************************************************************
 *
@@ -250,6 +250,261 @@ static time_t _dsproc_get_next_split_time(
     return(split_time);
 }
 
+/**
+ *  Static: Write an output csv file.
+ *
+ *  If an error occurs in this function it will be appended to the log and
+ *  error mail messages, and the process status will be set appropriately.
+ *
+ *  @param  full_path - full path to the output file
+ *  @param  dataset   - output dataset
+ *  @param  ntimes    - number of times in the output dataset
+ *  @param  times     - array of times in the output dataset
+ *
+ *  @return
+ *    - 1 if successful
+ *    - 0 if an error occurred
+ */
+int _dsproc_write_csv(
+    const char *full_path,
+    CDSGroup   *dataset,
+    size_t      ntimes,
+    timeval_t  *times)
+{
+    FILE   *fp;
+    CDSVar *var;
+    CDSAtt *att;
+    int    *skip;
+    int     buflen;
+    char   *buffer;
+    char   *chrp;
+    char    ts[32];
+    int     nbytes;
+    int     length;
+    int     ci, vi;
+    size_t  ti;
+
+    /* Allocate memory for buffers */
+
+    buflen = 256;
+    buffer = (char *)calloc(buflen, sizeof(char));
+    skip   = (int *)calloc(dataset->nvars, sizeof(int));
+
+    if (!skip || !buffer) {
+
+        ERROR( DSPROC_LIB_NAME,
+            "Could not create output CSV file: %s\n"
+            " -> memory allocation error creating buffer\n",
+            full_path);
+
+        if (skip)   free(skip);
+        if (buffer) free(buffer);
+
+        dsproc_set_status(DSPROC_ENOMEM);
+        return(0);
+    }
+
+    /* Open the output file */
+
+    fp = fopen(full_path, "w");
+
+    if (!fp) {
+
+        ERROR( DSPROC_LIB_NAME,
+            "Could not open output CSV file: %s\n"
+            " -> %s\n",
+            full_path, strerror(errno));
+
+        dsproc_set_status(DSPROC_EFILEOPEN);
+        return(0);
+    }
+
+    /* Print the header */
+
+    nbytes = fprintf(fp, "time");
+    if (nbytes < 0) goto WRITE_ERROR;
+
+    for (vi = 0; vi < dataset->nvars; ++vi) {
+
+        var = dataset->vars[vi];
+
+        /* Skip time variables */
+
+        if (strcmp(var->name, "base_time") == 0 ||
+            strcmp(var->name, "time") == 0 ||
+            strcmp(var->name, "time_offset") == 0) {
+
+            skip[vi] = 1;
+            continue;
+        }
+
+        /* Skip multi-dimensional variables */
+
+        if (var->ndims > 1) {
+            if (!(var->ndims == 2 && var->type == CDS_CHAR)) {
+
+                DEBUG_LV1( DSPROC_LIB_NAME,
+                    "%s: Skipping multi-dimensional variable in CSV output: %s\n",
+                    dataset->name, var->name);
+
+                skip[vi] = 1;
+                continue;
+            }
+        }
+
+        /* Skip variables that are not dimensioned by time */
+
+        if (var->ndims == 0 || strcmp(var->dims[0]->name, "time") != 0) {
+
+            DEBUG_LV1( DSPROC_LIB_NAME,
+                "%s: Skipping non-time-varying variable in CSV output:  %s\n",
+                dataset->name, var->name);
+
+            skip[vi] = 1;
+            continue;
+        }
+
+        /* Print column name using variable name and units */
+
+        att = cds_get_att(var, "units");
+        if (att && att->type == CDS_CHAR && att->value.cp &&
+            strcmp(att->value.cp, "unitless") != 0) {
+
+            nbytes = fprintf(fp, ", %s (%s)", var->name, att->value.cp);
+        }
+        else {
+            nbytes = fprintf(fp, ", %s", var->name);
+        }
+
+        if (nbytes < 0) goto WRITE_ERROR;
+    }
+
+    nbytes = fprintf(fp, "\n");
+    if (nbytes < 0) goto WRITE_ERROR;
+
+    /* Print data rows */
+
+    buflen = 0;
+
+    for (ti = 0; ti < ntimes; ++ti) {
+
+        /* Print record time */
+
+        nbytes = fprintf(fp, "%s", format_timeval(&times[ti], ts));
+        if (nbytes < 0) goto WRITE_ERROR;
+
+        /* Print column values */
+
+        for (vi = 0; vi < dataset->nvars; ++vi) {
+
+            var = dataset->vars[vi];
+            if (skip[vi]) continue;
+
+            switch (var->type) {
+
+                case CDS_CHAR:
+                    if (var->ndims == 1) {
+                        nbytes = fprintf(fp, ", %c", var->data.cp[ti]);
+                    }
+                    else {
+                        length = cds_var_sample_size(var);
+
+                        if (length >= buflen) {
+
+                            buflen = length + 1;
+                            buffer = (char *)realloc(buffer, buflen * sizeof(char));
+
+                            if (!buffer) {
+
+                                ERROR( DSPROC_LIB_NAME,
+                                    "Could not write to output CSV file: %s\n"
+                                    " -> memory allocation error resizing buffer\n",
+                                    full_path);
+
+                                fclose(fp);
+                                free(skip);
+                                free(buffer);
+
+                                dsproc_set_status(DSPROC_ENOMEM);
+                                return(0);
+                            }
+                        }
+
+                        chrp = &var->data.cp[ti*length];
+
+                        for (ci = 0; ci < length; ++ci) {
+                            buffer[ci] = chrp[ci];
+                        }
+                        buffer[ci] = '\0';
+
+                        if (!strchr(buffer, ',')) {
+                            nbytes = fprintf(fp, ", %s", buffer);
+                        }
+                        else if (!strchr(buffer, '"')) {
+                            nbytes = fprintf(fp, ", \"%s\"", buffer);
+                        }
+                        else if (!strchr(buffer, '\'')) {
+                            nbytes = fprintf(fp, ", '%s'", buffer);
+                        }
+                        else {
+                            while ((chrp = strchr(buffer, ','))) {
+                                *chrp = ';';
+                            }
+                        }
+                    }
+                    break;
+                case CDS_BYTE:
+                    nbytes = fprintf(fp, ", %d", var->data.bp[ti]);
+                    break;
+                case CDS_SHORT:
+                    nbytes = fprintf(fp, ", %d", var->data.sp[ti]);
+                    break;
+                case CDS_INT:
+                    nbytes = fprintf(fp, ", %d", var->data.ip[ti]);
+                    break;
+                case CDS_FLOAT:
+                    nbytes = fprintf(fp, ", %.7g", var->data.fp[ti]);
+                    break;
+                case CDS_DOUBLE:
+                    nbytes = fprintf(fp, ", %.15g", var->data.dp[ti]);
+                    break;
+                default:
+                    nbytes = fprintf(fp, ", NaN");
+                    break;
+            }
+
+            if (nbytes < 0) goto WRITE_ERROR;
+        }
+
+        nbytes = fprintf(fp, "\n");
+        if (nbytes < 0) goto WRITE_ERROR;
+    }
+
+    if (fclose(fp) != 0) {
+        fp = (FILE *)NULL;
+        goto WRITE_ERROR;
+    }
+
+    free(skip);
+    free(buffer);
+
+    return(1);
+
+WRITE_ERROR:
+
+    if (fp) fclose(fp);
+    free(skip);
+    free(buffer);
+
+    ERROR( DSPROC_LIB_NAME,
+        "Could not write to output CSV file: %s\n"
+        " -> %s\n",
+        full_path, strerror(errno));
+
+    dsproc_set_status(DSPROC_EFILEWRITE);
+    return(0);
+}
+
 /*******************************************************************************
  *  Private Functions Visible Only To This Library
  */
@@ -398,6 +653,7 @@ int dsproc_store_dataset(
     int         force_mode    = dsproc_get_force_mode();
 
     CDSGroup   *out_dataset   = ds->out_cds;
+    DSFormat    out_format    = ds->format;
     timeval_t  *out_times     = (timeval_t *)NULL;
     size_t      out_ntimes;
     timeval_t   out_begin;
@@ -544,6 +800,54 @@ int dsproc_store_dataset(
         if (time_desc) free(time_desc);
         _dsproc_free_datastream_out_cds(ds);
         return(0);
+    }
+
+    /************************************************************
+    *  Hack for CSV output format.
+    *
+    *  The proper way to do this is to add a data file access
+    *  layer to abstract the file format from the code logic...
+    *  but this should be good enough for what is needed now...
+    *************************************************************/
+
+    if (out_format == DSF_CSV) {
+
+        out_begin = out_times[0];
+        out_end   = out_times[out_ntimes - 1];
+
+        /* Create file name */
+
+        _dsproc_create_timestamp(out_begin.tv_sec, timestamp);
+
+        snprintf(full_path, PATH_MAX, "%s/%s.%s.%s",
+            ds_path, ds->name, timestamp, ds->extension);
+
+        /* Create the file */
+
+        if (msngr_debug_level || msngr_provenance_level) {
+
+            format_timeval(&out_begin, begin_ts);
+            format_timeval(&out_end,   end_ts);
+
+            DEBUG_LV1( DSPROC_LIB_NAME,
+                "%s: Writing file for record set:\n"
+                " - times:  '%s' to '%s'\n"
+                " - file:   %s",
+                ds->name, begin_ts, end_ts, full_path);
+        }
+
+        if (!_dsproc_write_csv(
+            full_path, out_dataset, out_ntimes, out_times)) {
+
+            goto ERROR_EXIT;
+        }
+
+        /* Update datastream stats and return.
+         *
+         * Yes, I'm using a goto... it's a hack...
+         */
+
+        goto UPDATE_DS_STATS;
     }
 
     /************************************************************
@@ -939,6 +1243,8 @@ int dsproc_store_dataset(
     /************************************************************
     *  Update datastream stats and times
     *************************************************************/
+
+UPDATE_DS_STATS:
 
     dsproc_update_datastream_data_stats(
         ds_id, out_ntimes, &out_begin, &out_end);

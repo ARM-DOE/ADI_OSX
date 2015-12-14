@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 57305 $
+*    $Revision: 66348 $
 *    $Author: ermold $
-*    $Date: 2014-10-06 20:26:36 +0000 (Mon, 06 Oct 2014) $
+*    $Date: 2015-12-09 22:47:44 +0000 (Wed, 09 Dec 2015) $
 *
 ********************************************************************************
 *
@@ -483,7 +483,11 @@ void _dsproc_free_datastream(DataStream *ds);
 int  _dsproc_init_input_datastreams(void);
 int  _dsproc_init_output_datastreams(void);
 
-const char *_dsproc_datastream_role_name(DSRole role);
+const char *_dsproc_dsrole_to_name(DSRole role);
+
+const char *_dsproc_dsformat_to_name(DSFormat format);
+DSFormat    _dsproc_name_to_dsformat(const char *name);
+
 
 /*@}*/
 

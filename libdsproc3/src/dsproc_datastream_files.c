@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 66116 $
+*    $Revision: 66348 $
 *    $Author: ermold $
-*    $Date: 2015-11-30 21:55:20 +0000 (Mon, 30 Nov 2015) $
+*    $Date: 2015-12-09 22:47:44 +0000 (Wed, 09 Dec 2015) $
 *
 ********************************************************************************
 *
@@ -1213,7 +1213,7 @@ int dsproc_get_datastream_files(
             ERROR( DSPROC_LIB_NAME,
                 "Could not get file list for %s datastream: %s\n"
                 " -> memory allocation error\n",
-                _dsproc_datastream_role_name(ds->role), ds->name);
+                _dsproc_dsrole_to_name(ds->role), ds->name);
 
             dsproc_set_status(DSPROC_ENOMEM);
             return(-1);
@@ -1266,7 +1266,7 @@ int dsproc_set_datastream_path(int ds_id, const char *path)
                     ERROR( DSPROC_LIB_NAME,
                         "Could not set path for %s datastream: %s\n"
                         " -> the COLLECTION_DATA environment variable was not found\n",
-                        _dsproc_datastream_role_name(ds->role), ds->name);
+                        _dsproc_dsrole_to_name(ds->role), ds->name);
 
                     dsproc_set_status(DSPROC_EDSPATH);
                     return(0);
@@ -1296,7 +1296,7 @@ int dsproc_set_datastream_path(int ds_id, const char *path)
             ERROR( DSPROC_LIB_NAME,
                 "Could not set path for %s datastream: %s\n"
                 " -> the DATASTREAM_DATA environment variable was not found\n",
-                _dsproc_datastream_role_name(ds->role), ds->name);
+                _dsproc_dsrole_to_name(ds->role), ds->name);
 
             dsproc_set_status(DSPROC_EDSPATH);
             return(0);
@@ -1309,7 +1309,7 @@ int dsproc_set_datastream_path(int ds_id, const char *path)
 
         DEBUG_LV1( DSPROC_LIB_NAME,
             "%s: Setting %s datastream path: %s\n",
-            ds->name, _dsproc_datastream_role_name(ds->role), path);
+            ds->name, _dsproc_dsrole_to_name(ds->role), path);
     }
 
     if (ds->dir) {
@@ -1354,7 +1354,7 @@ int dsproc_set_datastream_path(int ds_id, const char *path)
             ERROR( DSPROC_LIB_NAME,
                 "Could not set path for %s datastream: %s\n"
                 " -> memory allocation error\n",
-                _dsproc_datastream_role_name(ds->role), ds->name);
+                _dsproc_dsrole_to_name(ds->role), ds->name);
 
             dsproc_set_status(DSPROC_ENOMEM);
             return(0);
@@ -1463,13 +1463,13 @@ int dsproc_add_datastream_file_patterns(
 
             DEBUG_LV1( DSPROC_LIB_NAME,
                 "%s: Adding %s datastream file pattern: '%s'\n",
-                ds->name, _dsproc_datastream_role_name(ds->role), patterns[0]);
+                ds->name, _dsproc_dsrole_to_name(ds->role), patterns[0]);
         }
         else {
 
             DEBUG_LV1( DSPROC_LIB_NAME,
                 "%s: Adding %s datastream file patterns:\n",
-                ds->name, _dsproc_datastream_role_name(ds->role));
+                ds->name, _dsproc_dsrole_to_name(ds->role));
 
             for (i = 0; i < npatterns; i++) {
 

@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 63473 $
+*    $Revision: 66348 $
 *    $Author: ermold $
-*    $Date: 2015-08-26 20:44:23 +0000 (Wed, 26 Aug 2015) $
+*    $Date: 2015-12-09 22:47:44 +0000 (Wed, 09 Dec 2015) $
 *
 ********************************************************************************
 *
@@ -40,6 +40,7 @@ extern int _DisableDBUpdates; /**< Flag indicating if DB updates are disabled */
 
 static const char *gNCExtension     = "nc";
 static const char *gNetcdfExtension = "cdf";
+static DSFormat    gOutputFormat    = DSF_NETCDF;
 
 /**
  *  Static: Create a new DataStream structure.
@@ -70,7 +71,7 @@ static DataStream *_dsproc_create_datastream(
     if (!site)     site     = _DSProc->site;
     if (!facility) facility = _DSProc->facility;
 
-    role_name = _dsproc_datastream_role_name(role);
+    role_name = _dsproc_dsrole_to_name(role);
 
     ds = (DataStream *)calloc(1, sizeof(DataStream));
 
@@ -268,19 +269,79 @@ int _dsproc_init_output_datastreams(void)
 }
 
 /**
- *  Private: datastream role string name.
+ *  Private: datastream role name.
  *
  *  @param  role - datastream role
  *
- *  @return  datastream role name
+ *  @return  string name
  */
-const char *_dsproc_datastream_role_name(DSRole role)
+const char *_dsproc_dsrole_to_name(DSRole role)
 {
-    const char *role_name;
+    static const char *role_name;
 
     role_name = (role == DSR_INPUT) ? "input" : "output";
 
     return(role_name);
+}
+
+/**
+ *  Private: data format name.
+ *
+ *  @param  format - data format
+ *
+ *  @return  string name
+ */
+const char *_dsproc_dsformat_to_name(DSFormat format)
+{
+    static const char *name;
+
+    switch (format) {
+
+        case DSF_NETCDF: name = "NetCDF3"; break;
+        case DSF_CSV:    name = "CSV";     break;
+        case DSF_RAW:    name = "RAW";     break;
+        case DSF_JPG:    name = "JPG";     break;
+        case DSF_PNG:    name = "PNG";     break;
+        default:         name = "Unknown"; break;
+    }
+
+    return(name);
+}
+
+/**
+ *  Private: data format name.
+ *
+ *  @param  name - string name
+ *
+ *  @return  data format
+ */
+DSFormat _dsproc_name_to_dsformat(const char *name)
+{
+    DSFormat format;
+
+    if (strcmp(name, "NetCDF") == 0) {
+        format = DSF_NETCDF;
+    }
+    else if (strcmp(name, "NetCDF3") == 0) {
+        format = DSF_NETCDF;
+    }
+    else if (strcmp(name, "CSV") == 0) {
+        format = DSF_CSV;
+    }
+    else if (strcmp(name, "RAW") == 0) {
+        format = DSF_RAW;
+    }
+    else if (strcmp(name, "JPG") == 0) {
+        format = DSF_JPG;
+    }
+    else if (strcmp(name, "PNG") == 0) {
+        format = DSF_PNG;
+    }
+    else {
+        format = 0;
+    }
+
+    return(format);
 }
 
 /** @publicsection */
@@ -364,7 +425,7 @@ int dsproc_init_datastream(
         }
     }
 
-    role_name = _dsproc_datastream_role_name(role);
+    role_name = _dsproc_dsrole_to_name(role);
 
     if (msngr_debug_level || msngr_provenance_level) {
         DEBUG_LV1( DSPROC_LIB_NAME,
@@ -456,7 +517,8 @@ int dsproc_init_datastream(
             return(-1);
         }
 
-        if (ds->format == DSF_NETCDF) {
+        if (ds->format == DSF_NETCDF ||
+            ds->format == DSF_CSV) {
 
             /* Get the DSDOD if it has been defined */
 
@@ -557,7 +619,7 @@ void dsproc_set_datastream_flags(int ds_id, int flags)
 
         DEBUG_LV1( DSPROC_LIB_NAME,
             "%s: Setting %s datastream control flags\n",
-            ds->name, _dsproc_datastream_role_name(ds->role));
+            ds->name, _dsproc_dsrole_to_name(ds->role));
 
         if (flags & DS_STANDARD_QC) {
             DEBUG_LV1( DSPROC_LIB_NAME, " - DS_STANDARD_QC\n");
@@ -602,6 +664,7 @@ void dsproc_set_datastream_flags(int ds_id, int flags)
  *  <b>DataStream Formats:</b>
  *
  *    - DSF_NETCDF = NetCDF 3 Format;    extension = "cdf".
+ *    - DSF_CSV    = CSV Format;         extension = "csv".
  *    - DSF_RAW    = Generic Raw Format; extension = "raw".
  *    - DSF_PNG    = PNG Image Format;   extension = "png".
  *    - DSF_JPG    = JPG Image Format;   extension = "jpg".
@@ -616,12 +679,13 @@ void dsproc_set_datastream_format(int ds_id, DSFormat format)
     const char *extension;
 
     if (!format) {
-        format = (ds->dsc_level[0] == '0') ? DSF_RAW: DSF_NETCDF;
+        format = (ds->dsc_level[0] == '0') ? DSF_RAW: gOutputFormat;
     }
 
     switch (format) {
 
-        case DSF_NETCDF: name = "NetCDF";  extension = gNetcdfExtension; break;
+        case DSF_NETCDF: name = "NetCDF3"; extension = gNetcdfExtension; break;
+        case DSF_CSV:    name = "CSV";     extension = "csv"; break;
         case DSF_RAW:    name = "RAW";     extension = "raw"; break;
         case DSF_JPG:    name = "JPG";     extension = "jpg"; break;
         case DSF_PNG:    name = "PNG";     extension = "png"; break;
@@ -632,12 +696,65 @@ void dsproc_set_datastream_format(int ds_id, DSFormat format)
 
         DEBUG_LV1( DSPROC_LIB_NAME,
             "%s: Setting %s datastream format: %s\n",
-            ds->name, _dsproc_datastream_role_name(ds->role), name);
+            ds->name, _dsproc_dsrole_to_name(ds->role), name);
     }
 
     ds->format = format;
 
     strncpy((char *)ds->extension, extension, 63);
+}
+
+/**
+ *  Set the data format for all output datastreams.
+ *
+ *  By default the data format for all output datastreams is NETCDF3.
+ *  This function can be used to change the output format to CSV by
+ *  specifying DSF_CSV.  The only options currently supported by this
+ *  function are DSF_NETCDF and DSF_CSV.
+ *
+ *  If an error occurs in this function it will be appended to the log and
+ *  error mail messages, and the process status will be set appropriately.
+ *
+ *  @param  format - datastream data format
+ *
+ *  @return
+ *    - 1 if successful
+ *    - 0 invalid output format
+ */
+int dsproc_set_output_format(DSFormat format)
+{
+    const char *name = _dsproc_dsformat_to_name(format);
+    int         ds_id;
+
+    DEBUG_LV1( DSPROC_LIB_NAME,
+        "Setting data format for all output datastreams to: %s\n",
+        name);
+
+    /* Set global output format */
+
+    if (format != DSF_NETCDF &&
+        format != DSF_CSV) {
+
+        ERROR( DSPROC_LIB_NAME,
+            "Invalid output datastream format: %s\n"
+            " -> only DSF_NETCDF and DSF_CSV are currently supported\n",
+            name);
+
+        dsproc_set_status(DSPROC_EBADOUTFORMAT);
+        return(0);
+    }
+
+    gOutputFormat = format;
+
+    /* Update any output datastreams that have already been defined */
+
+    for (ds_id = 0; ds_id < _DSProc->ndatastreams; ds_id++) {
+        if (_DSProc->datastreams[ds_id]->role == DSR_OUTPUT) {
+            dsproc_set_datastream_format(ds_id, format);
+        }
+    }
+
+    return(1);
 }
 
 /**
@@ -658,7 +775,7 @@ void dsproc_unset_datastream_flags(int ds_id, int flags)
 
         DEBUG_LV1( DSPROC_LIB_NAME,
             "%s: Unsetting %s datastream control flags\n",
-            ds->name, _dsproc_datastream_role_name(ds->role));
+            ds->name, _dsproc_dsrole_to_name(ds->role));
 
         if (flags & DS_OVERLAP_CHECK) {
             DEBUG_LV1( DSPROC_LIB_NAME, " - DS_OVERLAP_CHECK\n");
@@ -721,7 +838,7 @@ void dsproc_update_datastream_data_stats(
             " - num records: %d\n"
             " - begin time:  %s\n"
             " - end time:    %s\n",
-            ds->name, _dsproc_datastream_role_name(ds->role),
+            ds->name, _dsproc_dsrole_to_name(ds->role),
             num_records, ts1, ts2);
     }
 
@@ -789,7 +906,7 @@ void dsproc_update_datastream_file_stats(
             " - file size:  %g bytes\n"
             " - begin time: %s\n"
             " - end time:   %s\n",
-            ds->name, _dsproc_datastream_role_name(ds->role),
+            ds->name, _dsproc_dsrole_to_name(ds->role),
             file_size, ts1, ts2);
     }
 

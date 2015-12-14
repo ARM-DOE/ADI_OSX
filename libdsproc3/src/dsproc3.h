@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 66117 $
+*    $Revision: 66348 $
 *    $Author: ermold $
-*    $Date: 2015-11-30 22:10:46 +0000 (Mon, 30 Nov 2015) $
+*    $Date: 2015-12-09 22:47:44 +0000 (Wed, 09 Dec 2015) $
 *
 ********************************************************************************
 *
@@ -1000,6 +1000,9 @@ int dsproc_execvp(
 
 /** Invalid Datastream ID */
 #define DSPROC_EBADDSID      "Invalid Datastream ID"
+
+/** Invalid Output Datastream Format */
+#define DSPROC_EBADOUTFORMAT "Invalid Output Datastream Format"
 
 /** Found Data Time Before Minimum Valid Time */
 #define DSPROC_EMINTIME      "Found Data Time Before Minimum Valid Time"
