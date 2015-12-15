@@ -11,12 +11,12 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
   - `brew uninstall adi`
   - `brew untap arm-doe/adi`
   - `brew tap arm-doe/adi`
-  -  'brew tap homebrew/science'
+  -  `brew tap homebrew/science`
   - `brew fetch --force adi`
   - `brew install adi`
 - Otherwise for a first installation
-  -  if installing on El Capitan (OSX 10.11.x) you will likely need ot install openssl 'brew install git --with-brewed-openssl'
-  -  'brew tap homebrew/science'
+  -  if installing on El Capitan (OSX 10.11.x) you will likely need ot install openssl `brew install git --with-brewed-openssl`
+  -  `brew tap homebrew/science`
   - `brew tap arm-doe/adi`
   - `brew install adi`
 - For Python programmers:
