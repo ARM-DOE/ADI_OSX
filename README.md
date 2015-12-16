@@ -7,8 +7,8 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
 ## To Install ADI:
 
 - Install the requisite perl moduels.  Run the following commands in a terminal.  Accept all defaults to configure cpan.  If you have to configure cspan you may need to repeat the install of JSON::XS  
-  - `sudo cspan JSON::XS`
-  - `sudo capn CGIU::Session`
+  - `sudo cpan JSON::XS`
+  - `sudo cpan CGIU::Session`
 - Install Homebrew if it's not already installed
 - If you have installed a previous version execute the following
   - `brew uninstall adi`
