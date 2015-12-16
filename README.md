@@ -39,7 +39,7 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
   vap to verify the ADI installation worked properly.*
 
 - untar the file and copy the resulting `adi_home` directory to somewhere you want to work from, say, `~/Documents` or your home directory in /Users, i.e. `~`.  These instructions will assume you copied it into `~`.
-- A core database named dsdb has been provided in /usr/local/share.  Create the directory path ~/adi_home/data/db/sqlite
+- A core database named dsdb has been provided in /usr/local/share.  Create the directory path ~/adi_home/data/db/sqlite, `mkdir -p ~/adi_home/data/db/sqlite`
 - Copy the core dsdb into it`cp /usr/local/share/dsdb   ~/adi_home/data/db/sqlite/dsdb.sqlite`
 - Enter your home directory and create a new file named .db_connect with the following entries
   - dsdb_data    sqlite    ~/adi_home/data/db/sqlite/dsdb.sqlite
