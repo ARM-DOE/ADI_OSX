@@ -32,9 +32,9 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
   - `python setup.py install`
   - This should install the ADI libraries for whichever is your default version of python.
 - For IDL programmers:
-- Requires ENVI/IDL which requies Java 6 and XQauartz.  Note that on OS 10.11 El Capitan you need to install the Apple supports version of Java 6 from https://support.apple.com/kb/DL1572?locale=en_US
-- down the idl ADI libs from [here](https://engineering.arm.gov/~gaustad/idl_libs.1.0.tar.gz). 
-- unzip, untar, then move all the files downloaded into /usr/local/lib
+  - Requires ENVI/IDL which requies Java 6 and XQauartz.  Note that on OS 10.11 El Capitan you need to install the Apple supports version of Java 6 from https://support.apple.com/kb/DL1572?locale=en_US
+  - down the idl ADI libs from [here](https://engineering.arm.gov/~gaustad/idl_libs.1.0.tar.gz). 
+  - unzip, untar, then move all the files downloaded into /usr/local/lib
 ## Set Up an Environment for ADI
 
 - Download [adi_home](https://engineering.arm.gov/~gaustad/adi_home.tar.gz). This tarfile contains a directory structure to get you started running ADI quickly. Note that you can also configure the directory structure however you like on your own. 
