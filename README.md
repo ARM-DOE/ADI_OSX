@@ -31,7 +31,10 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
   - untar the file, and from inside it, run:
   - `python setup.py install`
   - This should install the ADI libraries for whichever is your default version of python.
-
+- For IDL programmers:
+- Requires ENVI/IDL which requies Java 6 and XQauartz.  Note that on OS 10.11 El Capitan you need to install the Apple supports version of Java 6 from https://support.apple.com/kb/DL1572?locale=en_US
+- down the idl ADI libs from [here](https://engineering.arm.gov/~gaustad/idl_libs.1.0.tar.gz). 
+- unzip, untar, then move all the files downloaded into /usr/local/lib
 ## Set Up an Environment for ADI
 
 - Download [adi_home](https://engineering.arm.gov/~gaustad/adi_home.tar.gz). This tarfile contains a directory structure to get you started running ADI quickly. Note that you can also configure the directory structure however you like on your own. 
@@ -55,7 +58,9 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
   - import the output data definitions by running `db_load_dod -a dsdb_data cpc.json` and `db_load_dod -a dsdb_data met.json`
 
 - Run C version of example1
-  - if you have not edited ~/adi_home/env_vars_bash for your installtion, from the ~/adi_home directory 
+  - Each time you open a new bash terminal you will need to setup the environment variables
+    - `source ~/adi_home/env_vars_bash`
+  - to to the ~/adi_home/adi_example1 directory
   - run `make clean; make`. If successful the binary ~/adi_home/dev/vap/bin/adi_example1_vap will be created.
   - run `adi_example1_vap -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R` this should complete successfully with an exit status of zero.
   - The output data created are:
@@ -63,8 +68,26 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
     ~/adi_home/data/datastream/sbs/sbsadimetexample1S2.a1/sbsadimetexample1S2.a1.20110401.000000.cdf
 
 - Run Python version of example1
-  - if you have not edited ~/adi_home/env_vars_bash for your installtion, from the ~/adi_home directory 
+  - Each time you open a new bash terminal you will need to setup the environment variables
+    - `source ~/adi_home/env_vars_bash`
+  - go to the ~/adi_home/adi_example1_py directory 
   - run `python adi_example1_vap.py -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R'
+  - The output data created is the same as for the C run:
+    ~/adi_home/data/datastream/sbs/sbsadicpcexample1S2.a1/sbsadicpcexample1S2.a1.20110401.000000.cdf
+    ~/adi_home/data/datastream/sbs/sbsadimetexample1S2.a1/sbsadimetexample1S2.a1.20110401.000000.cdf
+
+- Run IDL version of example1
+  - If its first time you running an ADI process, from an IDL prompt:
+    - IDL> pref_set, 'idl_path','<IDL_DEFAULT>:/usr/local/lib',/commit
+    - IDL> pref_set, 'idl_dlm_path','<IDL_DEFAULT>:/usr/local/lib',/commit 
+  - Each time you open a new terminal you will need to setup idl and the environment variables
+    - `source /Applications/exelis/idl84/bin/idl_setup.bash`
+    - `source ~/adi_home/env_vars_bash`
+  - go to the ~/adi_home/adi_example1_idl directory 
+  - run $> `idl -e "adi_example1_vap" -args -s sbs -f S2 -b 20110401 -e 20110402 -D 2'
+  - or to run in debug mode 
+    - $> `idl -args -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R`
+    - $IDL> adi_example1_vap
   - The output data created is the same as for the C run:
     ~/adi_home/data/datastream/sbs/sbsadicpcexample1S2.a1/sbsadicpcexample1S2.a1.20110401.000000.cdf
     ~/adi_home/data/datastream/sbs/sbsadimetexample1S2.a1/sbsadimetexample1S2.a1.20110401.000000.cdf
