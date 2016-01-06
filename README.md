@@ -49,8 +49,8 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
 - A core database named dsdb has been provided in /usr/local/share.  Create the directory path ~/adi_home/data/db/sqlite, `mkdir -p ~/adi_home/data/db/sqlite`
 - Copy the core dsdb into it`cp /usr/local/share/dsdb/*core.sqlite   ~/adi_home/data/db/sqlite/dsdb.sqlite`
 - Enter your home directory and create a new file named .db_connect with the following entries
-  - dsdb_data    sqlite    <your_home_directory>/adi_home/data/db/sqlite/dsdb.sqlite
-  - dsdb_read    sqlite    <your_home_directory>/adi_home/data/db/sqlite/dsdb.sqlite
+  - `dsdb_data    sqlite    <your_home_directory>/adi_home/data/db/sqlite/dsdb.sqlite`
+  - `dsdb_read    sqlite    <your_home_directory>/adi_home/data/db/sqlite/dsdb.sqlite`
 - Enter the untarred `adi_home` directory
 - To set the required environment variables for running from ~/adi_home, cat ~/adi_home/env_vars_bash, and copy all the commands into your bash terminal. Later you may want to add these environment variables to your .bash_profile, as THESE WILL HAVE TO BE SET EACH TIME YOU ENTER A NEW TERMINAL.  You will probably want to update ~/adi_home/env_vars_bash to set the locations explicitly so you can run your process from any location rather than from ~/adi_home.
 - Setup the example vap process:
@@ -79,16 +79,16 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
 
 - Run IDL version of example1
   - If its first time you running an ADI process, from an IDL prompt:
-    - IDL> pref_set, 'idl_path','<IDL_DEFAULT>:/usr/local/lib',/commit
-    - IDL> pref_set, 'idl_dlm_path','<IDL_DEFAULT>:/usr/local/lib',/commit 
+    - IDL> `pref_set, 'idl_path','<IDL_DEFAULT>:/usr/local/lib',/commit`
+    - IDL> `pref_set, 'idl_dlm_path','<IDL_DEFAULT>:/usr/local/lib',/commit` 
   - Each time you open a new terminal you will need to setup idl and the environment variables
     - `source /Applications/exelis/idl84/bin/idl_setup.bash`
     - `source ~/adi_home/env_vars_bash`
   - go to the ~/adi_home/adi_example1_idl directory 
-  - run $> `idl -e "adi_example1_vap" -args -s sbs -f S2 -b 20110401 -e 20110402 -D 2'
+  - run $> `idl -e "adi_example1_vap" -args -s sbs -f S2 -b 20110401 -e 20110402 -D 2`
   - or to run in debug mode 
     - $> `idl -args -s sbs -f S2 -b 20110401 -e 20110402 -D 2 -R`
-    - $IDL> adi_example1_vap
+    - $IDL> `adi_example1_vap`
   - The output data created is the same as for the C run:
     ~/adi_home/data/datastream/sbs/sbsadicpcexample1S2.a1/sbsadicpcexample1S2.a1.20110401.000000.cdf
     ~/adi_home/data/datastream/sbs/sbsadimetexample1S2.a1/sbsadimetexample1S2.a1.20110401.000000.cdf
