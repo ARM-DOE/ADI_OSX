@@ -49,8 +49,8 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
 - A core database named dsdb has been provided in /usr/local/share.  Create the directory path ~/adi_home/data/db/sqlite, `mkdir -p ~/adi_home/data/db/sqlite`
 - Copy the core dsdb into it`cp /usr/local/share/dsdb/*core.sqlite   ~/adi_home/data/db/sqlite/dsdb.sqlite`
 - Enter your home directory and create a new file named .db_connect with the following entries
-  - dsdb_data    sqlite    ~/adi_home/data/db/sqlite/dsdb.sqlite
-  - dsdb_read    sqlite    ~/adi_home/data/db/sqlite/dsdb.sqlite
+  - dsdb_data    sqlite    <your_home_directory>/adi_home/data/db/sqlite/dsdb.sqlite
+  - dsdb_read    sqlite    <your_home_directory>/adi_home/data/db/sqlite/dsdb.sqlite
 - Enter the untarred `adi_home` directory
 - To set the required environment variables for running from ~/adi_home, cat ~/adi_home/env_vars_bash, and copy all the commands into your bash terminal. Later you may want to add these environment variables to your .bash_profile, as THESE WILL HAVE TO BE SET EACH TIME YOU ENTER A NEW TERMINAL.  You will probably want to update ~/adi_home/env_vars_bash to set the locations explicitly so you can run your process from any location rather than from ~/adi_home.
 - Setup the example vap process:
