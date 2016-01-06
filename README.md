@@ -9,7 +9,7 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
 - Install the requisite perl moduels.  Run the following commands in a terminal.  Accept all defaults to configure cpan.  If you have to configure cspan you may need to repeat the install of JSON::XS  
   - `sudo cpan JSON::XS`
   - `sudo cpan CGI::Session`
-- Install Homebrew if it's not already installed
+- Install Homebrew if it's not already installed (http://brew.sh/). Note it is good to do this within using a bash terminal.
 - If you have installed a previous version execute the following
   - `brew uninstall adi`
   - `brew untap arm-doe/adi`
@@ -46,8 +46,10 @@ ADI is used by the [Atmospheric Radiation Measurement (ARM) Climate Research Fac
   vap to verify the ADI installation worked properly.*
 
 - untar the file and copy the resulting `adi_home` directory to somewhere you want to work from, say, `~/Documents` or your home directory in /Users, i.e. `~`.  These instructions will assume you copied it into `~`.
-- A core database named dsdb has been provided in /usr/local/share.  Create the directory path ~/adi_home/data/db/sqlite, `mkdir -p ~/adi_home/data/db/sqlite`
-- Copy the core dsdb into it`cp /usr/local/share/dsdb/*core.sqlite   ~/adi_home/data/db/sqlite/dsdb.sqlite`
+- A core database named dsdb has been provided in /usr/local/share.  Create the directory path:
+  - `mkdir -p ~/adi_home/data/db/sqlite`
+- Copy the core dsdb into it
+  - `cp /usr/local/share/dsdb/*core.sqlite   ~/adi_home/data/db/sqlite/dsdb.sqlite`
 - Enter your home directory and create a new file named .db_connect with the following entries
   - `dsdb_data    sqlite    <your_home_directory>/adi_home/data/db/sqlite/dsdb.sqlite`
   - `dsdb_read    sqlite    <your_home_directory>/adi_home/data/db/sqlite/dsdb.sqlite`
