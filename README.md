@@ -117,6 +117,7 @@ The process definitions for adi_example1 have been included in your adi_home are
 ## Important Links
 
 - [Documentation](http://engineering.arm.gov/ADI_doc)
-- [ADI Process Configuration Interface](https://engineering.arm.gov/pcm/Main.html)
+- [ADI Process Configuration Interface Documentation](https://engineering.arm.gov/pcm/Main.html)
+- [Quick Reference Guide (under construction)] (https://engineering.arm.gov/~gaustad/adi_training_videos/)
 - [Examples](http://engineering.arm.gov/ADI_doc/algorithm.html#algorithm-development-tutorial)
 - [ARM Data Archive for accessing ARM data](http://archive.arm.gov)
