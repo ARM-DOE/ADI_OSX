@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 65878 $
+*    $Revision: 67294 $
 *    $Author: ermold $
-*    $Date: 2015-11-13 20:57:30 +0000 (Fri, 13 Nov 2015) $
+*    $Date: 2016-02-04 23:49:31 +0000 (Thu, 04 Feb 2016) $
 *
 ********************************************************************************
 *
@@ -33,7 +33,7 @@
  */
 /** @privatesection */
 
-static char *_VersionTag = "$Version: afl-libarmutils-1.10 $";
+static char *_VersionTag = "$Version: afl-libarmutils-1.11 $";
 static char  _Version[64];
 
 /*******************************************************************************

@@ -12,9 +12,9 @@
 ********************************************************************************
 *
 *  REPOSITORY INFORMATION:
-*    $Revision: 65877 $
+*    $Revision: 67293 $
 *    $Author: ermold $
-*    $Date: 2015-11-13 20:56:54 +0000 (Fri, 13 Nov 2015) $
+*    $Date: 2016-02-04 23:48:57 +0000 (Thu, 04 Feb 2016) $
 *
 ********************************************************************************
 *
@@ -536,16 +536,18 @@ int retime_execute(RETime *retime, const char *string, RETimeRes *res)
 
     /* Compute year from century and/or year within century */
 
-    if (res->century != -1) {
+    if (res->year == -1) {
 
         if (res->yy != -1) {
-            res->year = (res->century * 100) + res->yy;
-        }
-    }
-    else if (res->yy != -1) {
 
-        if (res->year == -1) {
-            res->year += (res->yy < 69) ? 2000 : 1900;
+            if (res->century != -1) {
+                res->year = (res->century * 100);
+            }
+            else {
+                res->year = (res->yy < 69) ? 2000 : 1900;
+            }
+
+            res->year += res->yy;
         }
     }
 
